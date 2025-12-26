@@ -11,7 +11,7 @@ const Footer = () => {
         {/* Brand */}
         <div>
           <h2 className="text-2xl font-bold">Trackpoint</h2>
-          <p className="mt-3 text-sm">
+          <p className="mt-3 text-sm text-black dark:text-white">
             Plan Smarter. Work Better. <br />
             Helping you manage clients, tasks, and projects efficiently.
           </p>
@@ -20,7 +20,7 @@ const Footer = () => {
         {/* Quick Links */}
         <div className="md:ml-auto">
           <h3 className="text-lg font-semibold mb-3">Quick Links</h3>
-          <ul className="space-y-2">
+          <ul className="space-y-2 text-black dark:text-white">
             <li>
               <Link href="/">Home</Link>
             </li>
@@ -39,7 +39,7 @@ const Footer = () => {
         {/* Resources */}
         <div className="md:ml-auto">
           <h3 className="text-lg font-semibold mb-3">Resources</h3>
-          <ul className="space-y-2">
+          <ul className="space-y-2 text-black dark:text-white   ">
             <li>
               <Link href="/blog">Blog</Link>
             </li>
@@ -55,14 +55,16 @@ const Footer = () => {
           </ul>
         </div>
 
-        {/* Social Media */}
+        {/* Social Media + Status */}
         <div className="md:ml-auto">
           <h3 className="text-lg font-semibold mb-3">Follow Us</h3>
-          <div className="flex justify-center sm:justify-start space-x-4 text-xl">
+
+          <div className="flex justify-center sm:justify-start space-x-4 text-xl mb-2">
             <a
               href="https://twitter.com/trackpoint"
               target="_blank"
               rel="noopener noreferrer"
+              // className="hover:text-indigo-500 transition"
             >
               <FaTwitter />
             </a>
@@ -70,6 +72,7 @@ const Footer = () => {
               href="https://github.com/trackpoint"
               target="_blank"
               rel="noopener noreferrer"
+              // className="hover:text-indigo-500 transition"
             >
               <FaGithub />
             </a>
@@ -77,15 +80,24 @@ const Footer = () => {
               href="https://www.linkedin.com/company/trackpoint/"
               target="_blank"
               rel="noopener noreferrer"
+              // className="hover:text-indigo-500 transition"
             >
               <FaLinkedin />
             </a>
+          </div>
+
+          {/* Status */}
+          <div className="flex items-center gap-2 justify-center sm:justify-start mt-14">
+            <span className="w-3 h-3 rounded-full bg-green-500"></span>
+            <span className="text-sm text-black dark:text-white">
+              All systems operational
+            </span>
           </div>
         </div>
       </div>
 
       {/* Copyright */}
-      <div className="border-t border-gray-300 dark:border-gray-700 mt-10 pt-6 text-center text-sm flex flex-row sm:flex-row items-center justify-center gap-2">
+      <div className="border-t border-gray-300 dark:border-slate-800 mt-10 pt-6 text-center text-sm flex flex-row items-center justify-center gap-2 text-black dark:text-white">
         <span>Made with</span>
         <motion.span
           animate={{ scale: [1, 1.3, 1] }}
@@ -95,7 +107,11 @@ const Footer = () => {
           <IoIosHeart className="text-red-500 text-lg cursor-pointer" />
         </motion.span>
         <span>
-          by <span className="font-semibold">Trackpoint Team</span>.
+          by{" "}
+          <span className="font-semibold text-black dark:text-white">
+            Trackpoint Team
+          </span>
+          .
         </span>
       </div>
     </footer>

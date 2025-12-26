@@ -1,6 +1,15 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Optional: smooth transition for dark mode */
+html {
+  transition: background-color 0.3s, color 0.3s;
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {

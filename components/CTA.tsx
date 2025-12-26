@@ -4,25 +4,28 @@ import React from "react";
 
 export default function CTA() {
   return (
-    <section className="bg-white dark:bg-gray-900 py-24 px-6 lg:px-8">
+    <section className="bg-white dark:bg-black py-36 px-6 lg:px-8">
       <div className="max-w-3xl mx-auto text-center">
-        <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white mb-4">
+        <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white mb-5">
           Ready to Take Your CRM to the Next Level?
         </h2>
-        <p className="text-lg sm:text-xl text-gray-700 dark:text-gray-300 mb-8">
+
+        <p className="text-lg sm:text-xl text-black dark:text-white mb-10">
           Start managing your clients efficiently and grow your business with
           ease.
         </p>
+
         <div className="flex justify-center gap-4 flex-wrap">
           <a
             href="#get-started"
-            className="px-8 py-4 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-500 transition"
+            className="px-8 py-4 bg-black dark:bg-neutral-900 text-white font-semibold rounded-lg shadow-md "
           >
             Get Started
           </a>
+
           <a
             href="#learn-more"
-            className="px-8 py-4 border border-gray-900 dark:border-gray-100 text-gray-900 dark:text-white font-semibold rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+            className="px-8 py-4 border border-gray-900 dark:border-slate-700 text-gray-900 dark:text-white font-semibold rounded-lg"
           >
             Learn More
           </a>

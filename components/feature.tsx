@@ -43,11 +43,12 @@ export default function Features() {
   ];
 
   return (
-    <section className="bg-gray-50 dark:bg-gray-900 py-24 px-6 lg:px-8">
+    <section className="bg-gray-50 dark:bg-black py-24 px-6 lg:px-8">
       <div className="max-w-7xl mx-auto text-center">
         <h2 className="text-4xl sm:text-5xl font-extrabold text-gray-900 dark:text-white mb-4">
           Powerful Features
         </h2>
+
         <p className="text-lg sm:text-xl text-black dark:text-white max-w-2xl mx-auto mb-16">
           Everything you need to manage your clients and grow your business
           efficiently.
@@ -57,17 +58,19 @@ export default function Features() {
           {features.map((feature, index) => (
             <div
               key={index}
-              className="bg-white dark:bg-gray-800 p-8 rounded-3xl shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300 flex flex-col items-center text-center"
+              className="bg-white dark:bg-black border border-transparent dark:border-slate-800 p-8 rounded-3xl shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300 flex flex-col items-center text-center"
             >
               <div
-                className={`flex items-center justify-center w-16 h-16 mb-5 rounded-full ${feature.color} bg-gradient-to-br from-indigo-400 to-indigo-600`}
+                className={`flex items-center justify-center w-16 h-16 mb-5 rounded-full ${feature.color}`}
               >
                 {feature.icon}
               </div>
+
               <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">
                 {feature.title}
               </h3>
-              <p className="text-gray-900 dark:text-white text-sm sm:text-base">
+
+              <p className="text-black dark:text-white text-sm sm:text-base">
                 {feature.description}
               </p>
             </div>

@@ -1,71 +1,49 @@
 "use client";
-import Head from "next/head";
-import Image from "next/image";
-import { Button } from "@/components/ui/button";
+
 import { signIn } from "next-auth/react";
 
-export default function Home() {
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-  };
+export default function SignInPage() {
   return (
-    <>
-      <Head>
-        <title>Donezo- Everything you need</title>
-        <meta name="description" content="Create content like never before" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+    <div className="min-h-screen flex items-center justify-center bg-white dark:bg-black px-6 transition-colors">
+      <div className="w-full max-w-md rounded-2xl border border-slate-200 dark:border-slate-800 p-8">
+        {/* LOGO / TITLE */}
+        <div className="mb-8 text-center">
+          <h1 className="text-3xl font-semibold text-black dark:text-white">
+            Sign in to Trackpoint
+          </h1>
+          <p className="mt-2 text-sm text-black dark:text-white">
+            Secure access to your CRM workspace
+          </p>
+        </div>
 
-      <div className="flex h-screen w-full">
-        <div className="relative flex-1 hidden lg:block">
-          <div className="absolute top-8 left-8 z-10">
-            <span className="text-white text-2xl font-bold">Donezo</span>
-          </div>
-          <div className="absolute inset-0 flex items-center z-10 px-16">
-            <div>
-              <h1 className="text-white text-5xl font-bold leading-tight mb-6">
-                Everything you need,
-                <br />
-                to make anything you want.
-              </h1>
-              <p className="text-white text-xl opacity-90">
-                Dozens of creative tools to ideate, generate and edit
-                <br />
-                content like never before.
-              </p>
-            </div>
-          </div>
-          <div className="absolute inset-0 bg-black bg-opacity-60 "></div>
-          <Image
-            src="/city-background.jpg"
-            alt="City skyline"
-            fill
-            className="object-cover"
-            priority
+        {/* GOOGLE BUTTON */}
+        <button
+          onClick={() => signIn("google", { callbackUrl: "/" })}
+          className="w-full flex items-center justify-center gap-3 rounded-lg border border-slate-300 dark:border-slate-700 py-3 text-sm font-medium text-black dark:text-white"
+        >
+          <img
+            src="https://www.svgrepo.com/show/475656/google-color.svg"
+            alt="Google"
+            className="w-5 h-5"
           />
-        </div>
-        <div className="flex-1 flex items-center justify-center p-8 bg-gray-500">
-          <div className="w-full max-w-md">
-            <h2 className="text-3xl font-bold text-center mb-6 text-black">
-              Welcome to Donezo
-            </h2>
+          Continue with Google
+        </button>
 
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <Button
-                type="button"
-                className="w-full flex items-center text-black justify-center gap-2 border bg-white border-gray-300 font-medium py-3 px-4 rounded-full hover:bg-gray-50 transition duration-300"
-                onClick={() => {
-                  signIn("google", { callbackUrl: "/" });
-                }}
-              >
-                <Image src="/google.png" alt="Google" width={20} height={20} />
-                Log in with Google
-              </Button>
-            </form>
-          </div>
-        </div>
+        {/* INFO TEXT */}
+        <p className="mt-6 text-center text-xs text-black dark:text-white leading-relaxed">
+          By continuing, you agree to Trackpoint’s Terms of Service and Privacy
+          Policy.
+        </p>
+
+        {/* FOOTER NOTE */}
+        {/* <p className="mt-8 text-center text-sm text-gray-600 dark:text-gray-400">
+          Access is currently invite-only.
+          <br />
+          <span className="text-black dark:text-white font-medium">
+            Contact admin if you need access.
+          </span>
+        </p> */}
       </div>
-    </>
+    </div>
   );
 }

@@ -7,7 +7,7 @@ import Image from "next/image";
 
 export default function HeroSection() {
   return (
-    <section className="relative overflow-hidden bg-gradient-to-b from-slate-50 to-white dark:from-slate-950 dark:to-slate-900">
+    <section className="relative overflow-hidden bg-gradient-to-b from-slate-50 to-white dark:from-black dark:to-black">
       {/* Background glow */}
       <div className="absolute inset-0 -z-10">
         <div className="absolute left-1/2 top-[-20%] h-[360px] w-[360px] sm:h-[420px] sm:w-[420px] -translate-x-1/2 rounded-full bg-indigo-500/20 dark:bg-indigo-400/10 blur-3xl" />
@@ -22,7 +22,7 @@ export default function HeroSection() {
             transition={{ duration: 0.6 }}
             className="space-y-5 text-center lg:text-left"
           >
-            <span className="mx-auto inline-flex items-center justify-center rounded-full border border-indigo-200 dark:border-indigo-800 bg-indigo-50 dark:bg-indigo-900/30 px-4 py-1 text-xs sm:text-sm font-medium text-indigo-600 dark:text-indigo-400 lg:mx-0">
+            <span className="mx-auto inline-flex items-center justify-center rounded-full border border-black dark:border-white bg-black dark:bg-neutral-900 px-4 py-1 text-xs sm:text-sm font-medium text-white dark:text-white lg:mx-0">
               🚀 Modern CRM Platform
             </span>
 
@@ -30,9 +30,10 @@ export default function HeroSection() {
               Manage Customers.
               <br />
               Grow Faster with{" "}
-              <span className="text-indigo-600 dark:text-indigo-400">
-                Trackpoint
-              </span>
+              {/* <span className="text-indigo-600 dark:text-indigo-400"> */}
+              <br />
+              Trackpoint
+              {/* </span> */}
             </h1>
 
             <p className="mx-auto max-w-md sm:max-w-xl text-base sm:text-lg text-black dark:text-white lg:mx-0">
@@ -41,14 +42,17 @@ export default function HeroSection() {
             </p>
 
             <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 lg:justify-start">
-              <Button size="lg" className="gap-2 w-full sm:w-auto">
+              <Button
+                size="lg"
+                className="gap-2 w-full sm:w-auto bg-black dark:bg-neutral-900 dark:text-white"
+              >
                 Get Started Free <ArrowRight className="h-4 w-4" />
               </Button>
 
               <Button
                 size="lg"
                 variant="outline"
-                className="gap-2 w-full sm:w-auto"
+                className="gap-2 w-full sm:w-auto dark:border-slate-700 dark:text-white"
               >
                 <Play className="h-4 w-4" />
                 Watch Demo
@@ -69,7 +73,7 @@ export default function HeroSection() {
           >
             <div className="absolute -inset-4 sm:-inset-6 -z-10 rounded-3xl bg-indigo-500/20 dark:bg-indigo-400/10 blur-3xl" />
 
-            <div className="relative mx-auto max-w-md sm:max-w-xl lg:max-w-none rounded-2xl border bg-white dark:bg-slate-900 dark:border-slate-800 p-2 sm:p-3 shadow-xl">
+            <div className="relative mx-auto max-w-md sm:max-w-xl lg:max-w-none rounded-2xl border bg-white dark:bg-black dark:border-slate-800 p-2 sm:p-3 shadow-xl">
               <Image
                 src="/dashboard.png"
                 alt="Trackpoint CRM Dashboard"

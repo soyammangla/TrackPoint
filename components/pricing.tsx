@@ -1,106 +1,142 @@
 "use client";
 
 import React from "react";
+import { Check, Star } from "lucide-react";
 
 export default function Pricing() {
   const plans = [
     {
       name: "Free",
+      description: "Best for individuals getting started.",
       price: "₹0",
-      features: ["Manage up to 10 clients", "Basic analytics", "Email support"],
-      color: "bg-gray-400",
+      duration: "/ free",
+      features: [
+        "Manage up to 10 clients",
+        "Basic analytics",
+        "Email support",
+        "Core CRM features",
+      ],
+      buttonText: "Get Started Free",
+      highlighted: false,
     },
     {
       name: "Pro",
+      description: "Perfect for growing teams & businesses.",
       price: "₹499",
+      duration: "/ one-time",
       features: [
         "Manage up to 100 clients",
         "Advanced analytics",
         "Priority email support",
         "Task automation",
+        "Team collaboration",
       ],
-      color: "bg-indigo-500",
+      buttonText: "Buy Pro",
       highlighted: true,
     },
     {
       name: "Enterprise",
+      description: "For large teams with custom needs.",
       price: "₹999",
+      duration: "/ one-time",
       features: [
         "Unlimited clients",
         "Custom integrations",
         "Dedicated account manager",
         "Advanced automations",
+        "Premium support",
       ],
-      color: "bg-pink-500",
+      buttonText: "Contact Sales",
+      highlighted: false,
     },
   ];
 
   return (
-    <section className="bg-gray-50 dark:bg-gray-900 py-24 px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto text-center">
-        <h2 className="text-4xl sm:text-5xl font-extrabold text-gray-900 dark:text-white mb-4">
-          Pricing Plans
-        </h2>
-        <p className="text-lg sm:text-xl text-black dark:text-white max-w-2xl mx-auto mb-16">
-          One-time payment, no recurring charges. Choose the plan that fits your
-          business needs.
-        </p>
+    <section className="flex min-h-screen items-center justify-center py-20 bg-gray-50 dark:bg-black px-6">
+      <div className="w-full max-w-6xl space-y-14">
+        {/* Header */}
+        <div className="text-center space-y-3">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-900 dark:text-white">
+            Trackpoint Pricing Plans
+          </h2>
+          <p className="text-black dark:text-white max-w-2xl mx-auto">
+            Simple, transparent pricing. Pay once and use forever.
+          </p>
+        </div>
 
-        <div className="grid gap-10 sm:grid-cols-1 md:grid-cols-3">
+        {/* Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {plans.map((plan, index) => (
             <div
               key={index}
-              className={`relative p-10 rounded-3xl shadow-xl transform transition-all duration-300 flex flex-col items-center text-center
+              className={`relative flex flex-col rounded-2xl border transition hover:shadow-xl
                 ${
                   plan.highlighted
-                    ? "bg-indigo-50 dark:bg-indigo-900 scale-105 z-10"
-                    : "bg-white dark:bg-gray-800 hover:shadow-2xl hover:-translate-y-2"
+                    ? "bg-white dark:bg-black border-indigo-600 scale-[1.03]"
+                    : "bg-white dark:bg-black border-gray-200 dark:border-gray-800"
                 }
               `}
             >
+              {/* Popular Badge */}
               {plan.highlighted && (
-                <span className="absolute -top-5 px-4 py-1 rounded-full bg-indigo-600 text-white text-sm font-semibold shadow-md">
-                  Most Popular
-                </span>
+                <div className="absolute top-3 right-3 flex items-center gap-1 rounded-md border px-2 py-0.5 text-xs bg-white dark:bg-black">
+                  <Star className="h-3 w-3 fill-current text-indigo-600" />
+                  Popular
+                </div>
               )}
 
-              <div
-                className={`flex items-center justify-center w-16 h-16 mb-5 rounded-full ${plan.color} bg-gradient-to-br from-indigo-400 to-indigo-600`}
-              >
-                <span className="text-white font-bold text-lg">
-                  {plan.name[0]}
-                </span>
+              {/* Header */}
+              <div className="rounded-t-2xl border-b p-6 bg-gray-50 dark:bg-black">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                  {plan.name}
+                </h3>
+                <p className="text-sm text-black dark:text-white mt-1">
+                  {plan.description}
+                </p>
+
+                <div className="mt-4 flex items-end gap-1">
+                  <span className="text-3xl font-bold text-gray-900 dark:text-white">
+                    {plan.price}
+                  </span>
+                  <span className="text-sm text-black dark:text-white">
+                    {plan.duration}
+                  </span>
+                </div>
               </div>
 
-              <h3 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
-                {plan.name}
-              </h3>
-              <p className="text-3xl font-bold text-gray-900 dark:text-white mb-6">
-                {plan.price}
-              </p>
+              {/* Divider (Professional look) */}
+              <div
+                className={`border-t ${
+                  plan.highlighted
+                    ? "border-gray-200 dark:border-gray-800"
+                    : "border-gray-200 dark:border-gray-700"
+                }`}
+              ></div>
 
-              <ul className="text-black dark:text-white mb-8 space-y-3 text-sm sm:text-base">
+              {/* Features */}
+              <div className="flex-1 px-6 py-6 space-y-4 text-sm text-black dark:text-white">
                 {plan.features.map((feature, i) => (
-                  <li key={i} className="flex items-center justify-center">
-                    <span className="mr-2 text-indigo-600 dark:text-indigo-400 font-bold">
-                      ✓
-                    </span>
-                    {feature}
-                  </li>
+                  <div key={i} className="flex items-center gap-2">
+                    <Check className="h-4 w-4 text-indigo-600" />
+                    <span>{feature}</span>
+                  </div>
                 ))}
-              </ul>
+              </div>
 
-              <button
-                className={`px-8 py-3 rounded-lg font-semibold transition
-                  ${
-                    plan.highlighted
-                      ? "bg-indigo-600 text-white hover:bg-indigo-500"
-                      : "bg-gray-800 text-white dark:bg-gray-700 hover:bg-gray-700"
-                  }
-                `}
-              >
-                {plan.highlighted ? "Get Pro" : "Choose Plan"}
-              </button>
+              {/* Button */}
+              <div className="border-t p-4">
+                <button
+                  className={`w-full rounded-md py-2.5 text-sm font-semibold transition
+                    ${
+                      plan.highlighted
+                        ? "bg-neutral-900 text-white"
+                        : "border border-gray-300 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-900 dark:text-white"
+                    }
+                  `}
+                >
+                  {plan.buttonText}
+                </button>
+              </div>
             </div>
           ))}
         </div>
