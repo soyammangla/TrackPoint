@@ -4,8 +4,21 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Play } from "lucide-react";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 export default function HeroSection() {
+  const router = useRouter();
+  const { status } = useSession(); // authenticated | unauthenticated | loading
+
+  const handleGetStarted = () => {
+    if (status === "authenticated") {
+      router.push("/home"); // or /dashboard
+    } else {
+      router.push("/login");
+    }
+  };
+
   return (
     <section className="relative overflow-hidden bg-gradient-to-b from-slate-50 to-white dark:from-black dark:to-black">
       {/* Background glow */}
@@ -15,25 +28,23 @@ export default function HeroSection() {
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 py-16 sm:py-20 lg:py-32">
         <div className="grid items-center gap-12 lg:grid-cols-2">
-          {/* LEFT CONTENT */}
+          {/* LEFT */}
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             className="space-y-5 text-center lg:text-left"
           >
-            <span className="mx-auto inline-flex items-center justify-center rounded-full border border-black dark:border-white bg-black dark:bg-neutral-900 px-4 py-1 text-xs sm:text-sm font-medium text-white dark:text-white lg:mx-0">
+            <span className="mx-auto inline-flex items-center justify-center rounded-full border border-black dark:border-white bg-black dark:bg-neutral-900 px-4 py-1 text-xs sm:text-sm font-medium text-white lg:mx-0">
               🚀 Modern CRM Platform
             </span>
 
             <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight text-slate-900 dark:text-white">
               Manage Customers.
               <br />
-              Grow Faster with{" "}
-              {/* <span className="text-indigo-600 dark:text-indigo-400"> */}
+              Grow Faster with
               <br />
               Trackpoint
-              {/* </span> */}
             </h1>
 
             <p className="mx-auto max-w-md sm:max-w-xl text-base sm:text-lg text-black dark:text-white lg:mx-0">
@@ -42,13 +53,16 @@ export default function HeroSection() {
             </p>
 
             <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 lg:justify-start">
+              {/* ✅ GET STARTED */}
               <Button
                 size="lg"
+                onClick={handleGetStarted}
                 className="gap-2 w-full sm:w-auto bg-black dark:bg-neutral-900 dark:text-white"
               >
                 Get Started Free <ArrowRight className="h-4 w-4" />
               </Button>
 
+              {/* WATCH DEMO */}
               <Button
                 size="lg"
                 variant="outline"
