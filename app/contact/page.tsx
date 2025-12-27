@@ -62,9 +62,9 @@ const ContactPage: React.FC = () => {
     if (!isLoggedIn) {
       window.location.href = "/login";
       return;
+    } else {
+      alert("Message sent successfully 🚀");
     }
-
-    alert("Message sent successfully 🚀");
   };
 
   return (
