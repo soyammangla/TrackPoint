@@ -2,9 +2,21 @@
 
 import React from "react";
 import { Check, Star } from "lucide-react";
-import Link from "next/link";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export default function Pricing() {
+  const { data: session } = useSession();
+  const router = useRouter();
+
+  const handlePlanClick = (link = "/") => {
+    if (!session) {
+      router.push("/login");
+    } else {
+      router.push(link);
+    }
+  };
+
   const plans = [
     {
       name: "Free",
@@ -18,7 +30,7 @@ export default function Pricing() {
         "Core CRM features",
       ],
       buttonText: "Get Started Free",
-      link: "/login",
+      link: "/",
       highlighted: false,
     },
     {
@@ -34,7 +46,7 @@ export default function Pricing() {
         "Team collaboration",
       ],
       buttonText: "Buy Pro",
-      link: "/", // Replace with actual purchase link
+      link: "/",
       highlighted: true,
     },
     {
@@ -109,13 +121,7 @@ export default function Pricing() {
               </div>
 
               {/* Divider */}
-              <div
-                className={`border-t ${
-                  plan.highlighted
-                    ? "border-gray-200 dark:border-gray-800"
-                    : "border-gray-200 dark:border-gray-700"
-                }`}
-              ></div>
+              <div className="border-t border-gray-200 dark:border-gray-800"></div>
 
               {/* Features */}
               <div className="flex-1 px-6 py-6 space-y-4 text-sm text-black dark:text-white">
@@ -129,19 +135,18 @@ export default function Pricing() {
 
               {/* Button */}
               <div className="border-t p-4">
-                <Link href={plan.link}>
-                  <button
-                    className={`w-full rounded-md py-2.5 text-sm font-semibold transition
+                <button
+                  onClick={() => handlePlanClick(plan.link)}
+                  className={`w-full rounded-md py-2.5 text-sm font-semibold transition
                     ${
                       plan.highlighted
                         ? "bg-neutral-900 text-white"
                         : "border border-gray-300 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-900 dark:text-white"
                     }
                   `}
-                  >
-                    {plan.buttonText}
-                  </button>
-                </Link>
+                >
+                  {plan.buttonText}
+                </button>
               </div>
             </div>
           ))}

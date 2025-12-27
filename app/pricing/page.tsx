@@ -2,8 +2,21 @@
 
 import React from "react";
 import { Check, Star } from "lucide-react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export default function Pricing() {
+  const { data: session } = useSession();
+  const router = useRouter();
+
+  const handlePlanClick = (link = "/") => {
+    if (!session) {
+      router.push("/login");
+    } else {
+      router.push(link);
+    }
+  };
+
   const plans = [
     {
       name: "Free",
@@ -17,6 +30,7 @@ export default function Pricing() {
         "Core CRM features",
       ],
       buttonText: "Get Started Free",
+      link: "/",
       highlighted: false,
     },
     {
@@ -32,6 +46,7 @@ export default function Pricing() {
         "Team collaboration",
       ],
       buttonText: "Buy Pro",
+      link: "/",
       highlighted: true,
     },
     {
@@ -47,6 +62,7 @@ export default function Pricing() {
         "Premium support",
       ],
       buttonText: "Contact Sales",
+      link: "/contact-sales",
       highlighted: false,
     },
   ];
@@ -104,14 +120,8 @@ export default function Pricing() {
                 </div>
               </div>
 
-              {/* Divider (Professional look) */}
-              <div
-                className={`border-t ${
-                  plan.highlighted
-                    ? "border-gray-200 dark:border-gray-800"
-                    : "border-gray-200 dark:border-gray-700"
-                }`}
-              ></div>
+              {/* Divider */}
+              <div className="border-t border-gray-200 dark:border-gray-800"></div>
 
               {/* Features */}
               <div className="flex-1 px-6 py-6 space-y-4 text-sm text-black dark:text-white">
@@ -126,6 +136,7 @@ export default function Pricing() {
               {/* Button */}
               <div className="border-t p-4">
                 <button
+                  onClick={() => handlePlanClick(plan.link)}
                   className={`w-full rounded-md py-2.5 text-sm font-semibold transition
                     ${
                       plan.highlighted

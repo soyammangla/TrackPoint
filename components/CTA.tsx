@@ -1,8 +1,22 @@
 "use client";
 
 import React from "react";
+import { useRouter } from "next/navigation";
 
 export default function CTA() {
+  const router = useRouter();
+
+  const handleGetStarted = () => {
+    // simple login check (same jo tu pehle use kar raha hai)
+    const isLoggedIn = localStorage.getItem("isLoggedIn");
+
+    if (!isLoggedIn) {
+      router.push("/login");
+    } else {
+      router.push("/home"); // ya /dashboard
+    }
+  };
+
   return (
     <section className="bg-white dark:bg-black py-36 px-6 lg:px-8">
       <div className="max-w-3xl mx-auto text-center">
@@ -16,16 +30,18 @@ export default function CTA() {
         </p>
 
         <div className="flex justify-center gap-4 flex-wrap">
-          <a
-            href="/login"
-            className="px-8 py-4 bg-black dark:bg-neutral-900 text-white font-semibold rounded-lg shadow-md "
+          {/* Get Started */}
+          <button
+            onClick={handleGetStarted}
+            className="px-8 py-4 bg-black dark:bg-white text-white dark:text-black font-semibold rounded-lg shadow-md hover:opacity-90 transition"
           >
             Get Started
-          </a>
+          </button>
 
+          {/* Learn More */}
           <a
             href="/learn-more"
-            className="px-8 py-4 border border-gray-900 dark:border-slate-700 text-gray-900 dark:text-white font-semibold rounded-lg"
+            className="px-8 py-4 border border-gray-900 dark:border-slate-700 text-gray-900 dark:text-white font-semibold rounded-lg hover:bg-gray-100 dark:hover:bg-neutral-800 transition"
           >
             Learn More
           </a>
