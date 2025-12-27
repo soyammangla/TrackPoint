@@ -146,7 +146,7 @@ export default function Navbar() {
                     >
                       <button
                         onClick={() => signOut()}
-                        className="block w-full text-left px-4 py-2 rounded-lg hover:bg-gray-700 dark:hover:bg-gray-800 transition-colors duration-200"
+                        className="block w-full text-left px-4 py-2 rounded-lg bg-black text-white dark:bg-white dark:text-black transition-colors duration-200"
                       >
                         Sign Out
                       </button>
