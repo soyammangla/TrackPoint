@@ -7,7 +7,7 @@ import { useSession, signOut } from "next-auth/react";
 import { Menu, X, ChevronDown, Sun, Moon } from "lucide-react";
 
 export default function Navbar() {
-  const { theme, setTheme } = useTheme();
+  const { theme, setTheme, resolvedTheme } = useTheme();
   const { data: session } = useSession();
 
   const [mounted, setMounted] = useState(false);
@@ -24,6 +24,7 @@ export default function Navbar() {
     { name: "Reports & Analytics", href: "/product/reports-analytics" },
   ];
 
+  // ------------------- Mounted & Click Outside -------------------
   useEffect(() => {
     setMounted(true);
 
@@ -37,14 +38,26 @@ export default function Navbar() {
         setUserDropdownOpen(false);
       }
     };
+
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const navBg =
-    theme === "dark" ? "bg-black text-white" : "bg-white text-black";
-  const dropdownBg =
-    theme === "dark" ? "bg-black text-white" : "bg-white text-black";
+  // ------------------- Hydration-safe navBg -------------------
+  const [navBg, setNavBg] = useState("bg-white text-black"); // SSR fallback
+  useEffect(() => {
+    if (mounted) {
+      setNavBg(
+        resolvedTheme === "dark" ? "bg-black text-white" : "bg-white text-black"
+      );
+    }
+  }, [mounted, resolvedTheme]);
+
+  const dropdownBg = mounted
+    ? resolvedTheme === "dark"
+      ? "bg-black text-white"
+      : "bg-white text-black"
+    : "bg-white text-black";
 
   return (
     <nav
@@ -61,6 +74,7 @@ export default function Navbar() {
 
           {/* Desktop Menu */}
           <div className="hidden md:flex md:items-center space-x-6">
+            {/* Product Dropdown */}
             <div className="relative">
               <button
                 onClick={() => setProductDropdownOpen(!productDropdownOpen)}
@@ -105,7 +119,7 @@ export default function Navbar() {
                 <button
                   onClick={() => setTheme(theme === "light" ? "dark" : "light")}
                 >
-                  {theme === "light" ? <Moon /> : <Sun />}
+                  {resolvedTheme === "light" ? <Moon /> : <Sun />}
                 </button>
               )}
 
@@ -132,9 +146,7 @@ export default function Navbar() {
                     >
                       <button
                         onClick={() => signOut()}
-                        className="block w-full text-left px-4 py-2 rounded-lg bg-black text-white dark:bg-neutral-900 dark:text-white 
-             shadow-md hover:shadow-lg 
-             transition-colors duration-200 ease-in-out"
+                        className="block w-full text-left px-4 py-2 rounded-lg hover:bg-gray-700 dark:hover:bg-gray-800 transition-colors duration-200"
                       >
                         Sign Out
                       </button>
@@ -202,7 +214,7 @@ export default function Navbar() {
                 <button
                   onClick={() => setTheme(theme === "light" ? "dark" : "light")}
                 >
-                  {theme === "light" ? <Moon /> : <Sun />}
+                  {resolvedTheme === "light" ? <Moon /> : <Sun />}
                 </button>
               </div>
             )}
@@ -213,7 +225,7 @@ export default function Navbar() {
             {session ? (
               <button
                 onClick={() => signOut()}
-                className="px-4 py-2 bg-black text-white dark:bg-neutral-900 dark:text-black rounded-md"
+                className="px-4 py-2 bg-black text-white dark:bg-neutral-900 dark:text-white rounded-md"
               >
                 Sign Out
               </button>

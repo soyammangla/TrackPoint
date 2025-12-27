@@ -17,14 +17,14 @@ export default function CTA() {
 
         <div className="flex justify-center gap-4 flex-wrap">
           <a
-            href="#get-started"
+            href="/login"
             className="px-8 py-4 bg-black dark:bg-neutral-900 text-white font-semibold rounded-lg shadow-md "
           >
             Get Started
           </a>
 
           <a
-            href="#learn-more"
+            href="/learn-more"
             className="px-8 py-4 border border-gray-900 dark:border-slate-700 text-gray-900 dark:text-white font-semibold rounded-lg"
           >
             Learn More

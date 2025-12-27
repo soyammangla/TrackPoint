@@ -61,7 +61,7 @@ const Footer = () => {
 
           <div className="flex justify-center sm:justify-start space-x-4 text-xl mb-2">
             <a
-              href="https://twitter.com/trackpoint"
+              href="https://twitter.com/soyam1134"
               target="_blank"
               rel="noopener noreferrer"
               // className="hover:text-indigo-500 transition"
@@ -69,7 +69,7 @@ const Footer = () => {
               <FaTwitter />
             </a>
             <a
-              href="https://github.com/trackpoint"
+              href="https://github.com/soyammangla"
               target="_blank"
               rel="noopener noreferrer"
               // className="hover:text-indigo-500 transition"
@@ -77,7 +77,7 @@ const Footer = () => {
               <FaGithub />
             </a>
             <a
-              href="https://www.linkedin.com/company/trackpoint/"
+              href="https://www.linkedin.com/in/soyam-mangla-432b13365/"
               target="_blank"
               rel="noopener noreferrer"
               // className="hover:text-indigo-500 transition"

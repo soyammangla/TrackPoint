@@ -2,7 +2,6 @@
 
 import React from "react";
 import { Check, Star } from "lucide-react";
-import Link from "next/link";
 
 export default function Pricing() {
   const plans = [
@@ -18,7 +17,6 @@ export default function Pricing() {
         "Core CRM features",
       ],
       buttonText: "Get Started Free",
-      link: "/login",
       highlighted: false,
     },
     {
@@ -34,7 +32,6 @@ export default function Pricing() {
         "Team collaboration",
       ],
       buttonText: "Buy Pro",
-      link: "/", // Replace with actual purchase link
       highlighted: true,
     },
     {
@@ -50,7 +47,6 @@ export default function Pricing() {
         "Premium support",
       ],
       buttonText: "Contact Sales",
-      link: "/contact-sales",
       highlighted: false,
     },
   ];
@@ -108,7 +104,7 @@ export default function Pricing() {
                 </div>
               </div>
 
-              {/* Divider */}
+              {/* Divider (Professional look) */}
               <div
                 className={`border-t ${
                   plan.highlighted
@@ -129,19 +125,17 @@ export default function Pricing() {
 
               {/* Button */}
               <div className="border-t p-4">
-                <Link href={plan.link}>
-                  <button
-                    className={`w-full rounded-md py-2.5 text-sm font-semibold transition
+                <button
+                  className={`w-full rounded-md py-2.5 text-sm font-semibold transition
                     ${
                       plan.highlighted
                         ? "bg-neutral-900 text-white"
                         : "border border-gray-300 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-900 dark:text-white"
                     }
                   `}
-                  >
-                    {plan.buttonText}
-                  </button>
-                </Link>
+                >
+                  {plan.buttonText}
+                </button>
               </div>
             </div>
           ))}
