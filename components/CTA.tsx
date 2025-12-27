@@ -10,7 +10,7 @@ export default function CTA() {
 
   const handleGetStarted = () => {
     if (status === "authenticated") {
-      router.push("/home"); // or /dashboard
+      router.push("/"); // or /dashboard
     } else {
       router.push("/login");
     }
