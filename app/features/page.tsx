@@ -2,6 +2,8 @@
 
 import React from "react";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 // ---------------- Reusable Step Component ----------------
 const Step = ({ number = "", title = "" }) => {
@@ -32,6 +34,17 @@ const FeatureCard = ({ icon = "💡", title = "", description = "" }) => {
 
 // ---------------- Main Features Page ----------------
 const FeaturesPage = () => {
+  const { data: session } = useSession();
+  const router = useRouter();
+
+  const handleGetStarted = () => {
+    if (!session) {
+      router.push("/login");
+    } else {
+      router.push("/");
+    }
+  };
+
   const features = [
     {
       icon: "📊",
@@ -118,11 +131,12 @@ const FeaturesPage = () => {
           Boost productivity with smart tracking.
         </p>
 
-        <Link href="/login">
-          <button className="bg-black dark:bg-neutral-900 text-white px-8 py-4 rounded-full font-semibold text-lg hover:opacity-90 transition duration-300">
-            Get Started
-          </button>
-        </Link>
+        <button
+          onClick={handleGetStarted}
+          className="bg-black dark:bg-white dark:text-black text-white px-8 py-4 rounded-full font-semibold text-lg hover:opacity-90 transition duration-300"
+        >
+          Get Started
+        </button>
       </section>
     </div>
   );
