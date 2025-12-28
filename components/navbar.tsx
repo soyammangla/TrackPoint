@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useTheme } from "next-themes";
 import { useSession, signOut } from "next-auth/react";
 import { Menu, X, ChevronDown, Sun, Moon } from "lucide-react";
-
 export default function Navbar() {
   const { theme, setTheme, resolvedTheme } = useTheme();
   const { data: session } = useSession();
@@ -66,9 +65,27 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
           {/* Logo */}
-          <div className="flex items-center">
+          {/* <div className="flex items-center">
             <Link href="/" className="text-2xl font-bold">
               Trackpoint
+            </Link>
+          </div> */}
+          {/* <div className="flex items-center"> */}
+          <div className="flex items-center">
+            <Link href="/" className="flex items-center gap-0">
+              <img
+                src="/logo-dark.jpg"
+                alt="TrackPoint Logo"
+                className="h-14 w-18 block dark:hidden -mr-3.5"
+              />
+              <img
+                src="/logo-light.png"
+                alt="TrackPoint Logo"
+                className="h-14 w-18 hidden dark:block -mr-3.5"
+              />
+              <span className="text-xl font-bold text-black dark:text-white relative top-1">
+                TrackPoint
+              </span>
             </Link>
           </div>
 

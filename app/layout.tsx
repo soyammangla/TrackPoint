@@ -17,6 +17,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Trackpoint",
   description: "Smart CRM. Smarter Growth.",
+  icons: {
+    icon: "/splash.ico",
+  },
 };
 
 export default function RootLayout({

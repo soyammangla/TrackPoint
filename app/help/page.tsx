@@ -44,7 +44,7 @@ const HelpCenterPage = () => {
       question: "Where can I find the Privacy Policy?",
       answer: "You can view our privacy policy here: ",
       linkText: "Privacy Policy",
-      linkHref: "/privacy-policy",
+      linkHref: "/privacy",
     },
     {
       question: "Who can I contact for support?",
