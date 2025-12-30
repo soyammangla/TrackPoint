@@ -69,7 +69,7 @@ export default function ResourcesPage() {
           Resources for Smarter Productivity
         </motion.h1>
 
-        <p className="text-muted-foreground max-w-3xl mx-auto text-lg mb-10">
+        <p className="max-w-3xl mx-auto text-lg mb-10 text-black dark:text-white">
           Learn, explore, and master TrackPoint with detailed documentation,
           real-world case studies, and live product demos.
         </p>
@@ -103,7 +103,9 @@ export default function ResourcesPage() {
               >
                 <item.icon className="h-10 w-10 text-primary mb-4" />
                 <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
-                <p className="text-sm text-muted-foreground">{item.desc}</p>
+                <p className="text-sm text-black dark:text-white">
+                  {item.desc}
+                </p>
               </button>
             </motion.div>
           ))}
@@ -122,7 +124,7 @@ export default function ResourcesPage() {
           >
             <PlayCircle className="h-12 w-12 text-primary mb-4" />
             <h3 className="text-2xl font-semibold mb-3">Live Product Demo</h3>
-            <p className="text-muted-foreground mb-6">
+            <p className="text-black dark:text-white mb-6">
               Explore TrackPoint in real-time and see how it works for your
               team.
             </p>
@@ -143,7 +145,7 @@ export default function ResourcesPage() {
             <h3 className="text-2xl font-semibold mb-3">
               Get Started in Minutes
             </h3>
-            <p className="text-muted-foreground mb-6">
+            <p className="text-black dark:text-white mb-6">
               Jump into your dashboard and start tracking productivity today.
             </p>
 
@@ -158,7 +160,7 @@ export default function ResourcesPage() {
       <section className="px-6 py-28 text-center">
         <h2 className="text-3xl md:text-4xl font-bold mb-6">Need More Help?</h2>
 
-        <p className="text-muted-foreground mb-8">
+        <p className="text-black dark:text-white mb-8">
           Our team and documentation are always ready to support you.
         </p>
 
