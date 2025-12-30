@@ -93,32 +93,32 @@ export default function CaseStudyPage() {
       >
         <Icon className="h-12 w-12 text-primary mx-auto mb-4" />
         <h1 className="text-4xl font-bold mb-2">{study.company}</h1>
-        <p className="text-muted-foreground mb-2">{study.industry}</p>
+        <p className="text-black dark:text-white mb-2">{study.industry}</p>
         <p className="text-lg font-semibold text-primary">{study.result}</p>
       </motion.div>
 
       {/* DESCRIPTION */}
       <section className="mb-12">
         <h2 className="text-2xl font-semibold mb-4">Overview</h2>
-        <p className="text-muted-foreground">{study.description}</p>
+        <p className="text-black dark:text-white">{study.description}</p>
       </section>
 
       {/* CHALLENGE */}
       <section className="mb-12">
         <h2 className="text-2xl font-semibold mb-4">Challenge</h2>
-        <p className="text-muted-foreground">{study.challenge}</p>
+        <p className="text-black dark:text-white">{study.challenge}</p>
       </section>
 
       {/* SOLUTION */}
       <section className="mb-12">
         <h2 className="text-2xl font-semibold mb-4">Solution</h2>
-        <p className="text-muted-foreground">{study.solution}</p>
+        <p className="text-black dark:text-white">{study.solution}</p>
       </section>
 
       {/* KEY RESULTS */}
       <section className="mb-12">
         <h2 className="text-2xl font-semibold mb-4">Key Results</h2>
-        <ul className="list-disc list-inside text-muted-foreground space-y-1">
+        <ul className="list-disc list-inside text-black dark:text-white space-y-1">
           {study.stats.map((stat, i) => (
             <li key={i}>{stat}</li>
           ))}

@@ -58,13 +58,13 @@ export default function ResourcesPage() {
   };
 
   return (
-    <div className="bg-background text-foreground">
+    <div className="bg-background dark:bg-black text-foreground">
       {/* ================= HERO ================= */}
       <section className="px-6 py-28 text-center">
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-4xl md:text-6xl font-bold mb-6"
+          className="text-4xl md:text-6xl font-bold mb-6 text-black dark:text-white"
         >
           Resources for Smarter Productivity
         </motion.h1>
@@ -99,10 +99,12 @@ export default function ResourcesPage() {
             >
               <button
                 onClick={() => navigate(item.href, item.protected)}
-                className="w-full text-left h-full rounded-2xl border bg-card p-6 hover:shadow-xl transition"
+                className="w-full text-left h-full rounded-2xl border bg-card dark:bg-black p-6 hover:shadow-xl transition"
               >
                 <item.icon className="h-10 w-10 text-primary mb-4" />
-                <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
+                <h3 className="text-xl font-semibold mb-2 text-black dark:text-white">
+                  {item.title}
+                </h3>
                 <p className="text-sm text-black dark:text-white">
                   {item.desc}
                 </p>
@@ -113,17 +115,19 @@ export default function ResourcesPage() {
       </section>
 
       {/* ================= EXTRA SECTION ================= */}
-      <section className="px-6 py-24 bg-muted/30">
+      <section className="px-6 py-24 bg-muted/30 dark:bg-black">
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* LIVE DEMO */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="rounded-2xl border bg-card p-10"
+            className="rounded-2xl border bg-card dark:bg-black p-10"
           >
             <PlayCircle className="h-12 w-12 text-primary mb-4" />
-            <h3 className="text-2xl font-semibold mb-3">Live Product Demo</h3>
+            <h3 className="text-2xl font-semibold mb-3 text-black dark:text-white">
+              Live Product Demo
+            </h3>
             <p className="text-black dark:text-white mb-6">
               Explore TrackPoint in real-time and see how it works for your
               team.
@@ -139,10 +143,10 @@ export default function ResourcesPage() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="rounded-2xl border bg-card p-10"
+            className="rounded-2xl border bg-card dark:bg-black p-10"
           >
             <Rocket className="h-12 w-12 text-primary mb-4" />
-            <h3 className="text-2xl font-semibold mb-3">
+            <h3 className="text-2xl font-semibold mb-3 text-black dark:text-white">
               Get Started in Minutes
             </h3>
             <p className="text-black dark:text-white mb-6">
@@ -158,7 +162,9 @@ export default function ResourcesPage() {
 
       {/* ================= CTA ================= */}
       <section className="px-6 py-28 text-center">
-        <h2 className="text-3xl md:text-4xl font-bold mb-6">Need More Help?</h2>
+        <h2 className="text-3xl md:text-4xl font-bold mb-6 text-black dark:text-white">
+          Need More Help?
+        </h2>
 
         <p className="text-black dark:text-white mb-8">
           Our team and documentation are always ready to support you.

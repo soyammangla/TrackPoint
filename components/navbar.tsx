@@ -107,7 +107,7 @@ export default function Navbar() {
                     <Link
                       key={link.name}
                       href={link.href}
-                      className="block px-4 py-2 hover:opacity-80"
+                      className="block px-4 py-2"
                     >
                       {link.name}
                     </Link>
@@ -116,13 +116,13 @@ export default function Navbar() {
               )}
             </div>
 
-            <Link href="/solutions" className="hover:opacity-80">
+            <Link href="/solutions" className="">
               Solutions
             </Link>
-            <Link href="/pricing" className="hover:opacity-80">
+            <Link href="/pricing" className="">
               Pricing
             </Link>
-            <Link href="/resources" className="hover:opacity-80">
+            <Link href="/resources" className="">
               Resources
             </Link>
           </div>

@@ -53,18 +53,18 @@ const caseStudies = [
 
 export default function CaseStudiesPage() {
   return (
-    <div className="bg-background text-foreground">
+    <div className="bg-background dark:bg-black text-foreground">
       {/* HERO */}
       <section className="px-6 py-24 text-center">
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-4xl md:text-6xl font-bold mb-6"
+          className="text-4xl md:text-6xl font-bold mb-6 text-black dark:text-white"
         >
           Customer Success Stories
         </motion.h1>
 
-        <p className="text-muted-foreground max-w-3xl mx-auto text-lg">
+        <p className="text-black dark:text-white max-w-3xl mx-auto text-lg">
           See how teams across industries use TrackPoint to improve
           productivity, streamline workflows, and achieve better results.
         </p>
@@ -80,18 +80,22 @@ export default function CaseStudiesPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
-              className="rounded-2xl border bg-card p-8 hover:shadow-xl transition"
+              className="rounded-2xl border bg-card dark:bg-black p-8 hover:shadow-xl transition"
             >
               <study.icon className="h-10 w-10 text-primary mb-4" />
-              <h3 className="text-2xl font-semibold mb-1">{study.company}</h3>
-              <p className="text-sm text-muted-foreground mb-4">
+              <h3 className="text-2xl font-semibold mb-1 text-black dark:text-white">
+                {study.company}
+              </h3>
+              <p className="text-sm text-black dark:text-white mb-4">
                 {study.industry}
               </p>
-              <p className="mb-4 text-muted-foreground">{study.description}</p>
+              <p className="mb-4 text-black dark:text-white">
+                {study.description}
+              </p>
 
               <div className="mb-6">
                 <p className="font-semibold mb-2 text-primary">Key Results</p>
-                <ul className="list-disc list-inside space-y-1 text-sm text-muted-foreground">
+                <ul className="list-disc list-inside space-y-1 text-sm text-black dark:text-white">
                   {study.stats.map((stat, i) => (
                     <li key={i}>{stat}</li>
                   ))}
@@ -111,17 +115,17 @@ export default function CaseStudiesPage() {
       </section>
 
       {/* CTA SECTION */}
-      <section className="px-6 py-24 text-center bg-muted/30">
+      <section className="px-6 py-24 text-center bg-muted/30 dark:bg-black">
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-3xl md:text-4xl font-bold mb-6"
+          className="text-3xl md:text-4xl font-bold mb-6 text-black dark:text-white"
         >
           Want to Be Our Next Success Story?
         </motion.h2>
 
-        <p className="text-muted-foreground max-w-2xl mx-auto mb-8">
+        <p className="text-black dark:text-white max-w-2xl mx-auto mb-8">
           Join thousands of teams using TrackPoint to work smarter, faster, and
           better.
         </p>

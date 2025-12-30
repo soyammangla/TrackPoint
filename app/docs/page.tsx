@@ -81,7 +81,7 @@ export default function DocsPage() {
           TrackPoint Documentation
         </motion.h1>
 
-        <p className="text-muted-foreground max-w-3xl mx-auto text-lg">
+        <p className="text-black dark:text-white max-w-3xl mx-auto text-lg">
           Learn how to use TrackPoint effectively to manage tasks, track time,
           and boost productivity.
         </p>
@@ -103,7 +103,7 @@ export default function DocsPage() {
                 <h2 className="text-2xl font-semibold">{section.title}</h2>
               </div>
 
-              <ul className="list-disc list-inside space-y-2 text-muted-foreground">
+              <ul className="list-disc list-inside space-y-2 text-black dark:text-white">
                 {section.content.map((item, i) => (
                   <li key={i}>{item}</li>
                 ))}
