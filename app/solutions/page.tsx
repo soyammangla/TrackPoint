@@ -122,9 +122,7 @@ export default function SolutionsPage() {
                 >
                   {item.desc}
                 </p>
-                <div
-                  className={`flex items-center text-sm text-primary opacity-0 group-hover:opacity-100 transition`}
-                >
+                <div className="flex items-center text-sm text-primary opacity-0 group-hover:opacity-100 transition">
                   Learn more <ArrowRight className="ml-2 h-4 w-4" />
                 </div>
               </motion.div>
