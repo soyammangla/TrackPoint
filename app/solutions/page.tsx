@@ -58,7 +58,7 @@ export default function SolutionsPage() {
       }
     >
       {/* THEME TOGGLE BUTTON */}
-      {/* <div className="fixed top-6 right-6 z-50">
+      <div className="fixed top-6 right-6 z-50">
         {mounted && (
           <button
             onClick={() => setTheme(theme === "light" ? "dark" : "light")}
@@ -67,7 +67,7 @@ export default function SolutionsPage() {
             {resolvedTheme === "light" ? <Moon size={20} /> : <Sun size={20} />}
           </button>
         )}
-      </div> */}
+      </div>
 
       {/* HERO */}
       <div className="px-6 pt-32 pb-28 text-center">
@@ -122,7 +122,9 @@ export default function SolutionsPage() {
                 >
                   {item.desc}
                 </p>
-                <div className="flex items-center text-sm text-primary opacity-0 group-hover:opacity-100 transition">
+                <div
+                  className={`flex items-center text-sm text-primary opacity-0 group-hover:opacity-100 transition`}
+                >
                   Learn more <ArrowRight className="ml-2 h-4 w-4" />
                 </div>
               </motion.div>
