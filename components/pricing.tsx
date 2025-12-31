@@ -88,7 +88,7 @@ export default function Pricing() {
               className={`relative flex flex-col rounded-2xl border transition hover:shadow-xl
                 ${
                   plan.highlighted
-                    ? "bg-white dark:bg-black border-indigo-600 scale-[1.03]"
+                    ? "bg-white dark:bg-black border-black dark:border-white scale-[1.03]"
                     : "bg-white dark:bg-black border-gray-200 dark:border-gray-800"
                 }
               `}
@@ -96,7 +96,7 @@ export default function Pricing() {
               {/* Popular Badge */}
               {plan.highlighted && (
                 <div className="absolute top-3 right-3 flex items-center gap-1 rounded-md border px-2 py-0.5 text-xs bg-white dark:bg-black">
-                  <Star className="h-3 w-3 fill-current text-indigo-600" />
+                  <Star className="h-3 w-3 fill-current text-green-700" />
                   Popular
                 </div>
               )}
@@ -127,7 +127,7 @@ export default function Pricing() {
               <div className="flex-1 px-6 py-6 space-y-4 text-sm text-black dark:text-white">
                 {plan.features.map((feature, i) => (
                   <div key={i} className="flex items-center gap-2">
-                    <Check className="h-4 w-4 text-indigo-600" />
+                    <Check className="h-4 w-4 text-green-700" />
                     <span>{feature}</span>
                   </div>
                 ))}
