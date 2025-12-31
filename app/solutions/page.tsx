@@ -69,7 +69,7 @@ export default function SolutionsPage() {
         )}
       </div>
 
-      {/* HERO */}
+      {/* HERO SECTION */}
       <div className="px-6 pt-32 pb-28 text-center">
         <motion.div
           initial={{ opacity: 0, y: 18 }}
@@ -102,7 +102,7 @@ export default function SolutionsPage() {
                 whileHover={{ y: -6 }}
                 transition={{ duration: 0.2 }}
                 onClick={() => router.push(item.href)}
-                className={`group cursor-pointer rounded-2xl border p-8 transition 
+                className={`group cursor-pointer rounded-2xl border p-8 transition
                   ${
                     resolvedTheme === "dark"
                       ? "bg-neutral-900 border-white/10"
