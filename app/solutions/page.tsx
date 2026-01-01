@@ -57,18 +57,6 @@ export default function SolutionsPage() {
         resolvedTheme === "dark" ? "bg-black text-white" : "bg-white text-black"
       }
     >
-      {/* THEME TOGGLE BUTTON */}
-      <div className="fixed top-6 right-6 z-50">
-        {mounted && (
-          <button
-            onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-            className="p-2 rounded-full border border-gray-300 dark:border-gray-700"
-          >
-            {resolvedTheme === "light" ? <Moon size={20} /> : <Sun size={20} />}
-          </button>
-        )}
-      </div>
-
       {/* HERO SECTION */}
       <div className="px-6 pt-32 pb-28 text-center">
         <motion.div
@@ -82,7 +70,7 @@ export default function SolutionsPage() {
           </h1>
           <p
             className={`mt-6 text-lg ${
-              resolvedTheme === "dark" ? "text-neutral-400" : "text-neutral-700"
+              resolvedTheme === "dark" ? "text-white" : "text-black"
             }`}
           >
             TrackPoint helps teams stay focused, aligned, and productive —
@@ -115,9 +103,7 @@ export default function SolutionsPage() {
                 <h3 className="text-xl font-semibold mb-3">{item.title}</h3>
                 <p
                   className={`text-sm leading-relaxed mb-6 ${
-                    resolvedTheme === "dark"
-                      ? "text-neutral-400"
-                      : "text-neutral-700"
+                    resolvedTheme === "dark" ? "text-white" : "text-black"
                   }`}
                 >
                   {item.desc}
@@ -168,9 +154,7 @@ export default function SolutionsPage() {
                 <h4 className="text-lg font-semibold mb-3">{item.title}</h4>
                 <p
                   className={`text-sm leading-relaxed ${
-                    resolvedTheme === "dark"
-                      ? "text-neutral-400"
-                      : "text-neutral-700"
+                    resolvedTheme === "dark" ? "text-white" : "text-black"
                   }`}
                 >
                   {item.desc}
@@ -189,7 +173,7 @@ export default function SolutionsPage() {
           </h2>
           <p
             className={`mb-10 ${
-              resolvedTheme === "dark" ? "text-neutral-400" : "text-neutral-700"
+              resolvedTheme === "dark" ? "text-white" : "text-black"
             }`}
           >
             Start using TrackPoint today and experience structured productivity.
