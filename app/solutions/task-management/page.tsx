@@ -146,7 +146,7 @@ export default function TaskManagementPage() {
           TrackPoint.
         </p>
         <Button size="lg" className="gap-2" onClick={handleGetStarted}>
-          Get Started <ArrowRight className="h-4 w-4" />
+          Start Free Trial <ArrowRight className="h-4 w-4" />
         </Button>
       </section>
     </main>
