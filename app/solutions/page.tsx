@@ -21,25 +21,25 @@ const solutions = [
     icon: ClipboardCheck,
     title: "Task Management",
     desc: "Plan, assign, and track tasks with complete visibility across teams.",
-    href: "/features/task-management",
+    href: "/solutions/task-management",
   },
   {
     icon: Users,
     title: "Team Collaboration",
     desc: "Collaborate efficiently with shared updates, roles, and timelines.",
-    href: "/features/team-collaboration",
+    href: "/solutions/team-collaboration",
   },
   {
     icon: Clock,
     title: "Time Tracking",
     desc: "Understand how time is spent and eliminate productivity leaks.",
-    href: "/features/time-tracking",
+    href: "/solutions/time-tracking",
   },
   {
     icon: BarChart3,
     title: "Reports & Analytics",
     desc: "Turn work data into insights that help teams grow faster.",
-    href: "/features/analytics",
+    href: "/solutions/analytics",
   },
 ];
 
