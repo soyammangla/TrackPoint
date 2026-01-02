@@ -31,14 +31,14 @@ export default function CTA() {
         <div className="flex justify-center gap-4 flex-wrap">
           <button
             onClick={handleGetStarted}
-            className="px-8 py-4 bg-black dark:bg-white text-white dark:text-black font-semibold rounded-lg shadow-md hover:opacity-90 transition"
+            className="px-8 py-4 bg-black dark:bg-white text-white dark:text-black font-semibold rounded-lg shadow-md transition"
           >
             Get Started
           </button>
 
           <a
             href="/learn-more"
-            className="px-8 py-4 border border-gray-900 dark:border-slate-700 text-gray-900 dark:text-white font-semibold rounded-lg hover:bg-gray-100 dark:hover:bg-neutral-800 transition"
+            className="px-8 py-4 border border-gray-900 dark:border-slate-700 text-gray-900 dark:text-white font-semibold rounded-lg transition"
           >
             Learn More
           </a>
