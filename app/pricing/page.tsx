@@ -141,7 +141,7 @@ export default function Pricing() {
                     ${
                       plan.highlighted
                         ? "bg-neutral-900 text-white"
-                        : "border border-gray-300 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-900 dark:text-white"
+                        : "border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white"
                     }
                   `}
                 >
