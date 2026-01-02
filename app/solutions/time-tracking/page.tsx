@@ -2,10 +2,11 @@
 
 import { motion } from "framer-motion";
 import {
-  Users,
-  MessageSquare,
-  Share2,
-  Bell,
+  Clock,
+  PlayCircle,
+  PauseCircle,
+  BarChart3,
+  Calendar,
   CheckCircle2,
   ArrowRight,
 } from "lucide-react";
@@ -16,28 +17,28 @@ import Link from "next/link";
 
 const features = [
   {
-    icon: <Users className="h-6 w-6" />,
-    title: "Team Workspaces",
-    desc: "Create shared workspaces where your entire team collaborates seamlessly.",
+    icon: <PlayCircle className="h-6 w-6" />,
+    title: "One-click Time Tracking",
+    desc: "Start and stop timers instantly to track work accurately.",
   },
   {
-    icon: <MessageSquare className="h-6 w-6" />,
-    title: "Real‑time Comments",
-    desc: "Discuss tasks instantly with mentions and threaded comments.",
+    icon: <PauseCircle className="h-6 w-6" />,
+    title: "Idle Detection",
+    desc: "Automatically detect idle time and keep logs clean.",
   },
   {
-    icon: <Share2 className="h-6 w-6" />,
-    title: "Easy Sharing",
-    desc: "Share tasks, files, and updates with complete visibility.",
+    icon: <Calendar className="h-6 w-6" />,
+    title: "Daily & Weekly Logs",
+    desc: "Review time spent with detailed daily and weekly breakdowns.",
   },
   {
-    icon: <Bell className="h-6 w-6" />,
-    title: "Smart Notifications",
-    desc: "Stay updated with alerts for mentions, deadlines, and changes.",
+    icon: <BarChart3 className="h-6 w-6" />,
+    title: "Productivity Insights",
+    desc: "Understand where time goes with clear analytics and reports.",
   },
 ];
 
-export default function TeamCollaborationPage() {
+export default function TimeTrackingPage() {
   const { data: session } = useSession();
   const router = useRouter();
 
@@ -59,8 +60,7 @@ export default function TeamCollaborationPage() {
           transition={{ duration: 0.6 }}
           className="text-4xl md:text-6xl font-bold mb-6"
         >
-          Team Collaboration That{" "}
-          <span className="text-primary">Actually Works</span>
+          Time Tracking That <span className="text-primary">Boosts Focus</span>
         </motion.h1>
         <motion.p
           initial={{ opacity: 0, y: 20 }}
@@ -68,8 +68,8 @@ export default function TeamCollaborationPage() {
           transition={{ delay: 0.1, duration: 0.6 }}
           className="max-w-2xl mx-auto text-black dark:text-white text-lg mb-10"
         >
-          Bring your team together with real‑time collaboration, clear
-          ownership, and transparent communication — all inside TrackPoint.
+          Track time effortlessly, reduce distractions, and gain full visibility
+          into how your team works.
         </motion.p>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -96,7 +96,7 @@ export default function TeamCollaborationPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
-              className="rounded-2xl border bg-card dark:bg-zinc-900 dark:border-zinc-800 p-6 shadow-sm hover:shadow-md transition"
+              className="rounded-2xl border bg-card p-6 shadow-sm hover:shadow-md transition"
             >
               <div className="mb-4 text-primary">{f.icon}</div>
               <h3 className="text-xl font-semibold mb-2">{f.title}</h3>
@@ -106,34 +106,30 @@ export default function TeamCollaborationPage() {
         </div>
       </section>
 
-      {/* How It Works */}
       <section className="bg-muted/40 dark:bg-black py-20">
         <div className="container mx-auto px-6">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
-            How Team Collaboration Works
+            How Time Tracking Works
           </h2>
           <div className="grid md:grid-cols-3 gap-8">
-            {[
-              "Create Workspace",
-              "Collaborate in Real‑time",
-              "Deliver Faster",
-            ].map((step, i) => (
-              <div
-                key={i}
-                className="rounded-2xl bg-background dark:bg-zinc-900 dark:border dark:border-zinc-800 p-6 shadow-sm"
-              >
-                <div className="flex items-center gap-3 mb-4">
-                  <CheckCircle2 className="text-primary" />
-                  <h4 className="text-lg font-semibold">{step}</h4>
+            {["Start Timer", "Track Automatically", "Analyze Productivity"].map(
+              (step, i) => (
+                <div
+                  key={i}
+                  className="rounded-2xl bg-background dark:bg-zinc-900 dark:border dark:border-zinc-800 p-6 shadow-sm"
+                >
+                  <div className="flex items-center gap-3 mb-4">
+                    <CheckCircle2 className="text-primary" />
+                    <h4 className="text-lg font-semibold">{step}</h4>
+                  </div>
+                  <p className="text-black dark:text-white">
+                    {i === 0 && "Start tracking time with a single click."}
+                    {i === 1 && "Time is logged automatically as you work."}
+                    {i === 2 && "Review reports to improve efficiency."}
+                  </p>
                 </div>
-                <p className="text-black dark:text-white">
-                  {i === 0 && "Set up teams, roles, and shared workspaces."}
-                  {i === 1 &&
-                    "Comment, tag teammates, and share updates instantly."}
-                  {i === 2 && "Reduce miscommunication and ship work faster."}
-                </p>
-              </div>
-            ))}
+              )
+            )}
           </div>
         </div>
       </section>
@@ -141,13 +137,14 @@ export default function TeamCollaborationPage() {
       {/* CTA */}
       <section className="container mx-auto px-6 py-24 text-center">
         <h2 className="text-3xl md:text-4xl font-bold mb-6">
-          Build Better Together
+          Make Every Minute Count
         </h2>
         <p className="text-black dark:text-white max-w-xl mx-auto mb-8">
-          Empower your team with seamless collaboration and clear communication.
+          Understand productivity better and build smarter workflows with
+          TrackPoint Time Tracking.
         </p>
         <Button size="lg" className="gap-2" onClick={handleGetStarted}>
-          Start Collaborating <ArrowRight className="h-4 w-4" />
+          Start Tracking Time <ArrowRight className="h-4 w-4" />
         </Button>
       </section>
     </main>

@@ -49,7 +49,7 @@ export default function TaskManagementPage() {
     }
   };
   return (
-    <main className="relative overflow-hidden bg-background">
+    <main className="relative overflow-hidden bg-background dark:bg-black">
       {/* Hero Section */}
       <section className="container mx-auto px-6 py-24 text-center">
         <motion.h1
@@ -94,7 +94,7 @@ export default function TaskManagementPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
-              className="rounded-2xl border bg-card p-6 shadow-sm hover:shadow-md transition"
+              className="rounded-2xl border bg-card dark:bg-zinc-900 dark:border-zinc-800 p-6 shadow-sm hover:shadow-md transition"
             >
               <div className="mb-4 text-primary">{f.icon}</div>
               <h3 className="text-xl font-semibold mb-2">{f.title}</h3>
@@ -105,7 +105,7 @@ export default function TaskManagementPage() {
       </section>
 
       {/* How It Works */}
-      <section className="bg-muted/40 py-20">
+      <section className="bg-muted/40 dark:bg-black py-20">
         <div className="container mx-auto px-6">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
             How Task Management Works
@@ -115,7 +115,7 @@ export default function TaskManagementPage() {
               (step, i) => (
                 <div
                   key={i}
-                  className="rounded-2xl bg-background p-6 shadow-sm"
+                  className="rounded-2xl bg-background dark:bg-zinc-900 dark:border dark:border-zinc-800 p-6 shadow-sm"
                 >
                   <div className="flex items-center gap-3 mb-4">
                     <CheckCircle2 className="text-primary" />

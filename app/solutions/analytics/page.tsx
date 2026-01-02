@@ -2,10 +2,10 @@
 
 import { motion } from "framer-motion";
 import {
-  Users,
-  MessageSquare,
-  Share2,
-  Bell,
+  BarChart3,
+  LineChart,
+  PieChart,
+  FileText,
   CheckCircle2,
   ArrowRight,
 } from "lucide-react";
@@ -16,28 +16,28 @@ import Link from "next/link";
 
 const features = [
   {
-    icon: <Users className="h-6 w-6" />,
-    title: "Team Workspaces",
-    desc: "Create shared workspaces where your entire team collaborates seamlessly.",
+    icon: <BarChart3 className="h-6 w-6" />,
+    title: "Performance Dashboards",
+    desc: "Visual dashboards to track productivity, progress, and team output.",
   },
   {
-    icon: <MessageSquare className="h-6 w-6" />,
-    title: "Real‑time Comments",
-    desc: "Discuss tasks instantly with mentions and threaded comments.",
+    icon: <LineChart className="h-6 w-6" />,
+    title: "Trends & Insights",
+    desc: "Identify trends over time and make data-driven decisions.",
   },
   {
-    icon: <Share2 className="h-6 w-6" />,
-    title: "Easy Sharing",
-    desc: "Share tasks, files, and updates with complete visibility.",
+    icon: <PieChart className="h-6 w-6" />,
+    title: "Workload Distribution",
+    desc: "See how work is distributed across people and projects.",
   },
   {
-    icon: <Bell className="h-6 w-6" />,
-    title: "Smart Notifications",
-    desc: "Stay updated with alerts for mentions, deadlines, and changes.",
+    icon: <FileText className="h-6 w-6" />,
+    title: "Exportable Reports",
+    desc: "Download reports in CSV or PDF format for sharing.",
   },
 ];
 
-export default function TeamCollaborationPage() {
+export default function ReportsAnalyticsPage() {
   const { data: session } = useSession();
   const router = useRouter();
 
@@ -59,8 +59,8 @@ export default function TeamCollaborationPage() {
           transition={{ duration: 0.6 }}
           className="text-4xl md:text-6xl font-bold mb-6"
         >
-          Team Collaboration That{" "}
-          <span className="text-primary">Actually Works</span>
+          Reports & Analytics That{" "}
+          <span className="text-primary">Drive Growth</span>
         </motion.h1>
         <motion.p
           initial={{ opacity: 0, y: 20 }}
@@ -68,8 +68,8 @@ export default function TeamCollaborationPage() {
           transition={{ delay: 0.1, duration: 0.6 }}
           className="max-w-2xl mx-auto text-black dark:text-white text-lg mb-10"
         >
-          Bring your team together with real‑time collaboration, clear
-          ownership, and transparent communication — all inside TrackPoint.
+          Turn your data into actionable insights with real-time reports and
+          powerful analytics — all in one place.
         </motion.p>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -86,7 +86,7 @@ export default function TeamCollaborationPage() {
         </motion.div>
       </section>
 
-      {/* Features */}
+      {/* Features Section */}
       <section className="container mx-auto px-6 py-20">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {features.map((f, i) => (
@@ -106,17 +106,17 @@ export default function TeamCollaborationPage() {
         </div>
       </section>
 
-      {/* How It Works */}
+      {/* How Analytics Works */}
       <section className="bg-muted/40 dark:bg-black py-20">
         <div className="container mx-auto px-6">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
-            How Team Collaboration Works
+            How Reports & Analytics Work
           </h2>
           <div className="grid md:grid-cols-3 gap-8">
             {[
-              "Create Workspace",
-              "Collaborate in Real‑time",
-              "Deliver Faster",
+              "Collect Data",
+              "Analyze Performance",
+              "Make Better Decisions",
             ].map((step, i) => (
               <div
                 key={i}
@@ -127,10 +127,9 @@ export default function TeamCollaborationPage() {
                   <h4 className="text-lg font-semibold">{step}</h4>
                 </div>
                 <p className="text-black dark:text-white">
-                  {i === 0 && "Set up teams, roles, and shared workspaces."}
-                  {i === 1 &&
-                    "Comment, tag teammates, and share updates instantly."}
-                  {i === 2 && "Reduce miscommunication and ship work faster."}
+                  {i === 0 && "Automatically collect task and time data."}
+                  {i === 1 && "Visualize metrics with charts and summaries."}
+                  {i === 2 && "Use insights to optimize workflows and output."}
                 </p>
               </div>
             ))}
@@ -141,13 +140,14 @@ export default function TeamCollaborationPage() {
       {/* CTA */}
       <section className="container mx-auto px-6 py-24 text-center">
         <h2 className="text-3xl md:text-4xl font-bold mb-6">
-          Build Better Together
+          Make Smarter Decisions
         </h2>
         <p className="text-black dark:text-white max-w-xl mx-auto mb-8">
-          Empower your team with seamless collaboration and clear communication.
+          Get complete visibility into your team’s performance with TrackPoint
+          analytics.
         </p>
         <Button size="lg" className="gap-2" onClick={handleGetStarted}>
-          Start Collaborating <ArrowRight className="h-4 w-4" />
+          View Your Reports <ArrowRight className="h-4 w-4" />
         </Button>
       </section>
     </main>
