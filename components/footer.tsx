@@ -108,9 +108,15 @@ const Footer = () => {
         </motion.span>
         <span>
           by{" "}
-          <span className="font-semibold text-black dark:text-white">
-            Trackpoint Team
-          </span>
+          <Link
+            href="https://twitter.com/Trackpoint"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span className="font-semibold text-black dark:text-white cursor-pointer hover:underline">
+              Trackpoint Team
+            </span>
+          </Link>
           .
         </span>
       </div>
