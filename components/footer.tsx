@@ -109,12 +109,12 @@ const Footer = () => {
         <span>
           by{" "}
           <Link
-            href="https://twitter.com/Trackpoint"
+            href="https://twitter.com/soyam1134"
             target="_blank"
             rel="noopener noreferrer"
           >
-            <span className="font-semibold text-black dark:text-white cursor-pointer hover:underline">
-              Trackpoint Team
+            <span className="font-semibold text-black dark:text-white cursor-pointer">
+              Soyam
             </span>
           </Link>
           .
