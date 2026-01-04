@@ -112,7 +112,7 @@ const Footer = () => {
 
           {/* Status */}
           <div className="flex items-center gap-2 justify-center sm:justify-start mt-14">
-            <span className="w-3 h-3 rounded-full bg-green-500"></span>
+            <span className="w-3 h-3 rounded-full bg-green-900 animate-pulse"></span>
             <span className="text-sm text-black dark:text-white">
               All systems operational
             </span>
