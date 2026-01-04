@@ -64,13 +64,6 @@ export default function Navbar() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
-          {/* Logo */}
-          {/* <div className="flex items-center">
-            <Link href="/" className="text-2xl font-bold">
-              Trackpoint
-            </Link>
-          </div> */}
-          {/* <div className="flex items-center"> */}
           <div className="flex items-center">
             <Link href="/" className="flex items-center gap-0">
               <img
@@ -92,39 +85,34 @@ export default function Navbar() {
           {/* Desktop Menu */}
           <div className="hidden md:flex md:items-center space-x-6">
             {/* Product Dropdown */}
-            <div className="relative">
-              <button
-                onClick={() => setProductDropdownOpen(!productDropdownOpen)}
-                className="flex items-center gap-1"
-              >
-                Product <ChevronDown size={16} />
+            <div className="relative group">
+              <button className="flex items-center gap-1">
+                Product
+                <ChevronDown
+                  size={16}
+                  className="transition-transform duration-300 ease-in-out group-hover:rotate-180"
+                />
               </button>
-              {productDropdownOpen && (
-                <div
-                  className={`absolute mt-2 w-56 rounded-md shadow-lg py-2 ${dropdownBg}`}
-                >
-                  {productLinks.map((link) => (
-                    <Link
-                      key={link.name}
-                      href={link.href}
-                      className="block px-4 py-2"
-                    >
-                      {link.name}
-                    </Link>
-                  ))}
-                </div>
-              )}
+
+              {/* Dropdown — hidden by default, show on hover */}
+              <div
+                className={`absolute mt-2 w-56 rounded-md shadow-lg py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-150 ${dropdownBg}`}
+              >
+                {productLinks.map((link) => (
+                  <Link
+                    key={link.name}
+                    href={link.href}
+                    className="block px-4 py-2 transition-colors"
+                  >
+                    {link.name}
+                  </Link>
+                ))}
+              </div>
             </div>
 
-            <Link href="/solutions" className="">
-              Solutions
-            </Link>
-            <Link href="/pricing" className="">
-              Pricing
-            </Link>
-            <Link href="/resources" className="">
-              Resources
-            </Link>
+            <Link href="/solutions">Solutions</Link>
+            <Link href="/pricing">Pricing</Link>
+            <Link href="/resources">Resources</Link>
           </div>
 
           {/* Right Side */}
