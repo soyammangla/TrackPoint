@@ -3,6 +3,7 @@ import Link from "next/link";
 import { FaTwitter, FaGithub, FaLinkedin } from "react-icons/fa";
 import { IoIosHeart } from "react-icons/io";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 const Footer = () => {
   return (
@@ -10,7 +11,30 @@ const Footer = () => {
       <div className="w-[90%] sm:w-[85%] md:w-[80%] mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 text-center sm:text-left">
         {/* Brand */}
         <div>
-          <h2 className="text-2xl font-bold">Trackpoint</h2>
+          <div className="flex items-start gap-0 -translate-x-3">
+            {/* Dark mode → light logo */}
+            <Image
+              src="/logo-light.png"
+              alt="Trackpoint Logo"
+              width={80}
+              height={80}
+              className="hidden dark:block -mr-4"
+            />
+
+            {/* Light mode → dark logo */}
+            <Image
+              src="/logo-dark.jpg"
+              alt="Trackpoint Logo"
+              width={80}
+              height={80}
+              className="block dark:hidden -mr-4"
+            />
+
+            <h2 className="text-2xl font-bold leading-tight mt-5">
+              Trackpoint
+            </h2>
+          </div>
+
           <p className="mt-3 text-sm text-black dark:text-white">
             Plan Smarter. Work Better. <br />
             Helping you manage clients, tasks, and projects efficiently.
