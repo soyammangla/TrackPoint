@@ -61,7 +61,7 @@ export default function FAQPage() {
           >
             <button
               onClick={() => toggleFaq(index)}
-              className="w-full flex justify-between items-center px-6 py-4 text-left font-medium transition-colors hover:bg-gray-200 dark:hover:bg-neutral-800"
+              className="w-full flex justify-between items-center px-6 py-4 text-left font-medium transition-colors"
             >
               <span className="text-base sm:text-lg">{faq.question}</span>
               <span className="text-xl font-bold">
