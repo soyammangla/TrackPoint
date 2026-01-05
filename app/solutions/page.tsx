@@ -48,8 +48,9 @@ export default function SolutionsPage() {
   const router = useRouter();
   const { theme, setTheme, resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
-
   useEffect(() => setMounted(true), []);
+
+  if (!mounted) return null;
 
   return (
     <section
