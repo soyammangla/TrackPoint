@@ -43,11 +43,20 @@ export default function TaskManagementPage() {
 
   const handleGetStarted = () => {
     if (session) {
-      router.push("/");
+      router.push("/"); // home
     } else {
       router.push("/login");
     }
   };
+
+  const handleStartFreeTrial = () => {
+    if (session) {
+      router.push("/dashboard"); // app/dashboard
+    } else {
+      router.push("/"); // home
+    }
+  };
+
   return (
     <main className="relative overflow-hidden bg-background dark:bg-black">
       {/* Hero Section */}
@@ -78,6 +87,7 @@ export default function TaskManagementPage() {
           <Button size="lg" className="gap-2" onClick={handleGetStarted}>
             Get Started <ArrowRight className="h-4 w-4" />
           </Button>
+
           <Button size="lg" variant="outline" asChild>
             <Link href="/demo">View Demo</Link>
           </Button>
@@ -145,7 +155,7 @@ export default function TaskManagementPage() {
           Start managing tasks efficiently and keep your team aligned with
           TrackPoint.
         </p>
-        <Button size="lg" className="gap-2" onClick={handleGetStarted}>
+        <Button size="lg" className="gap-2" onClick={handleStartFreeTrial}>
           Start Free Trial <ArrowRight className="h-4 w-4" />
         </Button>
       </section>
