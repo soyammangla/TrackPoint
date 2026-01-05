@@ -181,7 +181,9 @@ export default function SolutionsPage() {
           <Button
             size="lg"
             className="px-10"
-            onClick={() => (session ? router.push("/") : router.push("/login"))}
+            onClick={() =>
+              session ? router.push("/dashboard") : router.push("/login")
+            }
           >
             {session ? "Go to Dashboard" : "Get Started"}
           </Button>
