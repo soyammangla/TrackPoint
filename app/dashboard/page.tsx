@@ -67,14 +67,14 @@ export default function DashboardPage() {
               onClick={() => scrollTo(s.ref)}
             >
               <CardHeader className="flex justify-between items-center">
-                <CardTitle className="text-sm text-muted-foreground">
+                <CardTitle className="text-sm text-black dark:text-white">
                   {s.title}
                 </CardTitle>
                 <Icon className="h-5 w-5 text-primary" />
               </CardHeader>
               <CardContent>
                 <div className="text-3xl font-bold">{s.value}</div>
-                <p className="text-xs text-muted-foreground mt-1 hover:underline cursor-pointer">
+                <p className="text-xs text-black dark:text-white mt-1 hover:underline cursor-pointer">
                   View details →
                 </p>
               </CardContent>
