@@ -49,6 +49,14 @@ export default function ReportsAnalyticsPage() {
     }
   };
 
+  const handleViewReports = () => {
+    if (session) {
+      router.push("/dashboard");
+    } else {
+      router.push("/home");
+    }
+  };
+
   return (
     <main className="relative overflow-hidden bg-background dark:bg-black">
       {/* Hero Section */}
@@ -146,7 +154,7 @@ export default function ReportsAnalyticsPage() {
           Get complete visibility into your team’s performance with TrackPoint
           analytics.
         </p>
-        <Button size="lg" className="gap-2" onClick={handleGetStarted}>
+        <Button size="lg" className="gap-2" onClick={handleViewReports}>
           View Your Reports <ArrowRight className="h-4 w-4" />
         </Button>
       </section>

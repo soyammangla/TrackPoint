@@ -49,6 +49,14 @@ export default function TeamCollaborationPage() {
     }
   };
 
+  const handleStartCollaborating = () => {
+    if (session) {
+      router.push("/dashboard");
+    } else {
+      router.push("/home");
+    }
+  };
+
   return (
     <main className="relative overflow-hidden bg-background dark:bg-black">
       {/* Hero Section */}
@@ -80,6 +88,7 @@ export default function TeamCollaborationPage() {
           <Button size="lg" className="gap-2" onClick={handleGetStarted}>
             Get Started <ArrowRight className="h-4 w-4" />
           </Button>
+
           <Button size="lg" variant="outline" asChild>
             <Link href="/demo">View Demo</Link>
           </Button>
@@ -146,7 +155,7 @@ export default function TeamCollaborationPage() {
         <p className="text-black dark:text-white max-w-xl mx-auto mb-8">
           Empower your team with seamless collaboration and clear communication.
         </p>
-        <Button size="lg" className="gap-2" onClick={handleGetStarted}>
+        <Button size="lg" className="gap-2" onClick={handleStartCollaborating}>
           Start Collaborating <ArrowRight className="h-4 w-4" />
         </Button>
       </section>

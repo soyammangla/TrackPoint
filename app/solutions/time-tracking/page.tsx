@@ -41,12 +41,19 @@ const features = [
 export default function TimeTrackingPage() {
   const { data: session } = useSession();
   const router = useRouter();
-
   const handleGetStarted = () => {
     if (session) {
       router.push("/home");
     } else {
       router.push("/login");
+    }
+  };
+
+  const handleStartTracking = () => {
+    if (session) {
+      router.push("/dashboard");
+    } else {
+      router.push("/home");
     }
   };
 
@@ -80,6 +87,7 @@ export default function TimeTrackingPage() {
           <Button size="lg" className="gap-2" onClick={handleGetStarted}>
             Get Started <ArrowRight className="h-4 w-4" />
           </Button>
+
           <Button size="lg" variant="outline" asChild>
             <Link href="/demo">View Demo</Link>
           </Button>
@@ -143,7 +151,7 @@ export default function TimeTrackingPage() {
           Understand productivity better and build smarter workflows with
           TrackPoint Time Tracking.
         </p>
-        <Button size="lg" className="gap-2" onClick={handleGetStarted}>
+        <Button size="lg" className="gap-2" onClick={handleStartTracking}>
           Start Tracking Time <ArrowRight className="h-4 w-4" />
         </Button>
       </section>
