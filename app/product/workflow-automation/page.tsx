@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
+import Link from "next/link";
 import {
   Zap,
   GitBranch,
@@ -10,6 +11,8 @@ import {
   PauseCircle,
   Pencil,
   Trash2,
+  CheckCircle,
+  XCircle,
 } from "lucide-react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -17,7 +20,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 
-const workflows = [
+const initialWorkflows = [
   {
     name: "New Lead Follow-up",
     trigger: "Lead Created",
@@ -41,12 +44,61 @@ const workflows = [
 export default function WorkflowAutomationPage() {
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState<"All" | "Active" | "Paused">("All");
+  const [workflows, setWorkflows] = useState(initialWorkflows);
+
+  // Track which workflow is being edited
+  const [editingFlow, setEditingFlow] = useState<string | null>(null);
+  const [editName, setEditName] = useState("");
+  const [editTrigger, setEditTrigger] = useState("");
 
   const filteredWorkflows = workflows.filter((w) => {
     const matchesSearch = w.name.toLowerCase().includes(search.toLowerCase());
     const matchesFilter = filter === "All" || w.status === filter;
     return matchesSearch && matchesFilter;
   });
+
+  // Button handlers
+  const handlePlay = (flowName: string) => {
+    setWorkflows((prev) =>
+      prev.map((w) => (w.name === flowName ? { ...w, status: "Active" } : w))
+    );
+  };
+
+  const handlePause = (flowName: string) => {
+    setWorkflows((prev) =>
+      prev.map((w) => (w.name === flowName ? { ...w, status: "Paused" } : w))
+    );
+  };
+
+  const handleEdit = (flowName: string) => {
+    const flow = workflows.find((w) => w.name === flowName);
+    if (!flow) return;
+    setEditingFlow(flowName);
+    setEditName(flow.name);
+    setEditTrigger(flow.trigger);
+  };
+
+  const handleSave = (flowName: string) => {
+    setWorkflows((prev) =>
+      prev.map((w) =>
+        w.name === flowName ? { ...w, name: editName, trigger: editTrigger } : w
+      )
+    );
+    setEditingFlow(null);
+  };
+
+  const handleCancelEdit = () => {
+    setEditingFlow(null);
+  };
+
+  const handleDelete = (flowName: string) => {
+    const confirmDelete = confirm(
+      `Are you sure you want to delete "${flowName}"?`
+    );
+    if (confirmDelete) {
+      setWorkflows((prev) => prev.filter((w) => w.name !== flowName));
+    }
+  };
 
   return (
     <div className="min-h-screen px-6 py-10 bg-gray-50 dark:bg-black text-gray-900 dark:text-neutral-100">
@@ -59,9 +111,11 @@ export default function WorkflowAutomationPage() {
           </p>
         </div>
 
-        <Button className="gap-2 rounded-xl">
-          <Zap size={16} /> Create Workflow
-        </Button>
+        <Link href="/product/workflow-automation/createworkflow">
+          <Button className="gap-2 rounded-xl">
+            <Zap size={16} /> Create Workflow
+          </Button>
+        </Link>
       </div>
 
       {/* Stats */}
@@ -135,10 +189,26 @@ export default function WorkflowAutomationPage() {
               </CardHeader>
 
               <CardContent className="space-y-4">
-                <div>
-                  <p className="text-sm text-neutral-400">Trigger</p>
-                  <p className="font-medium">{flow.trigger}</p>
-                </div>
+                {/* Editable Fields */}
+                {editingFlow === flow.name ? (
+                  <div className="space-y-2">
+                    <Input
+                      value={editName}
+                      onChange={(e) => setEditName(e.target.value)}
+                      placeholder="Workflow Name"
+                    />
+                    <Input
+                      value={editTrigger}
+                      onChange={(e) => setEditTrigger(e.target.value)}
+                      placeholder="Trigger"
+                    />
+                  </div>
+                ) : (
+                  <div>
+                    <p className="text-sm text-neutral-400">Trigger</p>
+                    <p className="font-medium">{flow.trigger}</p>
+                  </div>
+                )}
 
                 <div>
                   <p className="text-sm text-neutral-400">Actions</p>
@@ -159,18 +229,55 @@ export default function WorkflowAutomationPage() {
                   </Badge>
 
                   <div className="flex gap-2">
-                    <Button size="sm" variant="ghost">
-                      <PlayCircle size={16} />
-                    </Button>
-                    <Button size="sm" variant="ghost">
-                      <Pencil size={16} />
-                    </Button>
-                    <Button size="sm" variant="ghost">
-                      <PauseCircle size={16} />
-                    </Button>
-                    <Button size="sm" variant="ghost">
-                      <Trash2 size={16} />
-                    </Button>
+                    {editingFlow === flow.name ? (
+                      <>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => handleSave(flow.name)}
+                        >
+                          <CheckCircle size={16} />
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={handleCancelEdit}
+                        >
+                          <XCircle size={16} />
+                        </Button>
+                      </>
+                    ) : (
+                      <>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => handlePlay(flow.name)}
+                        >
+                          <PlayCircle size={16} />
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => handleEdit(flow.name)}
+                        >
+                          <Pencil size={16} />
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => handlePause(flow.name)}
+                        >
+                          <PauseCircle size={16} />
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => handleDelete(flow.name)}
+                        >
+                          <Trash2 size={16} />
+                        </Button>
+                      </>
+                    )}
                   </div>
                 </div>
               </CardContent>
