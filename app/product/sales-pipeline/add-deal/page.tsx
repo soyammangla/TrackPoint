@@ -39,7 +39,7 @@ export default function AddDealPage() {
         <Card className="rounded-2xl border dark:border-neutral-800 dark:bg-neutral-900">
           <CardHeader>
             <CardTitle className="text-xl">Add New Deal</CardTitle>
-            <p className="text-sm text-neutral-500">
+            <p className="text-sm text-black dark:text-white">
               Create a new opportunity in your sales pipeline
             </p>
           </CardHeader>

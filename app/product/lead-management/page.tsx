@@ -48,7 +48,7 @@ export default function LeadManagementPage() {
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-10">
         <div>
           <h1 className="text-3xl font-bold">Product & Lead Management</h1>
-          <p className="text-gray-600 dark:text-neutral-400">
+          <p className="text-black dark:text-white">
             Track leads, manage products, and convert faster
           </p>
         </div>

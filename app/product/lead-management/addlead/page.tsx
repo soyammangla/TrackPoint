@@ -50,7 +50,7 @@ export default function AddLeadPage() {
           <Card className="rounded-2xl dark:bg-neutral-900 dark:border-neutral-800">
             <CardHeader>
               <CardTitle>Lead Details</CardTitle>
-              <p className="text-sm text-gray-600 dark:text-neutral-400">
+              <p className="text-sm text-black dark:text-white0">
                 Fill in the information to create a new lead
               </p>
             </CardHeader>

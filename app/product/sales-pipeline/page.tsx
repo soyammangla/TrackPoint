@@ -44,13 +44,13 @@ export default function SalesPipelinePage() {
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-10">
         <div>
           <h1 className="text-3xl font-bold">Sales Pipeline</h1>
-          <p className="text-muted-foreground">
+          <p className="text-black dark:text-white">
             Track deals across sales stages
           </p>
         </div>
 
         <Link href="/product/sales-pipeline/add-deal">
-          <Button className="rounded-xl">
+          <Button>
             <Plus size={18} className="mr-2" />
             Add Deal
           </Button>
@@ -86,16 +86,18 @@ export default function SalesPipelinePage() {
               <CardHeader className="flex flex-row items-center justify-between">
                 <div>
                   <CardTitle className="text-sm">{stage.title}</CardTitle>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-xs text-black dark:text-white">
                     {stage.leads.length} Deals
                   </p>
                 </div>
-                <stage.icon size={18} className="text-muted-foreground" />
+                <stage.icon size={18} className="text-black dark:text-white" />
               </CardHeader>
 
               <CardContent className="space-y-4">
                 {stage.leads.length === 0 && (
-                  <p className="text-sm text-muted-foreground">No deals yet</p>
+                  <p className="text-sm text-black dark:text-white">
+                    No deals yet
+                  </p>
                 )}
 
                 {stage.leads
