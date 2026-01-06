@@ -106,7 +106,7 @@ export default function WorkflowAutomationPage() {
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-10">
         <div>
           <h1 className="text-3xl font-bold">Workflow Automation</h1>
-          <p className="text-gray-600 dark:text-neutral-400">
+          <p className="text-black dark:text-white">
             Automate repetitive tasks and streamline operations
           </p>
         </div>
@@ -122,13 +122,15 @@ export default function WorkflowAutomationPage() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
         <Card className="rounded-2xl dark:bg-neutral-900 dark:border-neutral-800">
           <CardContent className="p-6">
-            <p className="text-sm text-neutral-400">Total Workflows</p>
+            <p className="text-sm text-black dark:text-white">
+              Total Workflows
+            </p>
             <p className="text-3xl font-bold">{workflows.length}</p>
           </CardContent>
         </Card>
         <Card className="rounded-2xl dark:bg-neutral-900 dark:border-neutral-800">
           <CardContent className="p-6">
-            <p className="text-sm text-neutral-400">Active</p>
+            <p className="text-sm text-black dark:text-white">Active</p>
             <p className="text-3xl font-bold text-green-400">
               {workflows.filter((w) => w.status === "Active").length}
             </p>
@@ -136,7 +138,7 @@ export default function WorkflowAutomationPage() {
         </Card>
         <Card className="rounded-2xl dark:bg-neutral-900 dark:border-neutral-800">
           <CardContent className="p-6">
-            <p className="text-sm text-neutral-400">Paused</p>
+            <p className="text-sm text-black dark:text-white">Paused</p>
             <p className="text-3xl font-bold text-yellow-400">
               {workflows.filter((w) => w.status === "Paused").length}
             </p>
@@ -205,13 +207,15 @@ export default function WorkflowAutomationPage() {
                   </div>
                 ) : (
                   <div>
-                    <p className="text-sm text-neutral-400">Trigger</p>
+                    <p className="text-sm text-black dark:text-white">
+                      Trigger
+                    </p>
                     <p className="font-medium">{flow.trigger}</p>
                   </div>
                 )}
 
                 <div>
-                  <p className="text-sm text-neutral-400">Actions</p>
+                  <p className="text-sm text-black dark:text-white">Actions</p>
                   <div className="flex flex-wrap gap-2 mt-1">
                     {flow.actions.map((action) => (
                       <Badge key={action} variant="secondary">
