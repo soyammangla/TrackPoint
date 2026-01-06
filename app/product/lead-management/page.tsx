@@ -86,7 +86,7 @@ export default function LeadManagementPage() {
           >
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle>{stat.title}</CardTitle>
-              <stat.icon className="text-muted-foreground" />
+              <stat.icon className="text-black dark:text-white" />
             </CardHeader>
             <CardContent>
               <p className="text-3xl font-bold">{stat.value}</p>
@@ -139,7 +139,7 @@ export default function LeadManagementPage() {
               >
                 <div>
                   <p className="font-semibold">{lead.name}</p>
-                  <p className="text-sm text-gray-500 dark:text-neutral-400">
+                  <p className="text-sm text-black dark:text-white">
                     {lead.company}
                   </p>
                 </div>

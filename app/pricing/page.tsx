@@ -85,7 +85,7 @@ export default function Pricing() {
           {plans.map((plan, index) => (
             <div
               key={index}
-              className={`relative flex flex-col rounded-2xl border transition hover:shadow-xl
+              className={`relative flex flex-col rounded-2xl border transition
                 ${
                   plan.highlighted
                     ? "bg-white dark:bg-black border-black dark:border-white scale-[1.03]"

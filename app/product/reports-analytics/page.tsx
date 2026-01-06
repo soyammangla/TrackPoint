@@ -78,7 +78,7 @@ export default function ReportsAnalyticsPage() {
           <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight">
             Reports & Analytics
           </h1>
-          <p className="text-gray-600 dark:text-neutral-400 mt-1">
+          <p className="text-black dark:text-white mt-1">
             Monitor your business performance, revenue trends, and sales
             efficiency
           </p>
@@ -117,13 +117,10 @@ export default function ReportsAnalyticsPage() {
           >
             <Card className="rounded-2xl p-4 dark:bg-neutral-900 dark:border-neutral-800 shadow-sm hover:shadow-md transition-shadow">
               <CardHeader className="flex items-center justify-between pb-2">
-                <CardTitle className="text-sm font-medium text-gray-600 dark:text-neutral-400">
+                <CardTitle className="text-sm font-medium text-black dark:text-white">
                   {kpi.title}
                 </CardTitle>
-                <kpi.icon
-                  className="text-gray-400 dark:text-neutral-500"
-                  size={20}
-                />
+                <kpi.icon className="text-black dark:text-white" size={20} />
               </CardHeader>
               <CardContent className="pt-2">
                 <p className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-neutral-100">
@@ -153,12 +150,12 @@ export default function ReportsAnalyticsPage() {
               <CardTitle className="text-lg font-semibold">
                 Revenue Trend
               </CardTitle>
-              <p className="text-sm text-gray-500 dark:text-neutral-400 mt-1">
+              <p className="text-sm text-black dark:text-white mt-1">
                 Visualize sales performance over selected period
               </p>
             </CardHeader>
             <CardContent className="h-80 flex items-center justify-center bg-gray-100 dark:bg-neutral-950 rounded-lg">
-              <p className="text-gray-400 dark:text-neutral-500 text-center">
+              <p className="text-black dark:text-white text-center">
                 📊 Line / Area Chart Placeholder
               </p>
             </CardContent>
@@ -175,12 +172,12 @@ export default function ReportsAnalyticsPage() {
               <CardTitle className="text-lg font-semibold">
                 Lead Sources
               </CardTitle>
-              <p className="text-sm text-gray-500 dark:text-neutral-400 mt-1">
+              <p className="text-sm text-black dark:text-white mt-1">
                 Distribution of incoming leads across channels
               </p>
             </CardHeader>
             <CardContent className="h-80 flex items-center justify-center bg-gray-100 dark:bg-neutral-950 rounded-lg">
-              <p className="text-gray-400 dark:text-neutral-500 text-center">
+              <p className="text-black dark:text-white text-center">
                 📈 Pie / Bar Chart Placeholder
               </p>
             </CardContent>
