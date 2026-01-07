@@ -1,189 +1,458 @@
+// "use client";
+
+// import { useState, useMemo } from "react";
+// import { BarChart3, Users, DollarSign, TrendingUp, Filter } from "lucide-react";
+
+// import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+// import { Button } from "@/components/ui/button";
+
+// type AutomationReport = {
+//   id: number;
+//   name: string;
+//   trigger: string;
+//   success: number;
+//   status: "Active" | "Inactive";
+// };
+
+// const AUTOMATIONS: AutomationReport[] = [
+//   {
+//     id: 1,
+//     name: "Assign New Lead",
+//     trigger: "New Lead Created",
+//     success: 92,
+//     status: "Active",
+//   },
+//   {
+//     id: 2,
+//     name: "Deal Won Follow-up",
+//     trigger: "Deal Closed Won",
+//     success: 87,
+//     status: "Inactive",
+//   },
+//   {
+//     id: 3,
+//     name: "Auto Reminder",
+//     trigger: "No Response 3 Days",
+//     success: 78,
+//     status: "Active",
+//   },
+// ];
+
+// export default function ReportsAnalyticsPage() {
+//   const [dateRange, setDateRange] = useState("30");
+//   const [statusFilter, setStatusFilter] = useState<
+//     "All" | "Active" | "Inactive"
+//   >("All");
+
+//   const filteredAutomations = useMemo(() => {
+//     if (statusFilter === "All") return AUTOMATIONS;
+//     return AUTOMATIONS.filter((a) => a.status === statusFilter);
+//   }, [statusFilter]);
+
+//   const stats = useMemo(() => {
+//     const totalLeads =
+//       dateRange === "7" ? 312 : dateRange === "90" ? 2860 : 1248;
+//     const dealsWon = dateRange === "7" ? 68 : dateRange === "90" ? 712 : 326;
+//     const revenue =
+//       dateRange === "7" ? 98000 : dateRange === "90" ? 1284000 : 482000;
+
+//     return [
+//       {
+//         title: "Total Leads",
+//         value: totalLeads,
+//         icon: Users,
+//       },
+//       {
+//         title: "Deals Won",
+//         value: dealsWon,
+//         icon: TrendingUp,
+//       },
+//       {
+//         title: "Revenue",
+//         value: `₹${revenue.toLocaleString()}`,
+//         icon: DollarSign,
+//       },
+//       {
+//         title: "Conversion Rate",
+//         value: `${Math.round((dealsWon / totalLeads) * 100)}%`,
+//         icon: BarChart3,
+//       },
+//     ];
+//   }, [dateRange]);
+
+//   return (
+//     <div className="p-6 space-y-8 min-h-screen bg-white dark:bg-neutral-950 text-black dark:text-neutral-100 transition-colors">
+//       {/* Header */}
+//       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+//         <div>
+//           <h1 className="text-3xl font-bold">Reports & Analytics</h1>
+//           <p className="text-sm text-neutral-600 dark:text-neutral-400">
+//             Sales, leads & automation insights
+//           </p>
+//         </div>
+
+//         {/* Filters */}
+//         <div className="flex flex-wrap gap-2">
+//           <select
+//             value={dateRange}
+//             onChange={(e) => setDateRange(e.target.value)}
+//             className="px-3 py-2 rounded-md border border-neutral-300 bg-white
+//               dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-200"
+//           >
+//             <option value="7">Last 7 Days</option>
+//             <option value="30">Last 30 Days</option>
+//             <option value="90">Last 90 Days</option>
+//           </select>
+
+//           <select
+//             value={statusFilter}
+//             onChange={(e) => setStatusFilter(e.target.value as any)}
+//             className="px-3 py-2 rounded-md border border-neutral-300 bg-white
+//               dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-200"
+//           >
+//             <option value="All">All Automations</option>
+//             <option value="Active">Active</option>
+//             <option value="Inactive">Inactive</option>
+//           </select>
+
+//           <Button
+//             variant="outline"
+//             className="border-neutral-300 dark:border-neutral-700"
+//           >
+//             <Filter size={16} />
+//           </Button>
+//         </div>
+//       </div>
+
+//       {/* Stats */}
+//       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+//         {stats.map((stat) => (
+//           <Card
+//             key={stat.title}
+//             className="bg-white dark:bg-neutral-900 border-neutral-200 dark:border-neutral-800"
+//           >
+//             <CardContent className="p-5 space-y-3">
+//               <div className="flex justify-between items-center">
+//                 <span className="text-sm text-neutral-600 dark:text-neutral-400">
+//                   {stat.title}
+//                 </span>
+//                 <stat.icon
+//                   size={18}
+//                   className="text-neutral-600 dark:text-neutral-400"
+//                 />
+//               </div>
+//               <div className="text-2xl font-bold">{stat.value}</div>
+//             </CardContent>
+//           </Card>
+//         ))}
+//       </div>
+
+//       {/* Funnel */}
+//       <Card className="bg-white dark:bg-neutral-900 border-neutral-200 dark:border-neutral-800">
+//         <CardHeader>
+//           <CardTitle>Sales Funnel</CardTitle>
+//         </CardHeader>
+//         <CardContent className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm text-neutral-700 dark:text-neutral-300">
+//           <div>
+//             New Leads: <b>1248</b>
+//           </div>
+//           <div>
+//             Contacted: <b>842</b>
+//           </div>
+//           <div>
+//             Qualified: <b>516</b>
+//           </div>
+//           <div>
+//             Deals Won: <b>326</b>
+//           </div>
+//         </CardContent>
+//       </Card>
+
+//       {/* Automation Table */}
+//       <Card className="bg-white dark:bg-neutral-900 border-neutral-200 dark:border-neutral-800">
+//         <CardHeader>
+//           <CardTitle>Automation Performance</CardTitle>
+//         </CardHeader>
+//         <CardContent>
+//           <table className="w-full text-sm">
+//             <thead className="border-b border-neutral-200 dark:border-neutral-800 text-neutral-600 dark:text-neutral-400">
+//               <tr>
+//                 <th className="text-left py-2">Automation</th>
+//                 <th className="text-left">Trigger</th>
+//                 <th className="text-left">Success</th>
+//                 <th className="text-left">Status</th>
+//               </tr>
+//             </thead>
+//             <tbody>
+//               {filteredAutomations.map((a) => (
+//                 <tr
+//                   key={a.id}
+//                   className="border-b border-neutral-200 dark:border-neutral-800
+//                   hover:bg-neutral-100 dark:hover:bg-neutral-800/50 transition"
+//                 >
+//                   <td className="py-2">{a.name}</td>
+//                   <td>{a.trigger}</td>
+//                   <td>{a.success}%</td>
+//                   <td
+//                     className={
+//                       a.status === "Active"
+//                         ? "text-green-500"
+//                         : "text-neutral-400"
+//                     }
+//                   >
+//                     {a.status}
+//                   </td>
+//                 </tr>
+//               ))}
+//             </tbody>
+//           </table>
+//         </CardContent>
+//       </Card>
+//     </div>
+//   );
+// }
+
 "use client";
 
-import { useState } from "react";
-import { motion } from "framer-motion";
-import {
-  BarChart3,
-  TrendingUp,
-  Users,
-  DollarSign,
-  Download,
-} from "lucide-react";
+import { useState, useMemo } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { BarChart3, Users, DollarSign, TrendingUp, Filter } from "lucide-react";
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
-const ranges = ["7 Days", "30 Days", "90 Days"];
+type AutomationReport = {
+  id: number;
+  name: string;
+  trigger: string;
+  success: number;
+  status: "Active" | "Inactive";
+};
+
+const AUTOMATIONS: AutomationReport[] = [
+  {
+    id: 1,
+    name: "Assign New Lead",
+    trigger: "New Lead Created",
+    success: 92,
+    status: "Active",
+  },
+  {
+    id: 2,
+    name: "Deal Won Follow-up",
+    trigger: "Deal Closed Won",
+    success: 87,
+    status: "Inactive",
+  },
+  {
+    id: 3,
+    name: "Auto Reminder",
+    trigger: "No Response 3 Days",
+    success: 78,
+    status: "Active",
+  },
+];
 
 export default function ReportsAnalyticsPage() {
-  const [range, setRange] = useState("30 Days");
+  const [dateRange, setDateRange] = useState("30");
+  const [statusFilter, setStatusFilter] = useState<
+    "All" | "Active" | "Inactive"
+  >("All");
 
-  const kpis = [
-    { title: "Total Revenue", value: "₹4.2L", badge: "+18%", icon: DollarSign },
-    { title: "New Leads", value: "312", badge: "+12%", icon: Users },
-    { title: "Conversion Rate", value: "36%", badge: "+6%", icon: TrendingUp },
-    {
-      title: "Active Deals",
-      value: "58",
-      badge: "In Pipeline",
-      icon: BarChart3,
-    },
-  ];
+  const [showFilters, setShowFilters] = useState(false);
 
-  // PDF Export
-  const handleExportPDF = async () => {
-    const { jsPDF: jsPDFClass } = await import("jspdf");
-    const doc = new jsPDFClass();
+  /* ---------------- FILTERED DATA ---------------- */
 
-    // Title
-    doc.setFontSize(18);
-    doc.text("Reports & Analytics", 14, 20);
+  const filteredAutomations = useMemo(() => {
+    if (statusFilter === "All") return AUTOMATIONS;
+    return AUTOMATIONS.filter((a) => a.status === statusFilter);
+  }, [statusFilter]);
 
-    // Range
-    doc.setFontSize(12);
-    doc.text(`Selected Range: ${range}`, 14, 30);
+  /* ---------------- STATS ---------------- */
 
-    // KPI Table
-    const tableColumn = ["Title", "Value", "Change"];
-    const tableRows = kpis.map((kpi) => [kpi.title, kpi.value, kpi.badge]);
+  const stats = useMemo(() => {
+    const totalLeads =
+      dateRange === "7" ? 312 : dateRange === "90" ? 2860 : 1248;
+    const dealsWon = dateRange === "7" ? 68 : dateRange === "90" ? 712 : 326;
+    const revenue =
+      dateRange === "7" ? 98000 : dateRange === "90" ? 1284000 : 482000;
 
-    const { default: autoTable } = await import("jspdf-autotable");
-    autoTable(doc, {
-      startY: 40,
-      head: [tableColumn],
-      body: tableRows,
-      theme: "grid",
-      headStyles: { fillColor: [22, 160, 133] },
-      styles: { fontSize: 12 },
-    });
-
-    // Footer / Charts Placeholder
-    doc.setFontSize(12);
-    const finalY = (doc as any).lastAutoTable?.finalY || 100;
-    doc.text(
-      "Charts (Revenue Trend, Lead Sources) would appear here",
-      14,
-      finalY + 20
-    );
-
-    // Save PDF
-    doc.save(`Reports_${range.replace(" ", "_")}.pdf`);
-  };
+    return [
+      {
+        title: "Total Leads",
+        value: totalLeads,
+        icon: Users,
+      },
+      {
+        title: "Deals Won",
+        value: dealsWon,
+        icon: TrendingUp,
+      },
+      {
+        title: "Revenue",
+        value: `₹${revenue.toLocaleString()}`,
+        icon: DollarSign,
+      },
+      {
+        title: "Conversion Rate",
+        value: `${Math.round((dealsWon / totalLeads) * 100)}%`,
+        icon: BarChart3,
+      },
+    ];
+  }, [dateRange]);
 
   return (
-    <div className="min-h-screen px-6 py-10 bg-gray-50 dark:bg-black text-gray-900 dark:text-neutral-100">
-      {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-10">
+    <div className="p-6 space-y-6 min-h-screen bg-white dark:bg-neutral-950 text-black dark:text-neutral-100 transition-colors">
+      {/* ---------------- HEADER ---------------- */}
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
-          <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight">
-            Reports & Analytics
-          </h1>
-          <p className="text-black dark:text-white mt-1">
-            Monitor your business performance, revenue trends, and sales
-            efficiency
+          <h1 className="text-3xl font-bold">Reports & Analytics</h1>
+          <p className="text-sm text-neutral-600 dark:text-neutral-400">
+            Sales, leads & automation insights
           </p>
         </div>
 
-        <div className="flex gap-3 flex-wrap">
-          {ranges.map((r) => (
-            <Button
-              key={r}
-              variant={range === r ? "default" : "outline"}
-              className="rounded-xl px-4"
-              onClick={() => setRange(r)}
-            >
-              {r}
-            </Button>
-          ))}
-
-          <Button
-            variant="default"
-            className="gap-2 rounded-xl px-4"
-            onClick={handleExportPDF}
-          >
-            <Download size={16} /> Export PDF
-          </Button>
-        </div>
+        <Button
+          variant="outline"
+          onClick={() => setShowFilters((prev) => !prev)}
+          className="border-neutral-300 dark:border-neutral-700"
+        >
+          <Filter size={16} />
+        </Button>
       </div>
 
-      {/* KPI Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-10">
-        {kpis.map((kpi, i) => (
+      {/* ---------------- FILTER PANEL ---------------- */}
+      <AnimatePresence>
+        {showFilters && (
           <motion.div
-            key={kpi.title}
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.08 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2 }}
+            className="rounded-2xl border border-neutral-200 dark:border-neutral-800
+            bg-white dark:bg-neutral-900 p-4 flex flex-wrap gap-3 items-center"
           >
-            <Card className="rounded-2xl p-4 dark:bg-neutral-900 dark:border-neutral-800 shadow-sm hover:shadow-md transition-shadow">
-              <CardHeader className="flex items-center justify-between pb-2">
-                <CardTitle className="text-sm font-medium text-black dark:text-white">
-                  {kpi.title}
-                </CardTitle>
-                <kpi.icon className="text-black dark:text-white" size={20} />
-              </CardHeader>
-              <CardContent className="pt-2">
-                <p className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-neutral-100">
-                  {kpi.value}
-                </p>
-                <Badge
-                  className="mt-2"
-                  variant={kpi.badge.includes("+") ? "default" : "outline"}
-                >
-                  {kpi.badge}
-                </Badge>
-              </CardContent>
-            </Card>
+            <select
+              value={dateRange}
+              onChange={(e) => setDateRange(e.target.value)}
+              className="px-3 py-2 rounded-md border border-neutral-300 bg-white
+              dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-200"
+            >
+              <option value="7">Last 7 Days</option>
+              <option value="30">Last 30 Days</option>
+              <option value="90">Last 90 Days</option>
+            </select>
+
+            <select
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value as any)}
+              className="px-3 py-2 rounded-md border border-neutral-300 bg-white
+              dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-200"
+            >
+              <option value="All">All Automations</option>
+              <option value="Active">Active</option>
+              <option value="Inactive">Inactive</option>
+            </select>
+
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => {
+                setDateRange("30");
+                setStatusFilter("All");
+                setShowFilters(false);
+              }}
+            >
+              Clear Filters
+            </Button>
           </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* ---------------- STATS ---------------- */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {stats.map((stat) => (
+          <Card
+            key={stat.title}
+            className="bg-white dark:bg-neutral-900 border-neutral-200 dark:border-neutral-800"
+          >
+            <CardContent className="p-5 space-y-3">
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-neutral-600 dark:text-neutral-400">
+                  {stat.title}
+                </span>
+                <stat.icon
+                  size={18}
+                  className="text-neutral-600 dark:text-neutral-400"
+                />
+              </div>
+              <div className="text-2xl font-bold">{stat.value}</div>
+            </CardContent>
+          </Card>
         ))}
       </div>
 
-      {/* Charts Section */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Revenue Trend */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-        >
-          <Card className="rounded-2xl dark:bg-neutral-900 dark:border-neutral-800 shadow-sm hover:shadow-md transition-shadow">
-            <CardHeader>
-              <CardTitle className="text-lg font-semibold">
-                Revenue Trend
-              </CardTitle>
-              <p className="text-sm text-black dark:text-white mt-1">
-                Visualize sales performance over selected period
-              </p>
-            </CardHeader>
-            <CardContent className="h-80 flex items-center justify-center bg-gray-100 dark:bg-neutral-950 rounded-lg">
-              <p className="text-black dark:text-white text-center">
-                📊 Line / Area Chart Placeholder
-              </p>
-            </CardContent>
-          </Card>
-        </motion.div>
+      {/* ---------------- FUNNEL ---------------- */}
+      <Card className="bg-white dark:bg-neutral-900 border-neutral-200 dark:border-neutral-800">
+        <CardHeader>
+          <CardTitle>Sales Funnel</CardTitle>
+        </CardHeader>
+        <CardContent className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm text-neutral-700 dark:text-neutral-300">
+          <div>
+            New Leads: <b>1248</b>
+          </div>
+          <div>
+            Contacted: <b>842</b>
+          </div>
+          <div>
+            Qualified: <b>516</b>
+          </div>
+          <div>
+            Deals Won: <b>326</b>
+          </div>
+        </CardContent>
+      </Card>
 
-        {/* Lead Sources */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-        >
-          <Card className="rounded-2xl dark:bg-neutral-900 dark:border-neutral-800 shadow-sm hover:shadow-md transition-shadow">
-            <CardHeader>
-              <CardTitle className="text-lg font-semibold">
-                Lead Sources
-              </CardTitle>
-              <p className="text-sm text-black dark:text-white mt-1">
-                Distribution of incoming leads across channels
-              </p>
-            </CardHeader>
-            <CardContent className="h-80 flex items-center justify-center bg-gray-100 dark:bg-neutral-950 rounded-lg">
-              <p className="text-black dark:text-white text-center">
-                📈 Pie / Bar Chart Placeholder
-              </p>
-            </CardContent>
-          </Card>
-        </motion.div>
-      </div>
+      {/* ---------------- AUTOMATION TABLE ---------------- */}
+      <Card className="bg-white dark:bg-neutral-900 border-neutral-200 dark:border-neutral-800">
+        <CardHeader>
+          <CardTitle>Automation Performance</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <table className="w-full text-sm">
+            <thead className="border-b border-neutral-200 dark:border-neutral-800 text-neutral-600 dark:text-neutral-400">
+              <tr>
+                <th className="text-left py-2">Automation</th>
+                <th className="text-left">Trigger</th>
+                <th className="text-left">Success</th>
+                <th className="text-left">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredAutomations.map((a) => (
+                <tr
+                  key={a.id}
+                  className="border-b border-neutral-200 dark:border-neutral-800
+                  hover:bg-neutral-100 dark:hover:bg-neutral-800/50 transition"
+                >
+                  <td className="py-2">{a.name}</td>
+                  <td>{a.trigger}</td>
+                  <td>{a.success}%</td>
+                  <td
+                    className={
+                      a.status === "Active"
+                        ? "text-green-500"
+                        : "text-neutral-400"
+                    }
+                  >
+                    {a.status}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </CardContent>
+      </Card>
     </div>
   );
 }

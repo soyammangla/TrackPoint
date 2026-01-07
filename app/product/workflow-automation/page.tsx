@@ -2,290 +2,187 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import Link from "next/link";
-import {
-  Zap,
-  GitBranch,
-  PlayCircle,
-  Search,
-  PauseCircle,
-  Pencil,
-  Trash2,
-  CheckCircle,
-  XCircle,
-} from "lucide-react";
+import { Plus, Trash2, Power, Workflow, ArrowRight } from "lucide-react";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
 
-const initialWorkflows = [
-  {
-    name: "New Lead Follow-up",
-    trigger: "Lead Created",
-    actions: ["Send Email", "Notify Sales Team"],
-    status: "Active",
-  },
-  {
-    name: "Deal Won Automation",
-    trigger: "Pipeline → Closed Won",
-    actions: ["Generate Invoice", "Send Welcome Email"],
-    status: "Active",
-  },
-  {
-    name: "Inactive Lead Reminder",
-    trigger: "No activity for 7 days",
-    actions: ["Send Reminder", "Notify Manager"],
-    status: "Paused",
-  },
-];
+type WorkflowType = {
+  id: number;
+  name: string;
+  trigger: string;
+  actions: string[];
+  active: boolean;
+};
+
+const TRIGGERS = ["New Lead Created", "Deal Stage Changed", "Deal Won"];
+
+const ACTIONS = ["Assign Owner", "Send Email", "Create Task", "Notify Manager"];
 
 export default function WorkflowAutomationPage() {
-  const [search, setSearch] = useState("");
-  const [filter, setFilter] = useState<"All" | "Active" | "Paused">("All");
-  const [workflows, setWorkflows] = useState(initialWorkflows);
+  const [workflows, setWorkflows] = useState<WorkflowType[]>([
+    {
+      id: 1,
+      name: "Lead Auto Assign",
+      trigger: "New Lead Created",
+      actions: ["Assign Owner", "Send Email"],
+      active: true,
+    },
+  ]);
 
-  // Track which workflow is being edited
-  const [editingFlow, setEditingFlow] = useState<string | null>(null);
-  const [editName, setEditName] = useState("");
-  const [editTrigger, setEditTrigger] = useState("");
+  const addWorkflow = () => {
+    setWorkflows([
+      ...workflows,
+      {
+        id: Date.now(),
+        name: "New Automation",
+        trigger: TRIGGERS[0],
+        actions: [],
+        active: true,
+      },
+    ]);
+  };
 
-  const filteredWorkflows = workflows.filter((w) => {
-    const matchesSearch = w.name.toLowerCase().includes(search.toLowerCase());
-    const matchesFilter = filter === "All" || w.status === filter;
-    return matchesSearch && matchesFilter;
-  });
-
-  // Button handlers
-  const handlePlay = (flowName: string) => {
-    setWorkflows((prev) =>
-      prev.map((w) => (w.name === flowName ? { ...w, status: "Active" } : w))
+  const updateWorkflow = (id: number, key: keyof WorkflowType, value: any) => {
+    setWorkflows(
+      workflows.map((wf) => (wf.id === id ? { ...wf, [key]: value } : wf))
     );
   };
 
-  const handlePause = (flowName: string) => {
-    setWorkflows((prev) =>
-      prev.map((w) => (w.name === flowName ? { ...w, status: "Paused" } : w))
-    );
-  };
-
-  const handleEdit = (flowName: string) => {
-    const flow = workflows.find((w) => w.name === flowName);
-    if (!flow) return;
-    setEditingFlow(flowName);
-    setEditName(flow.name);
-    setEditTrigger(flow.trigger);
-  };
-
-  const handleSave = (flowName: string) => {
-    setWorkflows((prev) =>
-      prev.map((w) =>
-        w.name === flowName ? { ...w, name: editName, trigger: editTrigger } : w
-      )
-    );
-    setEditingFlow(null);
-  };
-
-  const handleCancelEdit = () => {
-    setEditingFlow(null);
-  };
-
-  const handleDelete = (flowName: string) => {
-    const confirmDelete = confirm(
-      `Are you sure you want to delete "${flowName}"?`
-    );
-    if (confirmDelete) {
-      setWorkflows((prev) => prev.filter((w) => w.name !== flowName));
-    }
+  const deleteWorkflow = (id: number) => {
+    setWorkflows(workflows.filter((wf) => wf.id !== id));
   };
 
   return (
-    <div className="min-h-screen px-6 py-10 bg-gray-50 dark:bg-black text-gray-900 dark:text-neutral-100">
-      {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-10">
+    <div className="p-6 min-h-screen bg-white dark:bg-neutral-900 text-black dark:text-white space-y-6">
+      {/* HEADER */}
+      <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold">Workflow Automation</h1>
-          <p className="text-black dark:text-white">
-            Automate repetitive tasks and streamline operations
+          <h1 className="text-3xl font-bold flex items-center gap-2">
+            <Workflow className="opacity-70" />
+            Workflow Automation
+          </h1>
+          <p className="text-sm opacity-60">
+            Create automated flows using triggers & actions
           </p>
         </div>
 
-        <Link href="/product/workflow-automation/createworkflow">
-          <Button className="gap-2 rounded-xl">
-            <Zap size={16} /> Create Workflow
-          </Button>
-        </Link>
+        <Button onClick={addWorkflow}>
+          <Plus size={16} /> Add Workflow
+        </Button>
       </div>
 
-      {/* Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-        <Card className="rounded-2xl dark:bg-neutral-900 dark:border-neutral-800">
-          <CardContent className="p-6">
-            <p className="text-sm text-black dark:text-white">
-              Total Workflows
-            </p>
-            <p className="text-3xl font-bold">{workflows.length}</p>
-          </CardContent>
-        </Card>
-        <Card className="rounded-2xl dark:bg-neutral-900 dark:border-neutral-800">
-          <CardContent className="p-6">
-            <p className="text-sm text-black dark:text-white">Active</p>
-            <p className="text-3xl font-bold text-green-400">
-              {workflows.filter((w) => w.status === "Active").length}
-            </p>
-          </CardContent>
-        </Card>
-        <Card className="rounded-2xl dark:bg-neutral-900 dark:border-neutral-800">
-          <CardContent className="p-6">
-            <p className="text-sm text-black dark:text-white">Paused</p>
-            <p className="text-3xl font-bold text-yellow-400">
-              {workflows.filter((w) => w.status === "Paused").length}
-            </p>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Filters */}
-      <div className="flex flex-col md:flex-row gap-4 mb-8">
-        <div className="relative w-full md:max-w-sm">
-          <Search
-            size={18}
-            className="absolute left-3 top-3 text-neutral-400"
-          />
-          <Input
-            placeholder="Search workflows..."
-            className="pl-10 rounded-xl dark:bg-black dark:border-neutral-800 dark:text-neutral-100"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-        </div>
-
-        <div className="flex gap-2">
-          {["All", "Active", "Paused"].map((s) => (
-            <Button
-              key={s}
-              variant={filter === s ? "default" : "outline"}
-              onClick={() => setFilter(s as any)}
-            >
-              {s}
-            </Button>
-          ))}
-        </div>
-      </div>
-
-      {/* Workflow Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {filteredWorkflows.map((flow, i) => (
+      {/* WORKFLOW LIST */}
+      <div className="space-y-4">
+        {workflows.map((wf) => (
           <motion.div
-            key={flow.name}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.08 }}
+            key={wf.id}
+            layout
+            className="rounded-xl border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 p-4"
           >
-            <Card className="rounded-2xl h-full dark:bg-neutral-900 dark:border-neutral-800">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <GitBranch size={18} /> {flow.name}
-                </CardTitle>
-              </CardHeader>
+            {/* TITLE ROW */}
+            <div className="flex justify-between items-center mb-4">
+              <Input
+                className="max-w-xs font-semibold"
+                value={wf.name}
+                onChange={(e) => updateWorkflow(wf.id, "name", e.target.value)}
+              />
 
-              <CardContent className="space-y-4">
-                {/* Editable Fields */}
-                {editingFlow === flow.name ? (
-                  <div className="space-y-2">
-                    <Input
-                      value={editName}
-                      onChange={(e) => setEditName(e.target.value)}
-                      placeholder="Workflow Name"
-                    />
-                    <Input
-                      value={editTrigger}
-                      onChange={(e) => setEditTrigger(e.target.value)}
-                      placeholder="Trigger"
-                    />
-                  </div>
-                ) : (
-                  <div>
-                    <p className="text-sm text-black dark:text-white">
-                      Trigger
-                    </p>
-                    <p className="font-medium">{flow.trigger}</p>
-                  </div>
-                )}
+              <div className="flex items-center gap-2">
+                <Button
+                  size="icon"
+                  variant={wf.active ? "default" : "outline"}
+                  onClick={() => updateWorkflow(wf.id, "active", !wf.active)}
+                >
+                  <Power size={16} />
+                </Button>
 
-                <div>
-                  <p className="text-sm text-black dark:text-white">Actions</p>
-                  <div className="flex flex-wrap gap-2 mt-1">
-                    {flow.actions.map((action) => (
-                      <Badge key={action} variant="secondary">
-                        {action}
-                      </Badge>
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  onClick={() => deleteWorkflow(wf.id)}
+                >
+                  <Trash2 size={16} />
+                </Button>
+              </div>
+            </div>
+
+            {/* FLOW ROW */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+              {/* TRIGGER */}
+              <div className="p-3 rounded-lg bg-white dark:bg-neutral-900 border">
+                <p className="text-xs opacity-60 mb-1">Trigger</p>
+                <Select
+                  value={wf.trigger}
+                  onValueChange={(v) => updateWorkflow(wf.id, "trigger", v)}
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {TRIGGERS.map((t) => (
+                      <SelectItem key={t} value={t}>
+                        {t}
+                      </SelectItem>
                     ))}
-                  </div>
-                </div>
+                  </SelectContent>
+                </Select>
+              </div>
 
-                <div className="flex items-center justify-between pt-4">
-                  <Badge
-                    variant={flow.status === "Active" ? "default" : "outline"}
-                  >
-                    {flow.status}
-                  </Badge>
+              {/* ARROW */}
+              <div className="hidden md:flex justify-center">
+                <ArrowRight className="opacity-40" />
+              </div>
 
-                  <div className="flex gap-2">
-                    {editingFlow === flow.name ? (
-                      <>
-                        <Button
-                          size="sm"
-                          variant="ghost"
-                          onClick={() => handleSave(flow.name)}
-                        >
-                          <CheckCircle size={16} />
-                        </Button>
-                        <Button
-                          size="sm"
-                          variant="ghost"
-                          onClick={handleCancelEdit}
-                        >
-                          <XCircle size={16} />
-                        </Button>
-                      </>
-                    ) : (
-                      <>
-                        <Button
-                          size="sm"
-                          variant="ghost"
-                          onClick={() => handlePlay(flow.name)}
-                        >
-                          <PlayCircle size={16} />
-                        </Button>
-                        <Button
-                          size="sm"
-                          variant="ghost"
-                          onClick={() => handleEdit(flow.name)}
-                        >
-                          <Pencil size={16} />
-                        </Button>
-                        <Button
-                          size="sm"
-                          variant="ghost"
-                          onClick={() => handlePause(flow.name)}
-                        >
-                          <PauseCircle size={16} />
-                        </Button>
-                        <Button
-                          size="sm"
-                          variant="ghost"
-                          onClick={() => handleDelete(flow.name)}
-                        >
-                          <Trash2 size={16} />
-                        </Button>
-                      </>
-                    )}
-                  </div>
+              {/* ACTIONS */}
+              <div className="p-3 rounded-lg bg-white dark:bg-neutral-900 border">
+                <p className="text-xs opacity-60 mb-1">Actions</p>
+
+                <Select
+                  onValueChange={(v) =>
+                    updateWorkflow(wf.id, "actions", [...wf.actions, v])
+                  }
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Add Action" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {ACTIONS.map((a) => (
+                      <SelectItem key={a} value={a}>
+                        {a}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+
+                {/* ACTION CHIPS */}
+                <div className="flex flex-wrap gap-2 mt-2">
+                  {wf.actions.map((a, i) => (
+                    <span
+                      key={i}
+                      className="text-xs px-2 py-1 rounded bg-neutral-200 dark:bg-neutral-700"
+                    >
+                      {a}
+                    </span>
+                  ))}
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
+
+            {/* STATUS */}
+            <div className="mt-3 text-xs opacity-60">
+              Status:{" "}
+              <span className={wf.active ? "text-green-500" : "text-red-500"}>
+                {wf.active ? "Active" : "Inactive"}
+              </span>
+            </div>
           </motion.div>
         ))}
       </div>

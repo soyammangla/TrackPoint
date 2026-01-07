@@ -113,9 +113,6 @@ export default function LeadManagementPage() {
           <p className="text-sm opacity-70">Manage, edit, and track leads</p>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline" onClick={() => setDarkMode(!darkMode)}>
-            {darkMode ? <Sun size={16} /> : <Moon size={16} />}
-          </Button>
           <Button onClick={() => openModal("add")}>
             <Plus size={16} /> Add Lead
           </Button>
