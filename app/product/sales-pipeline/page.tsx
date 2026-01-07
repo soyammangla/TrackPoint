@@ -85,28 +85,13 @@ const stages = [
   "Closed Lost",
 ];
 
-export default function SalesPipelinePage({
-  globalDarkMode,
-}: {
-  globalDarkMode: boolean;
-}) {
+export default function SalesPipelinePage() {
   const [leads, setLeads] = useState<Lead[]>(initialLeads);
   const [deals, setDeals] = useState<Deal[]>(initialDeals);
   const [search, setSearch] = useState("");
   const [open, setOpen] = useState(false);
   const [mode, setMode] = useState<"add" | "edit" | "view">("add");
   const [current, setCurrent] = useState<Deal | null>(null);
-  const [darkMode, setDarkMode] = useState(globalDarkMode);
-
-  // Sync with global mode
-  useEffect(() => {
-    setDarkMode(globalDarkMode);
-  }, [globalDarkMode]);
-
-  useEffect(() => {
-    if (darkMode) document.documentElement.classList.add("dark");
-    else document.documentElement.classList.remove("dark");
-  }, [darkMode]);
 
   const filteredDeals = deals.filter(
     (d) =>
@@ -156,9 +141,6 @@ export default function SalesPipelinePage({
           <p className="text-sm opacity-70">Track all deals across stages</p>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline" onClick={() => setDarkMode(!darkMode)}>
-            {darkMode ? <Sun size={16} /> : <Moon size={16} />}
-          </Button>
           <Button onClick={() => openModal("add")}>
             <Plus size={16} /> Add Deal
           </Button>
