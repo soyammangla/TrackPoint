@@ -100,8 +100,10 @@ export default function LeadManagementPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold">Lead Management</h1>
-          <p className="text-sm opacity-70">Manage, edit, and track leads</p>
+          <h1 className="text-4xl font-bold">Lead Management</h1>
+          <p className="text-xl mt-2 opacity-70">
+            Manage, edit, and track leads
+          </p>
         </div>
         <div className="flex gap-2">
           <Button onClick={() => openModal("add")}>

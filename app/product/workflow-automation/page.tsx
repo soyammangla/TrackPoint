@@ -65,11 +65,11 @@ export default function WorkflowAutomationPage() {
       {/* HEADER */}
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold flex items-center gap-2">
+          <h1 className="text-4xl font-bold flex items-center gap-2">
             <Workflow className="opacity-70" />
             Workflow Automation
           </h1>
-          <p className="text-sm opacity-60">
+          <p className="text-xl mt-2 opacity-60">
             Create automated flows using triggers & actions
           </p>
         </div>

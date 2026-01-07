@@ -306,8 +306,8 @@ export default function ReportsAnalyticsPage() {
       {/* ---------------- HEADER ---------------- */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold">Reports & Analytics</h1>
-          <p className="text-sm text-neutral-600 dark:text-neutral-400">
+          <h1 className="text-4xl font-bold">Reports & Analytics</h1>
+          <p className="text-xl mt-2 text-neutral-600 dark:text-neutral-400">
             Sales, leads & automation insights
           </p>
         </div>

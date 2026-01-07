@@ -137,8 +137,10 @@ export default function SalesPipelinePage() {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-bold">Sales Pipeline</h1>
-          <p className="text-sm opacity-70">Track all deals across stages</p>
+          <h1 className="text-4xl font-bold">Sales Pipeline</h1>
+          <p className="text-xl mt-2 opacity-70">
+            Track all deals across stages
+          </p>
         </div>
         <div className="flex gap-2">
           <Button onClick={() => openModal("add")}>
