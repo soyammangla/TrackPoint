@@ -110,7 +110,7 @@ export default function Navbar() {
               </div>
             </div>
 
-            <Link href="/solutions">Solutions</Link>
+            <Link href="/dashboard">Dashboard</Link>
             <Link href="/pricing">Pricing</Link>
             <Link href="/resources">Resources</Link>
           </div>
@@ -203,8 +203,8 @@ export default function Navbar() {
               </div>
             )}
 
-            <Link href="/solutions" className="block px-3 py-2 rounded-md">
-              Solutions
+            <Link href="/dashboard" className="block px-3 py-2 rounded-md">
+              Dashboard
             </Link>
             <Link href="/pricing" className="block px-3 py-2 rounded-md">
               Pricing
