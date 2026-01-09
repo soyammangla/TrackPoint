@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import ProtectedLink from "@/components/protectedlink";
+
 import Link from "next/link";
 import { useTheme } from "next-themes";
 import { useSession, signOut } from "next-auth/react";
@@ -99,18 +101,18 @@ export default function Navbar() {
                 className={`absolute mt-2 w-56 rounded-md shadow-lg py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-150 ${dropdownBg}`}
               >
                 {productLinks.map((link) => (
-                  <Link
+                  <ProtectedLink
                     key={link.name}
                     href={link.href}
                     className="block px-4 py-2 transition-colors"
                   >
                     {link.name}
-                  </Link>
+                  </ProtectedLink>
                 ))}
               </div>
             </div>
 
-            <Link href="/dashboard">Dashboard</Link>
+            <ProtectedLink href="/dashboard">Dashboard</ProtectedLink>
             <Link href="/pricing">Pricing</Link>
             <Link href="/resources">Resources</Link>
           </div>
@@ -192,20 +194,23 @@ export default function Navbar() {
             {productDropdownOpen && (
               <div className="pl-4 space-y-1">
                 {productLinks.map((link) => (
-                  <Link
+                  <ProtectedLink
                     key={link.name}
                     href={link.href}
                     className="block px-3 py-2 rounded-md"
                   >
                     {link.name}
-                  </Link>
+                  </ProtectedLink>
                 ))}
               </div>
             )}
 
-            <Link href="/dashboard" className="block px-3 py-2 rounded-md">
+            <ProtectedLink
+              href="/dashboard"
+              className="block px-3 py-2 rounded-md"
+            >
               Dashboard
-            </Link>
+            </ProtectedLink>
             <Link href="/pricing" className="block px-3 py-2 rounded-md">
               Pricing
             </Link>
