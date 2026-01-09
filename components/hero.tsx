@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 
 export default function HeroSection() {
   const router = useRouter();
@@ -20,7 +21,7 @@ export default function HeroSection() {
   };
 
   return (
-    <section className="relative overflow-hidden bg-gradient-to-b from-slate-50 to-white dark:from-black dark:to-black">
+    <section className="relative overflow-hidden bg-gradient from-slate-50 to-white dark:from-black dark:to-black">
       {/* Background glow */}
       <div className="absolute inset-0 -z-10">
         <div className="absolute left-1/2 top-[-20%] h-[360px] w-[360px] sm:h-[420px] sm:w-[420px] -translate-x-1/2 rounded-full bg-indigo-500/20 dark:bg-indigo-400/10 blur-3xl" />
@@ -63,14 +64,17 @@ export default function HeroSection() {
               </Button>
 
               {/* WATCH DEMO */}
-              <Button
-                size="lg"
-                variant="outline"
-                className="gap-2 w-full sm:w-auto dark:border-slate-700 dark:text-white"
-              >
-                <Play className="h-4 w-4" />
-                Watch Demo
-              </Button>
+
+              <Link href="/demo">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="gap-2 w-full sm:w-auto dark:border-slate-700 dark:text-white"
+                >
+                  <Play className="h-4 w-4" />
+                  Watch Demo
+                </Button>
+              </Link>
             </div>
 
             <p className="text-xs sm:text-sm text-black dark:text-white">
