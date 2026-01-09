@@ -290,7 +290,11 @@ export default function ReportsAnalyticsPage() {
       },
       {
         title: "Revenue",
-        value: `₹${revenue.toLocaleString()}`,
+        value: new Intl.NumberFormat("en-IN", {
+          style: "currency",
+          currency: "INR",
+          maximumFractionDigits: 0,
+        }).format(revenue),
         icon: DollarSign,
       },
       {
@@ -307,7 +311,7 @@ export default function ReportsAnalyticsPage() {
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
           <h1 className="text-4xl font-bold">Reports & Analytics</h1>
-          <p className="text-xl mt-2 text-neutral-600 dark:text-neutral-400">
+          <p className="text-xl mt-2 text-black dark:text-white">
             Sales, leads & automation insights
           </p>
         </div>
@@ -378,13 +382,10 @@ export default function ReportsAnalyticsPage() {
           >
             <CardContent className="p-5 space-y-3">
               <div className="flex justify-between items-center">
-                <span className="text-sm text-neutral-600 dark:text-neutral-400">
+                <span className="text-sm text-black dark:text-white">
                   {stat.title}
                 </span>
-                <stat.icon
-                  size={18}
-                  className="text-neutral-600 dark:text-neutral-400"
-                />
+                <stat.icon size={18} className="text-black dark:text-white" />
               </div>
               <div className="text-2xl font-bold">{stat.value}</div>
             </CardContent>
@@ -397,7 +398,7 @@ export default function ReportsAnalyticsPage() {
         <CardHeader>
           <CardTitle>Sales Funnel</CardTitle>
         </CardHeader>
-        <CardContent className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm text-neutral-700 dark:text-neutral-300">
+        <CardContent className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm text-black dark:text-white">
           <div>
             New Leads: <b>1248</b>
           </div>

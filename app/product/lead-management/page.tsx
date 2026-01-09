@@ -101,7 +101,7 @@ export default function LeadManagementPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-4xl font-bold">Lead Management</h1>
-          <p className="text-xl mt-2 opacity-70">
+          <p className="text-xl mt-2 text-black dark:text-white">
             Manage, edit, and track leads
           </p>
         </div>
@@ -145,7 +145,7 @@ export default function LeadManagementPage() {
               {filteredLeads.map((lead) => (
                 <motion.tr
                   key={lead.id}
-                  className="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-900 transition-colors"
+                  className="border-b border-gray-200 dark:border-gray-700 transition-colors"
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}

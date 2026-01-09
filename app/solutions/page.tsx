@@ -49,7 +49,7 @@ export default function SolutionsPage() {
       {/* Header */}
       <div className="max-w-7xl mx-auto px-6 py-16 text-center">
         <h1 className="text-4xl font-bold">Solutions</h1>
-        <p className="mt-4 text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto">
+        <p className="mt-4 text-black dark:text-white max-w-2xl mx-auto">
           Everything you need to manage customers, sales, and growth — in one
           secure CRM platform.
         </p>
@@ -72,7 +72,7 @@ export default function SolutionsPage() {
                 <h3 className="text-lg font-semibold">{item.title}</h3>
               </div>
 
-              <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-6">
+              <p className="text-sm text-black dark:text-white mb-6">
                 {item.desc}
               </p>
 

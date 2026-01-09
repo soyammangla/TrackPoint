@@ -69,7 +69,7 @@ export default function WorkflowAutomationPage() {
             <Workflow className="opacity-70" />
             Workflow Automation
           </h1>
-          <p className="text-xl mt-2 opacity-60">
+          <p className="text-xl mt-2 text-black dark:text-white">
             Create automated flows using triggers & actions
           </p>
         </div>
@@ -118,7 +118,9 @@ export default function WorkflowAutomationPage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
               {/* TRIGGER */}
               <div className="p-3 rounded-lg bg-white dark:bg-neutral-900 border">
-                <p className="text-xs opacity-60 mb-1">Trigger</p>
+                <p className="text-xs text-black dark:text-white mb-1">
+                  Trigger
+                </p>
                 <Select
                   value={wf.trigger}
                   onValueChange={(v) => updateWorkflow(wf.id, "trigger", v)}
@@ -138,12 +140,14 @@ export default function WorkflowAutomationPage() {
 
               {/* ARROW */}
               <div className="hidden md:flex justify-center">
-                <ArrowRight className="opacity-40" />
+                <ArrowRight className="text-black dark:text-white" />
               </div>
 
               {/* ACTIONS */}
               <div className="p-3 rounded-lg bg-white dark:bg-neutral-900 border">
-                <p className="text-xs opacity-60 mb-1">Actions</p>
+                <p className="text-xs text-black dark:text-white mb-1">
+                  Actions
+                </p>
 
                 <Select
                   onValueChange={(v) =>
@@ -177,7 +181,7 @@ export default function WorkflowAutomationPage() {
             </div>
 
             {/* STATUS */}
-            <div className="mt-3 text-xs opacity-60">
+            <div className="mt-3 text-xs text-black dark:text-white">
               Status:{" "}
               <span className={wf.active ? "text-green-500" : "text-red-500"}>
                 {wf.active ? "Active" : "Inactive"}

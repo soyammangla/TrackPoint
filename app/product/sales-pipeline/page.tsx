@@ -138,7 +138,7 @@ export default function SalesPipelinePage() {
       <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
         <div>
           <h1 className="text-4xl font-bold">Sales Pipeline</h1>
-          <p className="text-xl mt-2 opacity-70">
+          <p className="text-xl mt-2 text-black dark:text-white">
             Track all deals across stages
           </p>
         </div>
@@ -188,8 +188,10 @@ export default function SalesPipelinePage() {
                     <div className="flex justify-between items-start mb-1">
                       <div>
                         <p className="font-semibold">{deal.name}</p>
-                        <p className="text-xs opacity-70">{deal.email}</p>
-                        <p className="text-xs opacity-70">
+                        <p className="text-xs text-black dark:text-white">
+                          {deal.email}
+                        </p>
+                        <p className="text-xs text-black dark:text-white">
                           Owner: {deal.owner}
                         </p>
                       </div>
