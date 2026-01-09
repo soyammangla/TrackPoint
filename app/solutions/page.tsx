@@ -21,25 +21,25 @@ const solutions = [
     title: "Lead Management",
     desc: "Capture, track, assign, and convert leads efficiently.",
     icon: Users,
-    href: "/lead-management",
+    href: "/product/lead-management",
   },
   {
     title: "Sales Pipeline",
     desc: "Visualize deals across stages and close faster.",
     icon: GitBranch,
-    href: "/sales-pipeline",
+    href: "/product/sales-pipeline",
   },
   {
     title: "Workflow Automation",
     desc: "Automate tasks, notifications, and follow-ups.",
     icon: Settings,
-    href: "/workflow-automation",
+    href: "/product/workflow-automation",
   },
   {
     title: "Reports & Analytics",
     desc: "Track performance with real-time insights.",
     icon: BarChart3,
-    href: "/reports-analytics",
+    href: "/product/reports-analytics",
   },
 ];
 
