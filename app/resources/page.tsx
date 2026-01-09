@@ -41,7 +41,7 @@ const resources = [
     title: "Help Center",
     desc: "FAQs, troubleshooting, and customer support.",
     href: "/contact",
-    protected: true,
+    protected: false,
   },
 ];
 
@@ -154,7 +154,7 @@ export default function ResourcesPage() {
             </p>
 
             <Button variant="outline" onClick={() => navigate("/", true)}>
-              Go to Dashboard
+              Get Started Now
             </Button>
           </motion.div>
         </div>
@@ -171,16 +171,16 @@ export default function ResourcesPage() {
         </p>
 
         <div className="flex justify-center gap-4">
-          <Button size="lg" onClick={() => navigate("/contact", true)}>
+          <Button size="lg" onClick={() => navigate("/contact", false)}>
             Contact Support
           </Button>
 
           <Button
             size="lg"
             variant="outline"
-            onClick={() => navigate("/dashboard", true)}
+            onClick={() => navigate("/", true)}
           >
-            Open Dashboard
+            Get Started
           </Button>
         </div>
       </section>
