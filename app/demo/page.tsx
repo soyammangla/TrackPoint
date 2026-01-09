@@ -1,13 +1,19 @@
 "use client";
 
-import { Play, Image as ImageIcon, ArrowRight } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Play, Image as ImageIcon, ArrowRight, Sun, Moon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useTheme } from "next-themes";
 
 export default function DemoPage() {
   const { data: session } = useSession();
   const router = useRouter();
+  const { theme, setTheme, resolvedTheme } = useTheme(); // resolvedTheme = actual current theme
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => setMounted(true), []);
 
   const handleCTA = () => {
     if (session) {
@@ -17,20 +23,32 @@ export default function DemoPage() {
     }
   };
 
+  if (!mounted) return null; // avoid hydration issues
+
+  // Determine initial theme: use resolvedTheme which matches current system/localStorage
+  const currentTheme = resolvedTheme || "light";
+
   return (
-    <div className="min-h-screen bg-white dark:bg-neutral-950 text-black dark:text-white px-6 py-16">
+    <div
+      className={`min-h-screen px-6 py-16 transition-colors duration-300 ${
+        currentTheme === "light"
+          ? "bg-white text-black"
+          : "bg-neutral-950 text-white"
+      }`}
+    >
+      {/* TOP BAR: Dark/Light Toggle */}
+
       {/* TOP CONTENT */}
       <div className="max-w-5xl mx-auto text-center space-y-5">
-        <span className="inline-block rounded-full border px-4 py-1 text-sm text-black dark:text-white ">
+        <span className="inline-block rounded-full border px-4 py-1 text-sm font-medium">
           Product Demo
         </span>
 
         <h1 className="text-4xl md:text-5xl font-bold leading-tight">
-          See <span className="text-black dark:text-white">TrackPoint</span> in
-          Action
+          See <span className="font-bold">TrackPoint</span> in Action
         </h1>
 
-        <p className="text-lg text-black dark:text-white max-w-3xl mx-auto">
+        <p className="text-lg max-w-3xl mx-auto">
           Get a quick walkthrough of how TrackPoint helps you manage leads,
           automate workflows, and track revenue — without signing up.
         </p>
@@ -38,45 +56,22 @@ export default function DemoPage() {
 
       {/* MEDIA SECTION */}
       <div className="max-w-5xl mx-auto mt-14">
-        <div className="group relative rounded-2xl border border-dashed border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-neutral-900 overflow-hidden">
-          {/* PLACEHOLDER */}
-          <div className="aspect-video flex flex-col items-center justify-center gap-4">
-            <div className="flex gap-4">
-              <div className="p-3 rounded-full bg-white dark:bg-neutral-800">
-                <Play className="h-7 w-7 opacity-70" />
-              </div>
-              <div className="p-3 rounded-full bg-white dark:bg-neutral-800">
-                <ImageIcon className="h-7 w-7 opacity-70" />
-              </div>
-            </div>
-
-            <p className="text-sm opacity-70 text-center max-w-md">
-              Add your demo video or product screenshots here.
-            </p>
-
-            <Button variant="outline" className="gap-2">
-              Add Demo Media
-              <ArrowRight className="h-4 w-4" />
-            </Button>
-
-            {/* 
-              🔹 VIDEO EXAMPLE:
-              Replace the above placeholder div with this when ready:
-
-              <video controls className="w-full h-full object-cover rounded-2xl">
+        <div
+          className="group relative rounded-2xl border border-dashed overflow-hidden shadow-md transition-shadow hover:shadow-xl
+          dark:border-gray-700 dark:bg-neutral-900 bg-gray-50"
+        >
+          <div className="aspect-video flex flex-col items-center justify-center gap-6 p-6">
+            {/* DEMO VIDEO */}
+            <div className="w-full mt-4">
+              <video
+                controls
+                className="w-full h-full object-cover rounded-2xl shadow-lg transition-all duration-300"
+                poster="/demo-poster.jpg"
+              >
                 <source src="/demo.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
-
-              🔹 IMAGE EXAMPLE:
-              Or replace with an image:
-              
-              <img
-                src="/demo.png"
-                alt="TrackPoint Demo"
-                className="w-full h-full object-cover rounded-2xl"
-              />
-            */}
+            </div>
           </div>
         </div>
       </div>
