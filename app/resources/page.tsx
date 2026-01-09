@@ -178,7 +178,7 @@ export default function ResourcesPage() {
           <Button
             size="lg"
             variant="outline"
-            onClick={() => navigate("/", true)}
+            onClick={() => navigate("/dashboard", true)}
           >
             Open Dashboard
           </Button>
