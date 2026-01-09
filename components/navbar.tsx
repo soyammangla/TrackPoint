@@ -142,9 +142,9 @@ export default function Navbar() {
                       alt="avatar"
                       className="w-8 h-8 rounded-full"
                     />
-                    <span className="hidden md:block">
+                    {/* <span className="hidden md:block">
                       {session.user?.name || "User"}
-                    </span>
+                    </span> */}
                     <ChevronDown size={16} />
                   </button>
                   {userDropdownOpen && (
