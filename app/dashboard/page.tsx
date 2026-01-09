@@ -95,8 +95,10 @@ export default function DashboardPage() {
       {/* HEADER */}
       <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-bold">Dashboard</h1>
-          <p className="text-sm opacity-70">CRM overview & performance</p>
+          <h1 className="text-4xl font-bold">Dashboard</h1>
+          <p className="text-xl mt-2 text-black dark:text-white">
+            CRM overview & performance
+          </p>
         </div>
 
         <div className="flex gap-2">
@@ -145,8 +147,9 @@ export default function DashboardPage() {
             transition={{ delay: i * 0.1 }}
             className="rounded-2xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-neutral-900 p-5 hover:shadow-lg transition cursor-pointer"
             onClick={() => {
-              if (stat.id === "leads") router.push("/leads");
-              if (stat.id === "workflows") router.push("/automation");
+              if (stat.id === "leads") router.push("/product/lead-management");
+              if (stat.id === "workflows")
+                router.push("/product/workflow-automation");
             }}
           >
             <div className="flex justify-between items-center mb-4">
@@ -156,7 +159,7 @@ export default function DashboardPage() {
               </span>
             </div>
             <h2 className="text-2xl font-bold">{stat.value}</h2>
-            <p className="text-sm opacity-70">{stat.title}</p>
+            <p className="text-sm text-black dark:text-white">{stat.title}</p>
           </motion.div>
         ))}
       </div>

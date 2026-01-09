@@ -69,12 +69,12 @@ export default function Navbar() {
               <img
                 src="/logo-dark.jpg"
                 alt="TrackPoint Logo"
-                className="h-14 w-18 block dark:hidden -mr-3.5"
+                className="h-14 w-18 block dark:hidden -mr-3.5 mt-1"
               />
               <img
                 src="/logo-light.png"
                 alt="TrackPoint Logo"
-                className="h-14 w-18 hidden dark:block -mr-3.5"
+                className="h-14 w-18 hidden dark:block -mr-3.5 mt-1"
               />
               <span className="text-xl font-bold text-black dark:text-white relative top-1">
                 TrackPoint
