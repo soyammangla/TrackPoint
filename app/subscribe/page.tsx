@@ -1,33 +1,60 @@
 "use client";
 
 import React, { useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
 
 const SubscribePage = () => {
   const [email, setEmail] = useState("");
-  const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
+  const [loading, setLoading] = useState(false);
 
-  const handleSubscribe = () => {
+  const handleSubscribe = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
     if (!email) {
-      alert("Please enter your email");
+      toast.error("Please enter your email!");
       return;
     }
-    // Simulate subscription success
-    setStatus("success");
-    setEmail("");
+
+    setLoading(true);
+
+    try {
+      const res = await fetch("/api/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+
+      if (res.ok) {
+        toast.success("Subscribed successfully! Check your email ✅");
+        setEmail("");
+      } else {
+        const data = await res.json();
+        toast.error("Error: " + data.error);
+      }
+    } catch (err) {
+      toast.error("Something went wrong. Try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="bg-white dark:bg-black text-black dark:text-white min-h-screen flex flex-col justify-center items-center px-4 md:px-0">
+      <Toaster position="top-right" />
+
       <div className="max-w-lg w-full bg-gray-100 dark:bg-neutral-900 p-10 rounded-2xl shadow-lg">
         <h1 className="text-3xl md:text-4xl font-bold mb-4 text-center">
-          Stay Updated
+          Subscribe to Trackpoint Updates
         </h1>
         <p className="text-black dark:text-white text-lg mb-8 text-center">
-          Subscribe to our newsletter and get the latest productivity tips and
-          updates.
+          Enter your email to receive all the latest updates, tips, and news
+          from Trackpoint.
         </p>
 
-        <div className="flex flex-col sm:flex-row gap-4">
+        <form
+          onSubmit={handleSubscribe}
+          className="flex flex-col sm:flex-row gap-4"
+        >
           <input
             type="email"
             placeholder="Enter your email"
@@ -36,21 +63,18 @@ const SubscribePage = () => {
             onChange={(e) => setEmail(e.target.value)}
           />
           <button
-            className="bg-black dark:bg-black text-white px-6 py-3 rounded-xl font-semibold hover:opacity-90 transition duration-300"
-            onClick={handleSubscribe}
+            type="submit"
+            disabled={loading}
+            className={`bg-black dark:bg-white text-white dark:text-black px-6 py-3 rounded-xl font-semibold hover:opacity-90 transition duration-300 ${
+              loading ? "opacity-60 cursor-not-allowed" : ""
+            }`}
           >
-            Subscribe
+            {loading ? "Subscribing..." : "Subscribe"}
           </button>
-        </div>
-
-        {status === "success" && (
-          <p className="mt-4 text-green-500 text-center">
-            Subscribed successfully!
-          </p>
-        )}
+        </form>
       </div>
 
-      {/* Optional social links below */}
+      {/* Optional social links */}
       <div className="mt-12 flex gap-6">
         <a
           href="https://www.linkedin.com/in/soyam-mangla-432b13365/"
