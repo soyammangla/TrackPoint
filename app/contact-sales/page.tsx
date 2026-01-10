@@ -10,101 +10,131 @@ const ContactSalesPage = () => {
     message: "",
   });
 
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    alert("Thank you! We will contact you soon.");
-    setFormData({ name: "", email: "", company: "", message: "" });
+    setLoading(true);
+    setSuccess(false);
+
+    try {
+      const res = await fetch("/api/contact-sales", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      if (res.ok) {
+        setSuccess(true);
+        setFormData({ name: "", email: "", company: "", message: "" });
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="bg-white dark:bg-neutral-900 text-black dark:text-white min-h-screen">
       {/* ---------------- Hero Section ---------------- */}
-      <section className="text-center py-20 px-4 md:px-8">
-        <h1 className="text-3xl md:text-5xl font-bold mb-4">Contact Sales</h1>
-        <p className="text-black dark:text-white max-w-2xl mx-auto text-lg md:text-xl">
-          Have questions? Our team is here to help you choose the right plan for
-          your business.
+      <section className="text-center py-24 px-4">
+        <h1 className="text-4xl md:text-5xl font-bold mb-5">Contact Sales</h1>
+        <p className="max-w-2xl mx-auto text-lg md:text-xl text-black dark:text-white">
+          Get in touch with our sales team to explore how Trackpoint can help
+          streamline tracking, insights, and performance for your organization.
         </p>
       </section>
 
-      {/* ---------------- Contact Form ---------------- */}
-      <section className="max-w-3xl mx-auto px-4 md:px-8 lg:px-16 py-16">
+      {/* ---------------- Form Section ---------------- */}
+      <section className="max-w-3xl mx-auto px-4 pb-24">
         <form
-          className="bg-white dark:bg-neutral-800 p-10 rounded-3xl shadow-lg space-y-6"
           onSubmit={handleSubmit}
+          className="bg-white dark:bg-neutral-800 p-10 rounded-3xl shadow-lg space-y-6"
         >
+          {/* Name */}
           <div>
-            <label className="block mb-2 font-semibold text-gray-900 dark:text-gray-200">
-              Name
-            </label>
+            <label className="block mb-2 font-medium">Full Name</label>
             <input
               type="text"
               name="name"
               value={formData.name}
               onChange={handleChange}
               required
-              className="w-full px-5 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-neutral-900 text-black dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white"
               placeholder="Enter your full name"
+              className="w-full px-5 py-3 rounded-xl border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-neutral-900 focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white"
             />
           </div>
 
+          {/* Email */}
           <div>
-            <label className="block mb-2 font-semibold text-gray-900 dark:text-gray-200">
-              Email
-            </label>
+            <label className="block mb-2 font-medium">Work Email</label>
             <input
               type="email"
               name="email"
               value={formData.email}
               onChange={handleChange}
               required
-              className="w-full px-5 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-neutral-900 text-black dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white"
-              placeholder="Enter your email address"
+              placeholder="you@company.com"
+              className="w-full px-5 py-3 rounded-xl border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-neutral-900 focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white"
             />
           </div>
 
+          {/* Company */}
           <div>
-            <label className="block mb-2 font-semibold text-gray-900 dark:text-gray-200">
-              Company
-            </label>
+            <label className="block mb-2 font-medium">Company Name</label>
             <input
               type="text"
               name="company"
               value={formData.company}
               onChange={handleChange}
               required
-              className="w-full px-5 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-neutral-900 text-black dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white"
-              placeholder="Your Company Name"
+              placeholder="Your company or organization"
+              className="w-full px-5 py-3 rounded-xl border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-neutral-900 focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white"
             />
           </div>
 
+          {/* Message */}
           <div>
-            <label className="block mb-2 font-semibold text-gray-900 dark:text-gray-200">
-              Message
-            </label>
+            <label className="block mb-2 font-medium">Message</label>
             <textarea
               name="message"
+              rows={2}
               value={formData.message}
               onChange={handleChange}
-              rows={5}
               required
-              placeholder="Write your message here..."
-              className="w-full px-5 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-neutral-900 text-black dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white"
-            ></textarea>
+              placeholder="Tell us about your requirements, team size, or use case..."
+              className="w-full px-5 py-3 rounded-xl border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-neutral-900 focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white"
+            />
           </div>
 
+          {/* Submit Button */}
           <button
             type="submit"
-            className="w-full bg-black dark:bg-white text-white dark:text-black px-6 py-3 rounded-full font-semibold text-lg hover:opacity-90 transition duration-300"
+            disabled={loading}
+            className={`w-full py-3 rounded-full font-semibold text-lg transition ${
+              loading
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-black dark:bg-white text-white dark:text-black hover:opacity-90"
+            }`}
           >
-            Submit
+            {loading ? "Sending Request..." : "Contact Sales"}
           </button>
+
+          {/* Success Message */}
+          {success && (
+            <p className="text-green-600 text-center mt-4">
+              Thank you for reaching out. Our sales team will get back to you
+              shortly.
+            </p>
+          )}
         </form>
       </section>
     </div>
