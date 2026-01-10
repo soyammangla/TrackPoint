@@ -71,6 +71,9 @@ const Footer = () => {
               <Link href="/blog">Blog</Link>
             </li>
             <li>
+              <Link href="/subscribe">Subscribe</Link>
+            </li>
+            <li>
               <Link href="/privacy">Privacy Policy</Link>
             </li>
             <li>
