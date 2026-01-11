@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-/* ---------------- TYPES ---------------- */
+/* ---------- TYPES ---------- */
 type Lead = {
   id: number;
   name: string;
@@ -17,13 +17,11 @@ type Lead = {
 };
 
 type User = {
-  id: number;
   name: string;
   plan: "free" | "paid";
   clientLimit: number;
 };
 
-/* ---------------- UI COLORS ---------------- */
 const statusColors: Record<string, string> = {
   New: "bg-gray-200 text-black dark:bg-gray-700 dark:text-white",
   Contacted: "bg-gray-300 text-black dark:bg-gray-600 dark:text-white",
@@ -39,17 +37,18 @@ export default function LeadManagementPage() {
   const [mode, setMode] = useState<"add" | "edit" | "view">("add");
   const [current, setCurrent] = useState<Lead | null>(null);
 
-  /* ---------------- LOAD USER + LEADS ---------------- */
+  /* ---------- LOAD USER + LEADS ---------- */
   useEffect(() => {
     fetch("/api/user")
-      .then((r) => r.json())
+      .then((res) => res.json())
       .then(setUser);
+
     fetch("/api/leads")
-      .then((r) => r.json())
+      .then((res) => res.json())
       .then(setLeads);
   }, []);
 
-  /* ---------------- FILTER ---------------- */
+  /* ---------- FILTER ---------- */
   const filteredLeads = leads.filter(
     (l) =>
       l.name.toLowerCase().includes(search.toLowerCase()) ||
@@ -57,16 +56,22 @@ export default function LeadManagementPage() {
       l.phone.includes(search)
   );
 
-  /* ---------------- MODAL ---------------- */
+  /* ---------- MODAL ---------- */
   const openModal = (type: typeof mode, lead?: Lead) => {
     setMode(type);
     setCurrent(
-      lead || { id: 0, name: "", email: "", phone: "", status: "New" }
+      lead || {
+        id: 0,
+        name: "",
+        email: "",
+        phone: "",
+        status: "New",
+      }
     );
     setOpen(true);
   };
 
-  /* ---------------- SAVE ---------------- */
+  /* ---------- SAVE ---------- */
   const saveLead = async () => {
     if (!current) return;
 
@@ -76,7 +81,7 @@ export default function LeadManagementPage() {
     });
 
     if (res.status === 403) {
-      alert("Upgrade to paid plan to add more leads");
+      alert("Free plan limit reached. Upgrade to add more leads.");
       return;
     }
 
@@ -85,22 +90,22 @@ export default function LeadManagementPage() {
     setOpen(false);
   };
 
-  /* ---------------- DELETE ---------------- */
+  /* ---------- DELETE ---------- */
   const deleteLead = async (id: number) => {
     await fetch(`/api/leads/${id}`, { method: "DELETE" });
     setLeads(leads.filter((l) => l.id !== id));
   };
 
-  /* ---------------- UI ---------------- */
+  if (!user) return null;
+
   return (
-    <div className="p-6 space-y-6 bg-white dark:bg-black min-h-screen">
+    <div className="p-6 space-y-6 bg-white dark:bg-black text-black dark:text-white min-h-screen">
       {/* HEADER */}
-      <div className="flex justify-between items-center">
+      <div className="flex items-center justify-between">
         <div>
           <h1 className="text-4xl font-bold">Lead Management</h1>
-          <p className="text-lg">
-            Plan: {user?.plan?.toUpperCase()} ({leads.length}/
-            {user?.clientLimit})
+          <p className="text-xl mt-2">
+            Plan: {user.plan.toUpperCase()} ({user.clientLimit} Leads)
           </p>
         </div>
         <Button onClick={() => openModal("add")}>
@@ -109,10 +114,10 @@ export default function LeadManagementPage() {
       </div>
 
       {/* SEARCH */}
-      <div className="flex gap-2 max-w-sm">
+      <div className="flex items-center gap-2 max-w-sm">
         <Search size={16} />
         <Input
-          placeholder="Search..."
+          placeholder="Search leads..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
@@ -121,14 +126,14 @@ export default function LeadManagementPage() {
       {/* TABLE */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex gap-2">
+          <CardTitle className="flex items-center gap-2">
             <Users /> All Leads
           </CardTitle>
         </CardHeader>
         <CardContent>
           <table className="w-full">
             <thead>
-              <tr className="border-b">
+              <tr>
                 <th>Name</th>
                 <th>Email</th>
                 <th>Phone</th>
@@ -137,31 +142,28 @@ export default function LeadManagementPage() {
               </tr>
             </thead>
             <tbody>
-              {filteredLeads.map((l) => (
-                <motion.tr
-                  key={l.id}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                >
-                  <td>{l.name}</td>
-                  <td>{l.email}</td>
-                  <td>{l.phone}</td>
+              {filteredLeads.map((lead) => (
+                <tr key={lead.id}>
+                  <td>{lead.name}</td>
+                  <td>{lead.email}</td>
+                  <td>{lead.phone}</td>
                   <td>
-                    <span
-                      className={`px-2 py-1 rounded ${statusColors[l.status]}`}
-                    >
-                      {l.status}
+                    <span className={statusColors[lead.status]}>
+                      {lead.status}
                     </span>
                   </td>
-                  <td>
-                    <Button onClick={() => openModal("edit", l)}>
+                  <td className="flex gap-2">
+                    <Button size="icon" onClick={() => openModal("view", lead)}>
+                      <Eye size={14} />
+                    </Button>
+                    <Button size="icon" onClick={() => openModal("edit", lead)}>
                       <Pencil size={14} />
                     </Button>
-                    <Button onClick={() => deleteLead(l.id)}>
+                    <Button size="icon" onClick={() => deleteLead(lead.id)}>
                       <Trash2 size={14} />
                     </Button>
                   </td>
-                </motion.tr>
+                </tr>
               ))}
             </tbody>
           </table>
@@ -172,10 +174,11 @@ export default function LeadManagementPage() {
       <AnimatePresence>
         {open && current && (
           <motion.div className="fixed inset-0 bg-black/50 flex items-center justify-center">
-            <motion.div className="bg-white p-6 rounded w-full max-w-md space-y-3">
+            <div className="bg-white p-6 rounded w-96 space-y-3">
               {["name", "email", "phone", "status"].map((f) => (
                 <Input
                   key={f}
+                  disabled={mode === "view"}
                   placeholder={f}
                   value={(current as any)[f]}
                   onChange={(e) =>
@@ -183,8 +186,12 @@ export default function LeadManagementPage() {
                   }
                 />
               ))}
-              <Button onClick={saveLead}>Save</Button>
-            </motion.div>
+              {mode !== "view" && (
+                <Button className="w-full" onClick={saveLead}>
+                  Save
+                </Button>
+              )}
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
