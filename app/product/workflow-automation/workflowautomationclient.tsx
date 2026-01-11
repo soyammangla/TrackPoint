@@ -2,8 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Plus, Trash2, Power, Workflow, ArrowRight } from "lucide-react";
-
+import { Plus, Trash2, Power, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -14,6 +13,7 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 
+/* ---------- TYPES ---------- */
 type WorkflowType = {
   id: number;
   name: string;
@@ -22,22 +22,33 @@ type WorkflowType = {
   active: boolean;
 };
 
-const TRIGGERS = ["New Lead Created", "Deal Stage Changed", "Deal Won"];
+type User = {
+  name: string;
+  plan: "free" | "paid";
+  workflowLimit: number;
+};
 
+/* ---------- OPTIONS ---------- */
+const TRIGGERS = ["New Lead Created", "Deal Stage Changed", "Deal Won"];
 const ACTIONS = ["Assign Owner", "Send Email", "Create Task", "Notify Manager"];
 
 export default function WorkflowAutomationPage() {
-  const [workflows, setWorkflows] = useState<WorkflowType[]>([
-    {
-      id: 1,
-      name: "Lead Auto Assign",
-      trigger: "New Lead Created",
-      actions: ["Assign Owner", "Send Email"],
-      active: true,
-    },
-  ]);
+  /* ---------- SIMULATED USER ---------- */
+  const [user] = useState<User>({
+    name: "Demo User",
+    plan: "free", // "paid" to test paid user
+    workflowLimit: 10,
+  });
 
+  const [workflows, setWorkflows] = useState<WorkflowType[]>([]); // EMPTY START
+
+  /* ---------- HANDLERS ---------- */
   const addWorkflow = () => {
+    if (workflows.length >= user.workflowLimit) {
+      alert("Upgrade plan to add more workflows");
+      return;
+    }
+
     setWorkflows([
       ...workflows,
       {
@@ -66,11 +77,11 @@ export default function WorkflowAutomationPage() {
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-4xl font-bold flex items-center gap-2">
-            <Workflow className="opacity-70" />
             Workflow Automation
           </h1>
           <p className="text-xl mt-2 text-black dark:text-white">
-            Create automated flows using triggers & actions
+            Create automated flows using triggers & actions (Plan:{" "}
+            {user.plan.toUpperCase()})
           </p>
         </div>
 

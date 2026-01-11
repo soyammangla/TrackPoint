@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -14,12 +8,40 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  email     String   @unique
-  name      String
-  image     String
-  createdAt DateTime @default(now())
-  provider  Provider
+  id          Int      @id @default(autoincrement())
+  name        String
+  email       String   @unique
+  plan        String   @default("free") // free / paid
+  clientLimit Int      @default(5)
+  clients     Client[]
+  deals       Deal[] // ← ye add karo
+}
+
+model Client {
+  id      Int    @id @default(autoincrement())
+  name    String
+  email   String
+  phone   String
+  ownerId Int
+  owner   User   @relation(fields: [ownerId], references: [id])
+}
+
+model Deal {
+  id      Int    @id @default(autoincrement())
+  name    String
+  email   String
+  amount  String
+  stage   String
+  ownerId Int
+  owner   User   @relation(fields: [ownerId], references: [id])
+}
+
+model Workflow {
+  id      Int      @id @default(autoincrement())
+  name    String
+  trigger String
+  actions String[]
+  active  Boolean  @default(true)
 }
 
 enum Provider {

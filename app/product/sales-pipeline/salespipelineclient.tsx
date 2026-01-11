@@ -1,34 +1,14 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  Users,
-  Plus,
-  Pencil,
-  Trash2,
-  Eye,
-  Search,
-  X,
-  Sun,
-  Moon,
-  ChevronDown,
-} from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Plus, Pencil, Trash2, Eye, Search, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-type Lead = {
-  id: number;
-  name: string;
-  email: string;
-  phone: string;
-  status: string;
-  owner: string;
-};
+/* ---------- TYPES ---------- */
 type Deal = {
   id: number;
-  leadId: number;
   name: string;
   owner: string;
   amount: string;
@@ -36,46 +16,13 @@ type Deal = {
   email?: string;
 };
 
-const initialLeads: Lead[] = [
-  {
-    id: 1,
-    name: "Rahul Sharma",
-    email: "rahul@gmail.com",
-    phone: "9876543210",
-    status: "New",
-    owner: "Amit",
-  },
-  {
-    id: 2,
-    name: "Priya Verma",
-    email: "priya@gmail.com",
-    phone: "9123456780",
-    status: "Contacted",
-    owner: "Neha",
-  },
-];
+type User = {
+  name: string;
+  plan: "free" | "paid";
+  clientLimit: number;
+};
 
-const initialDeals: Deal[] = [
-  {
-    id: 1,
-    leadId: 1,
-    name: "Rahul Sharma",
-    owner: "Amit",
-    amount: "$5000",
-    stage: "New",
-    email: "rahul@gmail.com",
-  },
-  {
-    id: 2,
-    leadId: 2,
-    name: "Priya Verma",
-    owner: "Neha",
-    amount: "$2000",
-    stage: "Contacted",
-    email: "priya@gmail.com",
-  },
-];
-
+/* ---------- PIPELINE STAGES ---------- */
 const stages = [
   "New",
   "Contacted",
@@ -86,41 +33,58 @@ const stages = [
 ];
 
 export default function SalesPipelinePage() {
-  const [leads, setLeads] = useState<Lead[]>(initialLeads);
-  const [deals, setDeals] = useState<Deal[]>(initialDeals);
+  /* ---------- SIMULATED USER ---------- */
+  const [user] = useState<User>({
+    name: "Demo User",
+    plan: "free", // "paid" to test paid user
+    clientLimit: 10,
+  });
+
+  const [deals, setDeals] = useState<Deal[]>([]); // EMPTY START
   const [search, setSearch] = useState("");
   const [open, setOpen] = useState(false);
   const [mode, setMode] = useState<"add" | "edit" | "view">("add");
   const [current, setCurrent] = useState<Deal | null>(null);
 
+  /* ---------- FILTERED DEALS ---------- */
   const filteredDeals = deals.filter(
     (d) =>
       d.name.toLowerCase().includes(search.toLowerCase()) ||
       d.owner.toLowerCase().includes(search.toLowerCase())
   );
 
+  /* ---------- MODAL HANDLER ---------- */
   const openModal = (type: typeof mode, deal?: Deal) => {
     setMode(type);
     setCurrent(
       deal || {
         id: 0,
-        leadId: 0,
         name: "",
         owner: "",
         amount: "",
         stage: "New",
+        email: "",
       }
     );
     setOpen(true);
   };
 
+  /* ---------- SAVE DEAL ---------- */
   const saveDeal = () => {
     if (!current) return;
+
+    // Plan limit check
+    if (mode === "add" && deals.length >= user.clientLimit) {
+      alert("Upgrade plan to add more deals");
+      return;
+    }
+
     if (mode === "add") {
       setDeals([...deals, { ...current, id: Date.now() }]);
     } else if (mode === "edit") {
       setDeals(deals.map((d) => (d.id === current.id ? current : d)));
     }
+
     setOpen(false);
   };
 
@@ -132,14 +96,15 @@ export default function SalesPipelinePage() {
     setDeals(deals.map((d) => (d.id === deal.id ? { ...d, stage } : d)));
   };
 
+  /* ---------- UI ---------- */
   return (
     <div className="p-6 bg-white dark:bg-neutral-900 text-black dark:text-white min-h-screen transition-colors duration-300 space-y-6">
-      {/* Header */}
+      {/* HEADER */}
       <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
         <div>
           <h1 className="text-4xl font-bold">Sales Pipeline</h1>
-          <p className="text-xl mt-2 text-black dark:text-white">
-            Track all deals across stages
+          <p className="text-xl mt-2">
+            Track all deals across stages (Plan: {user.plan.toUpperCase()})
           </p>
         </div>
         <div className="flex gap-2">
@@ -149,7 +114,7 @@ export default function SalesPipelinePage() {
         </div>
       </div>
 
-      {/* Search */}
+      {/* SEARCH */}
       <div className="flex items-center gap-2 max-w-sm">
         <Search size={20} className="opacity-60" />
         <Input
@@ -160,8 +125,8 @@ export default function SalesPipelinePage() {
         />
       </div>
 
-      {/* Pipeline */}
-      <div className="flex gap-6 overflow-x-auto py-4 px-1 ">
+      {/* PIPELINE */}
+      <div className="flex gap-6 overflow-x-auto py-4 px-1">
         {stages.map((stage) => (
           <div
             key={stage}
@@ -219,6 +184,7 @@ export default function SalesPipelinePage() {
                         </Button>
                       </div>
                     </div>
+
                     <span className="text-xs px-2 py-1 bg-gray-200 dark:bg-neutral-700 rounded-full inline-block mt-1">
                       {deal.amount}
                     </span>
@@ -232,7 +198,7 @@ export default function SalesPipelinePage() {
                             key={s}
                             size="sm"
                             variant="outline"
-                            className="flex-1 min-w-[90px] text-xs" // same min width for all buttons
+                            className="flex-1 min-w-[90px] text-xs"
                             onClick={() => moveDeal(deal, s)}
                           >
                             {s}
@@ -246,7 +212,7 @@ export default function SalesPipelinePage() {
         ))}
       </div>
 
-      {/* Modal */}
+      {/* MODAL */}
       <AnimatePresence>
         {open && current && (
           <motion.div

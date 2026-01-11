@@ -2,21 +2,12 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  Users,
-  Plus,
-  Pencil,
-  Trash2,
-  Eye,
-  Search,
-  X,
-  Sun,
-  Moon,
-} from "lucide-react";
+import { Users, Plus, Pencil, Trash2, Eye, Search, X } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
+/* ---------- TYPES ---------- */
 type Lead = {
   id: number;
   name: string;
@@ -26,6 +17,13 @@ type Lead = {
   owner: string;
 };
 
+type User = {
+  name: string;
+  plan: "free" | "paid";
+  clientLimit: number;
+};
+
+/* ---------- INITIAL DATA ---------- */
 const initialLeads: Lead[] = [
   {
     id: 1,
@@ -53,12 +51,20 @@ const statusColors: Record<string, string> = {
 };
 
 export default function LeadManagementPage() {
+  /* ---------- SIMULATED USER ---------- */
+  const [user] = useState<User>({
+    name: "Demo User",
+    plan: "free", // change to 'paid' to test paid user
+    clientLimit: 10,
+  });
+
   const [leads, setLeads] = useState<Lead[]>(initialLeads);
   const [search, setSearch] = useState("");
   const [open, setOpen] = useState(false);
   const [mode, setMode] = useState<"add" | "edit" | "view">("add");
   const [current, setCurrent] = useState<Lead | null>(null);
 
+  /* ---------- FILTERED LEADS ---------- */
   const filteredLeads = leads.filter(
     (l) =>
       l.name.toLowerCase().includes(search.toLowerCase()) ||
@@ -66,6 +72,7 @@ export default function LeadManagementPage() {
       l.phone.includes(search)
   );
 
+  /* ---------- MODAL HANDLER ---------- */
   const openModal = (type: typeof mode, lead?: Lead) => {
     setMode(type);
     setCurrent(
@@ -81,13 +88,22 @@ export default function LeadManagementPage() {
     setOpen(true);
   };
 
+  /* ---------- SAVE LEAD ---------- */
   const saveLead = () => {
     if (!current) return;
+
+    // Check client limit
+    if (mode === "add" && leads.length >= user.clientLimit) {
+      alert("Upgrade plan to add more clients");
+      return;
+    }
+
     if (mode === "add") {
       setLeads([...leads, { ...current, id: Date.now() }]);
     } else if (mode === "edit") {
       setLeads(leads.map((l) => (l.id === current.id ? current : l)));
     }
+
     setOpen(false);
   };
 
@@ -95,14 +111,15 @@ export default function LeadManagementPage() {
     setLeads(leads.filter((l) => l.id !== id));
   };
 
+  /* ---------- UI ---------- */
   return (
     <div className="p-6 space-y-6 bg-white dark:bg-black text-black dark:text-white min-h-screen transition-colors duration-300">
-      {/* Header */}
+      {/* HEADER */}
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-4xl font-bold">Lead Management</h1>
-          <p className="text-xl mt-2 text-black dark:text-white">
-            Manage, edit, and track leads
+          <p className="text-xl mt-2">
+            Manage, edit, and track leads (Plan: {user.plan.toUpperCase()})
           </p>
         </div>
         <div className="flex gap-2">
@@ -112,7 +129,7 @@ export default function LeadManagementPage() {
         </div>
       </div>
 
-      {/* Search */}
+      {/* SEARCH */}
       <div className="flex items-center gap-2 max-w-sm">
         <Search size={16} className="opacity-60" />
         <Input
@@ -122,7 +139,7 @@ export default function LeadManagementPage() {
         />
       </div>
 
-      {/* Table */}
+      {/* TABLE */}
       <Card className="rounded-2xl border border-gray-300 dark:border-gray-700">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
@@ -193,7 +210,7 @@ export default function LeadManagementPage() {
         </CardContent>
       </Card>
 
-      {/* Modal */}
+      {/* MODAL */}
       <AnimatePresence>
         {open && current && (
           <motion.div
