@@ -60,11 +60,7 @@ const INITIAL_STATS: Stat[] = [
   { id: "revenue", title: "Revenue", value: "₹0", icon: BarChart3 },
 ];
 
-const INITIAL_WORKFLOWS: Workflow[] = [
-  { id: 1, name: "Assign New Lead", active: true },
-  { id: 2, name: "Deal Won Follow-up", active: true },
-  { id: 3, name: "Cold Lead Reminder", active: false },
-];
+const INITIAL_WORKFLOWS: Workflow[] = [];
 
 export default function DashboardClient() {
   const router = useRouter();
@@ -259,21 +255,27 @@ export default function DashboardClient() {
           </div>
 
           <div className="space-y-3">
-            {workflows.map((wf) => (
-              <div
-                key={wf.id}
-                className="flex justify-between items-center p-3 rounded-lg bg-white dark:bg-neutral-950"
-              >
-                <span>{wf.name}</span>
-                <Button
-                  size="sm"
-                  variant={wf.active ? "default" : "outline"}
-                  onClick={() => toggleWorkflow(wf.id)}
-                >
-                  {wf.active ? "Active" : "Inactive"}
-                </Button>
+            {workflows.length === 0 ? (
+              <div className="text-center py-4 opacity-60">
+                No automations yet. Create your first workflow!
               </div>
-            ))}
+            ) : (
+              workflows.map((wf) => (
+                <div
+                  key={wf.id}
+                  className="flex justify-between items-center p-3 rounded-lg bg-white dark:bg-neutral-950"
+                >
+                  <span>{wf.name}</span>
+                  <Button
+                    size="sm"
+                    variant={wf.active ? "default" : "outline"}
+                    onClick={() => toggleWorkflow(wf.id)}
+                  >
+                    {wf.active ? "Active" : "Inactive"}
+                  </Button>
+                </div>
+              ))
+            )}
           </div>
         </div>
       </div>
