@@ -2,15 +2,14 @@ import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-interface Params {
-  id: string;
-}
-
-export async function GET(req: NextRequest, context: { params: Params }) {
-  const { id } = context.params;
+export async function GET(
+  req: NextRequest,
+  context: { params: Promise<{ id: string }> } // 🔹 note Promise here
+) {
+  const { id } = await context.params; // ✅ await the params
 
   const user = await prisma.user.findUnique({
-    where: { id },
+    where: { id }, // id is string because your Prisma User.id is uuid
     include: { leads: true, deals: true },
   });
 
