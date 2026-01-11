@@ -8,40 +8,61 @@ datasource db {
 }
 
 model User {
-  id          Int      @id @default(autoincrement())
-  name        String
-  email       String   @unique
-  plan        String   @default("free") // free / paid
-  clientLimit Int      @default(5)
-  clients     Client[]
-  deals       Deal[] // ← ye add karo
+  id    String  @id @default(uuid())
+  email String  @unique
+  name  String?
+  image String?
+
+  plan        String @default("free")
+  clientLimit Int    @default(10)
+
+  leads    Lead[]
+  clients  Client[]
+  deals    Deal[]
+  Workflow Workflow[]
+}
+
+model Lead {
+  id     String @id @default(uuid())
+  name   String
+  email  String
+  phone  String
+  status String
+  owner  String
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
 }
 
 model Client {
-  id      Int    @id @default(autoincrement())
-  name    String
-  email   String
-  phone   String
-  ownerId Int
+  id    String @id @default(uuid())
+  name  String
+  email String
+  phone String
+
+  ownerId String
   owner   User   @relation(fields: [ownerId], references: [id])
 }
 
 model Deal {
-  id      Int    @id @default(autoincrement())
-  name    String
-  email   String
-  amount  String
-  stage   String
-  ownerId Int
+  id    String @id @default(uuid())
+  title String
+  value Int
+  stage String
+
+  ownerId String
   owner   User   @relation(fields: [ownerId], references: [id])
 }
 
 model Workflow {
-  id      Int      @id @default(autoincrement())
+  id      String   @id @default(uuid())
   name    String
   trigger String
   actions String[]
   active  Boolean  @default(true)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
 }
 
 enum Provider {
