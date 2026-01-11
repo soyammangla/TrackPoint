@@ -31,9 +31,7 @@ export const authOptions = {
         await db.user.create({
           data: {
             email: params.user.email,
-            image: params.user.image ?? "",
             name: params.user.name ?? "",
-            provider: "Google",
           },
         });
         return true;
