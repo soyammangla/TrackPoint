@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Plus, Eye, Pencil, Trash2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -16,7 +16,31 @@ type Lead = {
 };
 
 export default function LeadManagementPage() {
-  const [leads, setLeads] = useState<Lead[]>([]);
+  // ---------------- Fake demo leads ----------------
+  const [leads, setLeads] = useState<Lead[]>([
+    {
+      id: "1",
+      name: "Amit Sharma",
+      email: "amit@gmail.com",
+      phone: "9876543210",
+      status: "New",
+    },
+    {
+      id: "2",
+      name: "Ravi Kumar",
+      email: "ravi@gmail.com",
+      phone: "9876543211",
+      status: "Contacted",
+    },
+    {
+      id: "3",
+      name: "Neha Singh",
+      email: "neha@gmail.com",
+      phone: "9876543212",
+      status: "Qualified",
+    },
+  ]);
+
   const [open, setOpen] = useState(false);
   const [mode, setMode] = useState<"add" | "edit" | "view">("add");
   const [current, setCurrent] = useState<Lead>({
@@ -27,84 +51,30 @@ export default function LeadManagementPage() {
     status: "New",
   });
 
-  // Fetch leads
-  const fetchLeads = async () => {
-    try {
-      const res = await fetch("/api/leads", { credentials: "include" });
-      const text = await res.text();
-      let data = [];
-      try {
-        data = text ? JSON.parse(text) : [];
-      } catch (err) {
-        console.error("JSON parse error:", err, text);
-      }
-      if (!res.ok) {
-        console.error("API Error:", data || text);
-        return;
-      }
-      setLeads(data);
-    } catch (err) {
-      console.error("Fetch leads failed:", err);
-    }
-  };
-
-  useEffect(() => {
-    fetchLeads();
-  }, []);
-
+  // ---------------- Modal Open ----------------
   const openModal = (type: typeof mode, lead?: Lead) => {
     setMode(type);
     setCurrent(
-      lead || { id: "", name: "", email: "", phone: "", status: "New" }
+      lead || {
+        id: Date.now().toString(),
+        name: "",
+        email: "",
+        phone: "",
+        status: "New",
+      }
     );
     setOpen(true);
   };
 
-  const saveLead = async () => {
-    try {
-      const method = mode === "edit" ? "PUT" : "POST";
-      const res = await fetch("/api/leads", {
-        method,
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify(current),
-      });
-      const text = await res.text();
-      let data = null;
-      try {
-        data = text ? JSON.parse(text) : null;
-      } catch (err) {
-        console.error("JSON parse error:", err, text);
-      }
-      if (!res.ok) {
-        console.error("Save lead failed:", data?.error || text);
-        return;
-      }
-      if (!data) return;
-      if (mode === "add") setLeads([data, ...leads]);
-      else setLeads(leads.map((l) => (l.id === data.id ? data : l)));
-      setOpen(false);
-    } catch (err) {
-      console.error("Save lead error:", err);
-    }
+  // ---------------- Save Lead (Frontend only) ----------------
+  const saveLead = () => {
+    if (mode === "add") setLeads([current, ...leads]);
+    else setLeads(leads.map((l) => (l.id === current.id ? current : l)));
+    setOpen(false);
   };
 
-  const deleteLead = async (id: string) => {
-    try {
-      const res = await fetch(`/api/leads?id=${id}`, {
-        method: "DELETE",
-        credentials: "include",
-      });
-      const text = await res.text();
-      if (!res.ok) {
-        console.error("Delete failed:", text);
-        return;
-      }
-      setLeads(leads.filter((l) => l.id !== id));
-    } catch (err) {
-      console.error("Delete lead error:", err);
-    }
-  };
+  // ---------------- Delete Lead (Frontend only) ----------------
+  const deleteLead = (id: string) => setLeads(leads.filter((l) => l.id !== id));
 
   return (
     <div className="p-6 space-y-6">
@@ -157,7 +127,7 @@ export default function LeadManagementPage() {
         </CardContent>
       </Card>
 
-      {/* Modal */}
+      {/* ---------------- Modal ---------------- */}
       <AnimatePresence>
         {open && (
           <motion.div className="fixed inset-0 bg-black/50 flex justify-center items-center">

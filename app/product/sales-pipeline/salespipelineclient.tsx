@@ -16,12 +16,6 @@ type Deal = {
   email?: string;
 };
 
-type User = {
-  name: string;
-  plan: "free" | "paid";
-  clientLimit: number;
-};
-
 /* ---------- PIPELINE STAGES ---------- */
 const stages = [
   "New",
@@ -33,14 +27,7 @@ const stages = [
 ];
 
 export default function SalesPipelinePage() {
-  /* ---------- SIMULATED USER ---------- */
-  const [user] = useState<User>({
-    name: "Demo User",
-    plan: "free", // "paid" to test paid user
-    clientLimit: 10,
-  });
-
-  const [deals, setDeals] = useState<Deal[]>([]); // EMPTY START
+  const [deals, setDeals] = useState<Deal[]>([]); // All deals stored here
   const [search, setSearch] = useState("");
   const [open, setOpen] = useState(false);
   const [mode, setMode] = useState<"add" | "edit" | "view">("add");
@@ -58,7 +45,7 @@ export default function SalesPipelinePage() {
     setMode(type);
     setCurrent(
       deal || {
-        id: 0,
+        id: Date.now(),
         name: "",
         owner: "",
         amount: "",
@@ -73,17 +60,9 @@ export default function SalesPipelinePage() {
   const saveDeal = () => {
     if (!current) return;
 
-    // Plan limit check
-    if (mode === "add" && deals.length >= user.clientLimit) {
-      alert("Upgrade plan to add more deals");
-      return;
-    }
-
-    if (mode === "add") {
-      setDeals([...deals, { ...current, id: Date.now() }]);
-    } else if (mode === "edit") {
+    if (mode === "add") setDeals([...deals, current]);
+    else if (mode === "edit")
       setDeals(deals.map((d) => (d.id === current.id ? current : d)));
-    }
 
     setOpen(false);
   };
@@ -96,16 +75,13 @@ export default function SalesPipelinePage() {
     setDeals(deals.map((d) => (d.id === deal.id ? { ...d, stage } : d)));
   };
 
-  /* ---------- UI ---------- */
   return (
-    <div className="p-6 bg-white dark:bg-neutral-900 text-black dark:text-white min-h-screen transition-colors duration-300 space-y-6">
+    <div className="p-6 bg-white dark:bg-neutral-900 text-black dark:text-white min-h-screen space-y-6">
       {/* HEADER */}
       <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
         <div>
           <h1 className="text-4xl font-bold">Sales Pipeline</h1>
-          <p className="text-xl mt-2">
-            Track all deals across stages (Plan: {user.plan.toUpperCase()})
-          </p>
+          <p className="text-xl mt-2">Track all deals across stages</p>
         </div>
         <div className="flex gap-2">
           <Button onClick={() => openModal("add")}>
@@ -132,7 +108,6 @@ export default function SalesPipelinePage() {
             key={stage}
             className="shrink-0 w-[280px] bg-gray-100 dark:bg-black rounded-xl p-4 shadow-sm flex flex-col"
           >
-            {/* Column Header */}
             <div className="flex justify-between items-center mb-3">
               <h3 className="font-semibold text-lg">{stage}</h3>
               <span className="text-xs bg-gray-200 dark:bg-neutral-700 px-2 py-0.5 rounded-full opacity-80">
@@ -140,7 +115,6 @@ export default function SalesPipelinePage() {
               </span>
             </div>
 
-            {/* Cards */}
             <div className="flex flex-col gap-4">
               {filteredDeals
                 .filter((d) => d.stage === stage)
@@ -189,7 +163,6 @@ export default function SalesPipelinePage() {
                       {deal.amount}
                     </span>
 
-                    {/* Move buttons */}
                     <div className="flex flex-wrap gap-1 mt-2">
                       {stages
                         .filter((s) => s !== stage)
