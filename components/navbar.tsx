@@ -64,7 +64,7 @@ export default function Navbar() {
     <nav
       className={`shadow sticky top-0 z-50 transition-colors duration-300 ${navBg}`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-[1342px] mx-auto px-8 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
           <div className="flex items-center">
             <Link href="/" className="flex items-center gap-0">

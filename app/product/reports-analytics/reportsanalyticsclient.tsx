@@ -12,7 +12,7 @@ type AutomationReport = {
   id: number;
   name: string;
   trigger: string;
-  success: number;
+  action: string;
   status: "Active" | "Inactive";
 };
 
@@ -24,6 +24,7 @@ type User = {
 
 /* ---------- TRIGGERS ---------- */
 const TRIGGERS = ["New Lead Created", "Deal Stage Changed", "Deal Won"];
+const ACTIONS = ["Send Email", "Create Task", "Update Contact"];
 
 export default function ReportsAnalyticsPage() {
   /* ---------- SIMULATED USER ---------- */
@@ -82,7 +83,7 @@ export default function ReportsAnalyticsPage() {
         id: Date.now(),
         name: `New Automation`,
         trigger: TRIGGERS[0],
-        success: 0,
+        action: ACTIONS[0],
         status: "Active",
       },
     ]);
@@ -98,62 +99,7 @@ export default function ReportsAnalyticsPage() {
             Sales, leads & automation insights (Plan: {user.plan.toUpperCase()})
           </p>
         </div>
-        <div className="flex gap-2">
-          <Button
-            variant="outline"
-            onClick={() => setShowFilters((prev) => !prev)}
-            className="border-neutral-300 dark:border-neutral-700"
-          >
-            <Filter size={16} />
-          </Button>
-          <Button onClick={addAutomation}>Add Automation</Button>
-        </div>
       </div>
-
-      {/* FILTER PANEL */}
-      <AnimatePresence>
-        {showFilters && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.2 }}
-            className="rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-4 flex flex-wrap gap-3 items-center"
-          >
-            <select
-              value={dateRange}
-              onChange={(e) => setDateRange(e.target.value)}
-              className="px-3 py-2 rounded-md border border-neutral-300 bg-white dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-200"
-            >
-              <option value="7">Last 7 Days</option>
-              <option value="30">Last 30 Days</option>
-              <option value="90">Last 90 Days</option>
-            </select>
-
-            <select
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value as any)}
-              className="px-3 py-2 rounded-md border border-neutral-300 bg-white dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-200"
-            >
-              <option value="All">All Automations</option>
-              <option value="Active">Active</option>
-              <option value="Inactive">Inactive</option>
-            </select>
-
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={() => {
-                setDateRange("30");
-                setStatusFilter("All");
-                setShowFilters(false);
-              }}
-            >
-              Clear Filters
-            </Button>
-          </motion.div>
-        )}
-      </AnimatePresence>
 
       {/* STATS */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -207,7 +153,7 @@ export default function ReportsAnalyticsPage() {
               <tr>
                 <th className="text-left py-2">Automation</th>
                 <th className="text-left">Trigger</th>
-                <th className="text-left">Success</th>
+                <th className="text-left">Action</th>
                 <th className="text-left">Status</th>
               </tr>
             </thead>
@@ -220,7 +166,7 @@ export default function ReportsAnalyticsPage() {
                 >
                   <td className="py-2">{a.name}</td>
                   <td>{a.trigger}</td>
-                  <td>{a.success}%</td>
+                  <td>{a.action}</td>
                   <td
                     className={
                       a.status === "Active"

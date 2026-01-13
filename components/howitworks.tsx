@@ -1,67 +1,57 @@
 "use client";
 
-import React from "react";
-import { CheckCircle, Users, FileText, Zap } from "lucide-react";
+import { Users, FileText, CheckCircle, Zap } from "lucide-react";
 
 export default function HowItWorks() {
   const steps = [
     {
       title: "Sign Up",
       description:
-        "Create your account in seconds and start managing your clients.",
-      icon: <Users className="w-8 h-8 text-white" />,
-      color: "bg-indigo-500",
+        "Create your account in seconds and get instant access to your CRM dashboard.",
     },
     {
-      title: "Add Clients",
-      description: "Add your clients, leads, and contacts with ease.",
-      icon: <FileText className="w-8 h-8 text-white" />,
-      color: "bg-green-500",
-    },
-    {
-      title: "Track Progress",
+      title: "Add Clients & Leads",
       description:
-        "Monitor interactions, follow-ups, and analytics in real-time.",
-      icon: <CheckCircle className="w-8 h-8 text-white" />,
-      color: "bg-yellow-500",
+        "Store all your leads, clients, and contacts in one secure place.",
     },
     {
-      title: "Automate Tasks",
-      description: "Automate repetitive tasks and save time for what matters.",
-      icon: <Zap className="w-8 h-8 text-white" />,
-      color: "bg-pink-500",
+      title: "Track & Analyze",
+      description:
+        "Monitor conversations, deals, and business performance in real time.",
+    },
+    {
+      title: "Automate & Grow",
+      description:
+        "Let the system handle follow-ups and workflows while you focus on closing deals.",
     },
   ];
 
   return (
-    <section className="bg-gray-50 dark:bg-black py-24 px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto text-center">
-        <h2 className="text-4xl sm:text-5xl font-extrabold text-gray-900 dark:text-white mb-4">
-          How It Works
-        </h2>
+    <section className="w-full py-20 md:py-28 px-6 bg-white dark:bg-black">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="text-center mb-16 md:mb-20">
+          <h2 className="text-4xl md:text-5xl font-extrabold text-foreground mb-6">
+            How It Works
+          </h2>
+          <p className="text-xl text-black dark:text-white max-w-2xl mx-auto">
+            Get started in minutes and manage your entire business from one
+            simple platform.
+          </p>
+        </div>
 
-        <p className="text-lg sm:text-xl text-black dark:text-white max-w-2xl mx-auto mb-16">
-          Follow these simple steps to get started and make the most out of our
-          CRM.
-        </p>
-
-        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+        {/* Steps */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
           {steps.map((step, index) => (
             <div
               key={index}
-              className="bg-white dark:bg-black border border-transparent dark:border-slate-800 p-8 rounded-3xl shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300 flex flex-col items-center text-center"
+              className="rounded-xl border border-border bg-card p-10 transition-all duration-300 hover:shadow-lg hover:border-border/70"
             >
-              <div
-                className={`flex items-center justify-center w-16 h-16 mb-5 rounded-full ${step.color}`}
-              >
-                {step.icon}
-              </div>
-
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">
+              <h3 className="text-xl font-bold text-foreground mb-6">
                 {step.title}
               </h3>
 
-              <p className="text-black dark:text-white text-sm sm:text-base">
+              <p className="text-sm text-black dark:text-white leading-relaxed">
                 {step.description}
               </p>
             </div>

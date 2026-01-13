@@ -7,65 +7,137 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Provider {
+  Google
+}
+
+enum Plan {
+  FREE
+  PRO
+  ENTERPRISE
+}
+
+enum LeadStatus {
+  New
+  Contacted
+  Qualified
+  Proposal
+  ClosedWon
+  ClosedLost
+}
+
+enum WorkflowTrigger {
+  NewLead
+  DealStageChanged
+  DealWon
+}
+
+enum WorkflowAction {
+  AssignOwner
+  SendEmail
+  CreateTask
+  NotifyManager
+}
+
 model User {
   id    String  @id @default(uuid())
   email String  @unique
   name  String?
   image String?
+  leads Lead[]
 
-  plan        String @default("free")
-  clientLimit Int    @default(10)
+  plan        Plan @default(FREE)
+  clientLimit Int  @default(10)
 
-  leads    Lead[]
-  clients  Client[]
-  deals    Deal[]
-  Workflow Workflow[]
-}
+  // Leads
+  ownedLeads Lead[] @relation("OwnerLeads")
+  userLeads  Lead[] @relation("UserLeads")
 
-model Lead {
-  id     String @id @default(uuid())
-  name   String
-  email  String
-  phone  String
-  status String
-  owner  String
+  // Deals
+  ownedDeals Deal[] @relation("OwnerDeals") // deals this user owns
+  deals      Deal[] @relation("UserDeals") // deals created by this user
 
-  userId String
-  user   User   @relation(fields: [userId], references: [id])
-}
-
-model Client {
-  id    String @id @default(uuid())
-  name  String
-  email String
-  phone String
-
-  ownerId String
-  owner   User   @relation(fields: [ownerId], references: [id])
+  createdAt      DateTime         @default(now())
+  Workflow       Workflow[]
+  AutomationStat AutomationStat[]
+  Payment        Payment[]
 }
 
 model Deal {
-  id    String @id @default(uuid())
-  title String
-  value Int
-  stage String
+  id     String     @id @default(uuid())
+  name   String
+  amount Float
+  stage  LeadStatus
+  email  String?
+
+  // Owner of the deal (salesperson)
+  ownerId String
+  owner   User   @relation("OwnerDeals", fields: [ownerId], references: [id])
+
+  // Which user created this deal
+  userId String
+  user   User   @relation("UserDeals", fields: [userId], references: [id])
+
+  leadId String?
+  lead   Lead?   @relation(fields: [leadId], references: [id])
+
+  createdAt DateTime @default(now())
+}
+
+model Lead {
+  id    String  @id @default(uuid())
+  name  String
+  email String
+  phone String?
 
   ownerId String
-  owner   User   @relation(fields: [ownerId], references: [id])
-}
+  owner   User   @relation("OwnerLeads", fields: [ownerId], references: [id])
 
+  userId String
+  user   User   @relation("UserLeads", fields: [userId], references: [id])
+
+  status LeadStatus @default(New)
+  deals  Deal[]
+
+  createdAt DateTime @default(now())
+}
 
 model Workflow {
-  id      Int      @id @default(autoincrement())
+  id      String          @id @default(uuid())
   name    String
-  trigger String
-  actions String[]
-  active  Boolean  @default(true)
+  trigger WorkflowTrigger
+  active  Boolean         @default(true)
 
-  userId  String
-  user    User     @relation(fields: [userId], references: [id])
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  actions WorkflowAction[]
+
+  createdAt DateTime @default(now())
 }
 
-enum Provider {
-  Google
+model AutomationStat {
+  id      String          @id @default(uuid())
+  name    String
+  trigger WorkflowTrigger
+  success Int
+  status  String
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+}
+
+model Payment {
+  id     String @id @default(uuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  plan     Plan
+  amount   Float
+  provider String
+  status   String
+
+  createdAt DateTime @default(now())
 }

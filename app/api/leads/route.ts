@@ -1,42 +1,39 @@
+import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/authoptions";
 
 export async function GET() {
-  const session = await getServerSession(authOptions);
-  if (!session?.user?.email) return Response.json([]);
-
-  const user = await prisma.user.findUnique({
-    where: { email: session.user.email },
-    include: { leads: true },
+  const leads = await prisma.lead.findMany({
+    orderBy: { id: "desc" },
   });
-
-  return Response.json(user?.leads || []);
+  return NextResponse.json(leads);
 }
 
 export async function POST(req: Request) {
-  const session = await getServerSession(authOptions);
-  if (!session?.user?.email) return Response.json({ error: "Unauthorized" });
-
-  const data = await req.json();
-
-  const user = await prisma.user.findUnique({
-    where: { email: session.user.email },
-    include: { leads: true },
-  });
-
-  if (!user) return Response.json({ error: "User not found" });
-
-  if (user.plan === "free" && user.leads.length >= user.clientLimit) {
-    return Response.json({ error: "LIMIT" });
-  }
+  const body = await req.json();
 
   const lead = await prisma.lead.create({
-    data: {
-      ...data,
-      userId: user.id,
-    },
+    data: body,
   });
 
-  return Response.json(lead);
+  return NextResponse.json(lead);
+}
+
+export async function DELETE(req: Request) {
+  const { searchParams } = new URL(req.url);
+  const id = searchParams.get("id")!;
+
+  await prisma.lead.delete({ where: { id } });
+
+  return NextResponse.json({ success: true });
+}
+
+export async function PUT(req: Request) {
+  const body = await req.json();
+
+  const lead = await prisma.lead.update({
+    where: { id: body.id },
+    data: body,
+  });
+
+  return NextResponse.json(lead);
 }

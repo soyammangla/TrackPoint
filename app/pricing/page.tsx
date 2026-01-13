@@ -39,7 +39,7 @@ export default function Pricing() {
       price: "₹499",
       duration: "/ one-time",
       features: [
-        "Manage up to 100 clients",
+        "Manage up to 500 clients",
         "Advanced analytics",
         "Priority email support",
         "Task automation",

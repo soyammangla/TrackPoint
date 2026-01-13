@@ -25,8 +25,8 @@ type Stat = {
 type Lead = {
   id: number;
   name: string;
+  email: string;
   status: string;
-  owner: string;
 };
 
 type Workflow = {
@@ -129,29 +129,11 @@ export default function DashboardClient() {
             Plan: {CURRENT_USER.plan} | Client Limit: {CURRENT_USER.clientLimit}
           </p>
         </div>
-
-        <div className="flex gap-2">
-          <Button
-            variant={filter === "today" ? "default" : "outline"}
-            onClick={() => setFilter("today")}
-          >
-            Today
-          </Button>
-          <Button
-            variant={filter === "month" ? "default" : "outline"}
-            onClick={() => setFilter("month")}
-          >
-            This Month
-          </Button>
-          <Button variant="outline" onClick={refreshDashboard}>
-            <RefreshCcw size={16} className={loading ? "animate-spin" : ""} />
-          </Button>
-        </div>
       </div>
 
       {/* TABS */}
       <div className="flex gap-6 border-b border-gray-200 dark:border-gray-800 pb-2">
-        {["overview", "leads", "revenue"].map((t) => (
+        {["overview"].map((t) => (
           <button
             key={t}
             onClick={() => setTab(t as any)}
@@ -208,8 +190,8 @@ export default function DashboardClient() {
                 addLead({
                   id: Date.now(),
                   name: `Client ${leads.length + 1}`,
+                  email: `client${leads.length + 1}@gmail.com`,
                   status: "New",
-                  owner: CURRENT_USER.name,
                 });
               }}
             >
@@ -224,16 +206,16 @@ export default function DashboardClient() {
               <thead className="opacity-60 border-b">
                 <tr>
                   <th className="text-left py-2">Name</th>
+                  <th>Email</th>
                   <th>Status</th>
-                  <th>Owner</th>
                 </tr>
               </thead>
               <tbody>
                 {leads.map((lead) => (
                   <tr key={lead.id} className="border-b">
                     <td className="py-2">{lead.name}</td>
+                    <td className="text-center">{lead.email}</td>
                     <td className="text-center">{lead.status}</td>
-                    <td className="text-center">{lead.owner}</td>
                   </tr>
                 ))}
               </tbody>

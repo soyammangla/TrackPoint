@@ -1,52 +1,64 @@
 "use client";
 
 export default function Testimonials() {
-  const sampleTestimonials = [
+  const testimonials = [
     {
       name: "Rohit Sharma",
+      role: "Sales Manager",
       feedback:
-        "Trackpoint CRM has completely transformed how we manage clients. It’s intuitive, efficient, and the analytics dashboard is extremely helpful.",
+        "TrackPoint CRM has made lead management simple. The dashboard helps our team stay organized and close deals faster.",
     },
     {
       name: "Anjali Mehta",
+      role: "Small Business Owner",
       feedback:
-        "As a small business owner, Trackpoint allowed me to streamline lead tracking and follow-ups effortlessly. Highly recommended!",
+        "Managing clients and follow-ups is now effortless. TrackPoint keeps everything in one place and saves me hours every week.",
     },
     {
       name: "Vikram Singh",
+      role: "Operations Lead",
       feedback:
-        "The team collaboration features are excellent. Assigning tasks, tracking progress, and communicating with the team is seamless.",
+        "Our team collaboration improved a lot. Assigning leads, tracking progress, and staying aligned is now very easy.",
     },
     {
       name: "Priya Kapoor",
+      role: "Marketing Consultant",
       feedback:
-        "I love the clean and intuitive interface. No technical skills required, and managing clients has never been easier.",
+        "The clean interface makes it easy for anyone to use. Even new team members can start working without training.",
     },
   ];
 
   return (
-    <section className="w-full max-w-[90%] sm:max-w-[80%] md:max-w-[70%] lg:max-w-[60%] mx-auto py-16 bg-gray-50 dark:bg-black text-black dark:text-white transition-colors">
-      <h2 className="text-3xl sm:text-4xl font-bold text-center mb-12">
-        What Our Users Say
-      </h2>
+    <section className="w-full py-20 md:py-28 px-6 bg-white dark:bg-black">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="text-center mb-16 md:mb-20">
+          <h2 className="text-4xl md:text-5xl font-extrabold text-foreground mb-6">
+            Trusted by Growing Businesses
+          </h2>
+          <p className="text-xl text-black dark:text-white max-w-2xl mx-auto">
+            See what professionals are saying about using TrackPoint CRM.
+          </p>
+        </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-        {sampleTestimonials.map((t, idx) => (
-          <div
-            key={idx}
-            className="bg-white dark:bg-black rounded-xl shadow-md dark:shadow-gray-700 p-8 flex flex-col justify-between transition-all hover:shadow-lg"
-          >
-            {/* Quote with professional style */}
-            <p className="text-gray-800 dark:text-white italic text-base sm:text-lg mb-4 relative pl-6 before:content-['“'] before:text-4xl before:absolute before:-top-2 before:left-0">
-              {t.feedback}
-            </p>
+        {/* Testimonials */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+          {testimonials.map((t, idx) => (
+            <div
+              key={idx}
+              className="rounded-xl border border-border bg-card p-10 transition-all duration-300 hover:shadow-lg hover:border-border/70"
+            >
+              <p className="text-sm text-black dark:text-white leading-relaxed mb-8">
+                “{t.feedback}”
+              </p>
 
-            {/* Name */}
-            <span className="mt-auto font-semibold text-gray-900 dark:text-white">
-              — {t.name}
-            </span>
-          </div>
-        ))}
+              <div>
+                <p className="text-lg font-bold text-foreground">{t.name}</p>
+                <p className="text-sm text-black dark:text-white">{t.role}</p>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );

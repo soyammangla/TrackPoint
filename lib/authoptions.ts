@@ -1,81 +1,64 @@
-import db from "./db";
-import { NextAuthOptions, type DefaultSession } from "next-auth";
+import { prisma } from "@/lib/prisma";
+import { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 
-export const authOptions = {
+export const authOptions: NextAuthOptions = {
   providers: [
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID ?? "",
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
   ],
-  pages: {
-    signIn: "/signin",
+
+  session: {
+    strategy: "jwt",
   },
-  secret: process.env.NEXTAUTH_SECRET ?? "secret",
+
+  secret: process.env.NEXTAUTH_SECRET,
+
   callbacks: {
-    async signIn(params) {
-      if (!params.user.email) {
-        return false;
-      }
+    // 1️⃣ On Google login → ensure user exists in DB
+    async signIn({ user }) {
+      if (!user.email) return false;
 
-      try {
-        const existingUser = await db.user.findUnique({
-          where: {
-            email: params.user.email,
-          },
-        });
-        if (existingUser) {
-          return true;
-        }
-        await db.user.create({
-          data: {
-            email: params.user.email,
-            name: params.user.name ?? "",
-          },
-        });
-        return true;
-      } catch (e) {
-        console.log(e);
-        return false;
-      }
+      await prisma.user.upsert({
+        where: { email: user.email },
+        update: {
+          name: user.name ?? "",
+          image: user.image ?? "",
+        },
+        create: {
+          email: user.email,
+          name: user.name ?? "",
+          image: user.image ?? "",
+        },
+      });
+
+      return true;
     },
+
+    // 2️⃣ Put DB userId into JWT token
     async jwt({ token, user }) {
-      if (user && user.email) {
-        const dbUser = await db.user.findUnique({
-          where: {
-            email: user.email,
-          },
+      if (user?.email) {
+        const dbUser = await prisma.user.findUnique({
+          where: { email: user.email },
+          select: { id: true },
         });
 
-        if (!dbUser) {
-          return token;
+        if (dbUser) {
+          token.id = dbUser.id;
         }
-
-        return {
-          ...token,
-          id: dbUser.id,
-        };
       }
 
       return token;
     },
+
+    // 3️⃣ Put userId into session (THIS fixes your bug)
     async session({ session, token }) {
-      return {
-        ...session,
-        user: {
-          ...session.user,
-          id: token.id as string,
-        },
-      };
+      if (session.user && token.id) {
+        session.user.id = token.id as string;
+      }
+      return session;
     },
   },
-} satisfies NextAuthOptions;
-
-declare module "next-auth" {
-  interface Session {
-    user: {
-      id: string;
-    } & DefaultSession["user"];
-  }
-}
+};
