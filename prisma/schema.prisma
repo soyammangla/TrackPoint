@@ -8,14 +8,11 @@ datasource db {
 }
 
 model User {
-  email     String   @unique
-  name      String
-  image     String
-  createdAt DateTime @default(now())
-  provider  Provider
-  id    Int    @id @default(autoincrement())
+  id       Int    @id @default(autoincrement())
+  email    String @unique
+  name     String?
+  image    String?
+  provider String   // ❗ REQUIRED (aur rahega)
 }
 
-enum Provider {
-  Google
-}
+

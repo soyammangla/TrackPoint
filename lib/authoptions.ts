@@ -17,27 +17,27 @@ export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
 
   callbacks: {
-    // 1️⃣ On Google login → ensure user exists in DB
+    // 1️⃣ Ensure user exists in DB on Google login
     async signIn({ user }) {
       if (!user.email) return false;
 
       await prisma.user.upsert({
         where: { email: user.email },
         update: {
-          name: user.name ?? "",
-          image: user.image ?? "",
+          name: user.name ?? null,
+          image: user.image ?? null,
         },
         create: {
           email: user.email,
-          name: user.name ?? "",
-          image: user.image ?? "",
+          name: user.name ?? null,
+          image: user.image ?? null,
+          provider: "google", // ✅ REQUIRED — MUST BE HERE
         },
       });
 
       return true;
     },
-
-    // 2️⃣ Put DB userId into JWT token
+    // 2️⃣ Store DB userId in JWT
     async jwt({ token, user }) {
       if (user?.email) {
         const dbUser = await prisma.user.findUnique({
@@ -49,11 +49,10 @@ export const authOptions: NextAuthOptions = {
           token.id = String(dbUser.id);
         }
       }
-
       return token;
     },
 
-    // 3️⃣ Put userId into session (THIS fixes your bug)
+    // 3️⃣ Expose userId in session
     async session({ session, token }) {
       if (session.user && token.id) {
         session.user.id = token.id as string;
