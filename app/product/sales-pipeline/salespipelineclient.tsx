@@ -128,10 +128,10 @@ export default function SalesPipelinePage() {
                       <div>
                         <p className="font-semibold">{deal.name}</p>
                         <p className="text-xs text-black dark:text-white">
-                          {deal.email}
+                          Owner: {deal.owner}
                         </p>
                         <p className="text-xs text-black dark:text-white">
-                          Owner: {deal.owner}
+                          {deal.email}
                         </p>
                       </div>
                       <div className="flex gap-1">

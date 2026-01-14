@@ -90,22 +90,25 @@ export default function LeadManagementPage() {
           <CardTitle>Leads</CardTitle>
         </CardHeader>
         <CardContent>
-          <table className="w-full">
-            <thead>
+          <table className="w-full table-fixed border-collapse">
+            <thead className="bg-gray-100 dark:bg-neutral-800">
               <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Status</th>
-                <th>Actions</th>
+                <th className="w-1/4 text-left py-2 px-3">Name</th>
+                <th className="w-1/4 text-left py-2 px-3">Email</th>
+                <th className="w-1/4 text-left py-2 px-3">Status</th>
+                <th className="w-1/4 text-center py-2 px-3">Actions</th>
               </tr>
             </thead>
             <tbody>
               {leads.map((l) => (
-                <tr key={l.id}>
-                  <td>{l.name}</td>
-                  <td>{l.email}</td>
-                  <td>{l.status}</td>
-                  <td className="flex gap-2">
+                <tr
+                  key={l.id}
+                  className="border-b border-gray-200 dark:border-neutral-700 hover:bg-gray-50 dark:hover:bg-neutral-900"
+                >
+                  <td className="py-2 px-3">{l.name}</td>
+                  <td className="py-2 px-3">{l.email}</td>
+                  <td className="py-2 px-3">{l.status}</td>
+                  <td className="py-2 px-3 flex justify-center gap-2">
                     <Button size="sm" onClick={() => openModal("view", l)}>
                       <Eye size={14} />
                     </Button>
