@@ -46,7 +46,7 @@ export const authOptions: NextAuthOptions = {
         });
 
         if (dbUser) {
-          token.id = dbUser.id;
+          token.id = String(dbUser.id);
         }
       }
 
