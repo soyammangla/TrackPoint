@@ -61,7 +61,7 @@ export default function LeadManagementPage() {
         email: "",
         phone: "",
         status: "New",
-      }
+      },
     );
     setOpen(true);
   };
