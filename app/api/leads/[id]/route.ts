@@ -1,22 +1,70 @@
 import { prisma } from "@/lib/prisma";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/authoptions";
 
 export async function DELETE(
-  req: Request,
-  { params }: { params: { id: string } },
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
 ) {
+  const { id } = await params;
+
   const session = await getServerSession(authOptions);
-  if (!session?.user?.email)
+  if (!session?.user?.email) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
 
   const lead = await prisma.lead.findFirst({
-    where: { id: params.id, user: { email: session.user.email } },
+    where: {
+      id,
+      user: { email: session.user.email },
+    },
   });
 
-  if (!lead) return NextResponse.json({ error: "Not found" }, { status: 404 });
+  if (!lead) {
+    return NextResponse.json({ error: "Not found" }, { status: 404 });
+  }
 
-  await prisma.lead.delete({ where: { id: params.id } });
+  await prisma.lead.delete({
+    where: { id },
+  });
+
   return NextResponse.json({ success: true });
+}
+
+export async function PUT(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
+) {
+  const { id } = await params;
+
+  const session = await getServerSession(authOptions);
+  if (!session?.user?.email) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const body = await request.json();
+
+  const lead = await prisma.lead.findFirst({
+    where: {
+      id,
+      user: { email: session.user.email },
+    },
+  });
+
+  if (!lead) {
+    return NextResponse.json({ error: "Not found" }, { status: 404 });
+  }
+
+  const updated = await prisma.lead.update({
+    where: { id },
+    data: {
+      name: body.name,
+      email: body.email || null,
+      phone: body.phone,
+      status: body.status,
+    },
+  });
+
+  return NextResponse.json(updated);
 }
