@@ -5,7 +5,6 @@
     "typeRoots": ["./types", "./node_modules/@types"],
     "allowJs": true,
     "skipLibCheck": true,
-    "baseUrl": ".",
     "strict": true,
     "noEmit": true,
     "esModuleInterop": true,
@@ -20,6 +19,7 @@
         "name": "next"
       }
     ],
+    "baseUrl": ".",
     "paths": {
       "@/*": ["./*"]
     }
