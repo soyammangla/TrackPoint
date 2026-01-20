@@ -1,50 +1,12 @@
-// "use client";
-
-// import { createContext, useContext, useState, ReactNode } from "react";
-
-// export type Deal = {
-//   id: string;
-//   name: string;
-//   email?: string;
-//   amount: number;
-//   owner: string;
-//   stage: string;
-// };
-
-// type DealsContextType = {
-//   deals: Deal[];
-//   addDeal: (deal: Deal) => void;
-//   updateDeal: (deal: Deal) => void;
-//   removeDeal: (id: string) => void;
-// };
-
-// const DealsContext = createContext<DealsContextType | undefined>(undefined);
-
-// export function DealsProvider({ children }: { children: ReactNode }) {
-//   const [deals, setDeals] = useState<Deal[]>([]);
-
-//   const addDeal = (deal: Deal) => setDeals((prev) => [...prev, deal]);
-//   const updateDeal = (deal: Deal) =>
-//     setDeals((prev) => prev.map((d) => (d.id === deal.id ? deal : d)));
-//   const removeDeal = (id: string) =>
-//     setDeals((prev) => prev.filter((d) => d.id !== id));
-
-//   return (
-//     <DealsContext.Provider value={{ deals, addDeal, updateDeal, removeDeal }}>
-//       {children}
-//     </DealsContext.Provider>
-//   );
-// }
-
-// export function useDeals() {
-//   const ctx = useContext(DealsContext);
-//   if (!ctx) throw new Error("useDeals must be used within DealsProvider");
-//   return ctx;
-// }
-
 "use client";
 
-import { createContext, useContext, useState, ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useEffect,
+} from "react";
 
 export type Deal = {
   id: string;
@@ -57,12 +19,6 @@ export type Deal = {
   createdAt: string;
 };
 
-// type DealsContextType = {
-//   deals: Deal[];
-//   addDeal: (deal: Deal) => void;
-//   removeDeal: (id: string) => void;
-//   setDeals: (deals: Deal[]) => void;
-// };
 type DealsContextType = {
   deals: Deal[];
   addDeal: (deal: Deal) => void;
@@ -76,14 +32,49 @@ const DealsContext = createContext<DealsContextType | undefined>(undefined);
 export function DealsProvider({ children }: { children: ReactNode }) {
   const [deals, setDealsState] = useState<Deal[]>([]);
 
-  const addDeal = (deal: Deal) => setDealsState((prev) => [...prev, deal]);
-  const updateDeal = (updatedDeal: Deal) =>
-    setDealsState((prev) =>
-      prev.map((deal) => (deal.id === updatedDeal.id ? updatedDeal : deal)),
-    );
+  // Initial fetch on mount
+  useEffect(() => {
+    const fetchDeals = async () => {
+      try {
+        const res = await fetch("/api/deals");
+        if (!res.ok) throw new Error("Failed to fetch deals");
+        const data: Deal[] = await res.json();
+        setDealsState(data);
+      } catch (err) {
+        console.error("Fetch deals error:", err);
+      }
+    };
+    fetchDeals();
+  }, []);
 
-  const removeDeal = (id: string) =>
-    setDealsState((prev) => prev.filter((d) => d.id !== id));
+  const addDeal = (deal: Deal) => setDealsState((prev) => [...prev, deal]);
+
+  const updateDeal = async (updatedDeal: Deal) => {
+    try {
+      const res = await fetch(`/api/deals/${updatedDeal.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updatedDeal),
+      });
+      if (!res.ok) throw new Error("Update failed");
+      const data: Deal = await res.json();
+      setDealsState((prev) => prev.map((d) => (d.id === data.id ? data : d)));
+    } catch (err) {
+      console.error(err);
+      alert("Update failed");
+    }
+  };
+
+  const removeDeal = async (id: string) => {
+    try {
+      const res = await fetch(`/api/deals/${id}`, { method: "DELETE" });
+      if (!res.ok) throw new Error("Delete failed");
+      setDealsState((prev) => prev.filter((d) => d.id !== id));
+    } catch (err) {
+      console.error(err);
+      alert("Delete failed");
+    }
+  };
 
   return (
     <DealsContext.Provider

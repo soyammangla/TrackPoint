@@ -25,6 +25,7 @@ model Lead {
   phone     String
   status    Status   @default(New)
   userId    String
+  owner     String?
   user      User     @relation(fields: [userId], references: [id])
   deal      Deal?
   createdAt DateTime @default(now())

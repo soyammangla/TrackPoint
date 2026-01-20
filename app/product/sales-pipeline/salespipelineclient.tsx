@@ -29,11 +29,9 @@ export default function SalesPipelinePage() {
     setPipelineDeals(deals);
   }, [deals]);
 
-  // Filter deals by search input
   const filteredDeals = pipelineDeals.filter(
     (d) =>
       d.name.toLowerCase().includes(search.toLowerCase()) ||
-      // d.owner.toLowerCase().includes(search.toLowerCase()),
       (d.owner ?? "").toLowerCase().includes(search.toLowerCase()),
   );
 
@@ -44,7 +42,10 @@ export default function SalesPipelinePage() {
   };
 
   const saveDeal = () => {
-    if (!current) return;
+    if (!current || !current.id) {
+      alert("Deal ID missing!");
+      return;
+    }
     updateDeal(current);
     setOpen(false);
   };
@@ -54,6 +55,7 @@ export default function SalesPipelinePage() {
   };
 
   const moveDeal = (deal: Deal, stage: string) => {
+    if (!deal.id) return;
     updateDeal({ ...deal, stage });
   };
 
@@ -82,7 +84,7 @@ export default function SalesPipelinePage() {
         {stages.map((stage) => (
           <div
             key={stage}
-            className="shrink-0 w-72 bg-gray-100 dark:bg-neutral-800 rounded-xl p-4 shadow flex flex-col"
+            className="shrink-0 w-80 bg-gray-100 dark:bg-neutral-800 rounded-xl p-4 shadow flex flex-col"
           >
             <div className="flex justify-between items-center mb-3">
               <h3 className="font-semibold text-lg text-gray-800 dark:text-white">
@@ -103,7 +105,8 @@ export default function SalesPipelinePage() {
                     whileHover={{ scale: 1.02 }}
                   >
                     <div className="flex justify-between items-start mb-2">
-                      <div>
+                      {/* <div className="flex flex-col"> */}
+                      <div className="flex flex-col overflow-hidden break-normal break-all truncate">
                         <p className="font-semibold text-gray-800 dark:text-white">
                           {deal.name}
                         </p>
@@ -118,27 +121,27 @@ export default function SalesPipelinePage() {
                         </span>
                       </div>
 
-                      <div className="flex gap-1">
+                      <div className="flex gap-1 ml-2 shrink-0">
                         <Button
                           size="icon"
                           variant="ghost"
                           onClick={() => openModal("view", deal)}
                         >
-                          <Eye size={14} />
+                          <Eye size={16} />
                         </Button>
                         <Button
                           size="icon"
                           variant="ghost"
                           onClick={() => openModal("edit", deal)}
                         >
-                          <Pencil size={14} />
+                          <Pencil size={16} />
                         </Button>
                         <Button
                           size="icon"
                           variant="ghost"
                           onClick={() => deleteDeal(deal.id)}
                         >
-                          <Trash2 size={14} />
+                          <Trash2 size={16} />
                         </Button>
                       </div>
                     </div>
@@ -199,6 +202,7 @@ export default function SalesPipelinePage() {
                     disabled={mode === "view"}
                     placeholder={`Enter ${field}`}
                     value={(current as any)[field] || ""}
+                    className="w-full truncate"
                     onChange={(e) =>
                       setCurrent({ ...current, [field]: e.target.value })
                     }

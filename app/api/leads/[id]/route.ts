@@ -238,6 +238,11 @@ export async function GET(
     return NextResponse.json({ error: "User not found" }, { status: 404 });
 
   const lead = await prisma.lead.findUnique({ where: { id } });
+  // const lead = await prisma.lead.findUnique({
+  //   where: { id },
+  //   include: { deal: true }, // <-- ye line add kar di
+  // });
+
   if (!lead)
     return NextResponse.json({ error: "Lead not found" }, { status: 404 });
 
