@@ -1,96 +1,150 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Plus, Eye, Pencil, Trash2 } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { Plus, Pencil, Trash2, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { AnimatePresence, motion } from "framer-motion";
+import { useDeals, Deal } from "@/context/dealscontext";
+import { useRouter } from "next/navigation";
 
 type Lead = {
   id: string;
   name: string;
-  email: string;
+  email?: string;
   phone: string;
   status: string;
 };
 
 export default function LeadManagementPage() {
+  const router = useRouter();
+  const { addDeal } = useDeals();
+
   const [leads, setLeads] = useState<Lead[]>([]);
-
-  useEffect(() => {
-    fetch("/api/leads")
-      .then((res) => res.json())
-      .then((data) => setLeads(data));
-  }, []);
-
-  const [error, setError] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
-  const [mode, setMode] = useState<"add" | "edit" | "view">("add");
-  const [current, setCurrent] = useState<Lead>({
+  const [mode, setMode] = useState<"add" | "edit" | "view" | "convert">("add");
+  const [current, setCurrent] = useState<
+    Lead & { amount?: number; owner?: string }
+  >({
     id: "",
     name: "",
     email: "",
     phone: "",
     status: "New",
+    amount: 0,
+    owner: "",
   });
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetchLeads();
+  }, []);
+
+  const fetchLeads = async () => {
+    try {
+      const res = await fetch("/api/leads");
+      const data = await res.json();
+      setLeads(data);
+    } catch {
+      setError("Failed to fetch leads");
+    }
+  };
 
   const openModal = (type: typeof mode, lead?: Lead) => {
     setMode(type);
     setError(null);
     setCurrent(
-      lead || {
-        id: Date.now().toString(),
-        name: "",
-        email: "",
-        phone: "",
-        status: "New",
-      },
+      lead
+        ? { ...lead, amount: 0, owner: "" }
+        : {
+            id: "",
+            name: "",
+            email: "",
+            phone: "",
+            status: "New",
+            amount: 0,
+            owner: "",
+          },
     );
     setOpen(true);
   };
 
   const saveLead = async () => {
-    if (mode === "add") {
-      const res = await fetch("/api/leads", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(current),
-      });
+    setError(null);
+    try {
+      let res: Response | undefined;
 
-      if (!res.ok) {
+      if (mode === "add") {
+        res = await fetch("/api/leads", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(current),
+        });
+      }
+
+      if (mode === "edit") {
+        res = await fetch(`/api/leads/${current.id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(current),
+        });
+      }
+
+      if (mode === "convert") {
+        if (current.status !== "Qualified") {
+          setError("Only qualified leads can be converted");
+          return;
+        }
+        if (!current.amount || !current.owner) {
+          setError("Deal amount and owner are required");
+          return;
+        }
+        res = await fetch(`/api/leads/${current.id}/convert`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            amount: current.amount,
+            owner: current.owner,
+          }),
+        });
+
+        if (res.ok) {
+          const deal: Deal = await res.json();
+          deal.stage = "New";
+          addDeal(deal);
+          router.push("/product/sales-pipeline");
+        }
+      }
+
+      if (res && !res.ok) {
         const err = await res.json();
-        setError(err.error || "Something went wrong");
+        setError(err.error || "Operation failed");
         return;
       }
 
-      setError(null);
+      fetchLeads();
+      setOpen(false);
+    } catch {
+      setError("Something went wrong");
     }
-
-    if (mode === "edit") {
-      await fetch(`/api/leads/${current.id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(current),
-      });
-    }
-
-    // re-fetch fresh data from DB
-    const res = await fetch("/api/leads");
-    const data = await res.json();
-    setLeads(data);
-
-    setOpen(false);
   };
 
   const deleteLead = async (id: string) => {
-    await fetch(`/api/leads/${id}`, {
-      method: "DELETE",
-    });
+    const confirmDelete = confirm("Are you sure you want to delete this lead?");
+    if (!confirmDelete) return;
 
-    const res = await fetch("/api/leads");
-    const data = await res.json();
-    setLeads(data);
+    try {
+      const res = await fetch(`/api/leads/${id}`, { method: "DELETE" });
+      if (!res.ok) {
+        const err = await res.json();
+        setError(err.error || "Failed to delete lead");
+        return;
+      }
+      fetchLeads();
+    } catch {
+      setError("Failed to delete lead");
+    }
   };
 
   return (
@@ -106,42 +160,69 @@ export default function LeadManagementPage() {
         <CardHeader>
           <CardTitle>Leads</CardTitle>
         </CardHeader>
-
-        {/* TABLE WRAPPER FOR RESPONSIVE */}
         <CardContent className="overflow-x-auto">
-          <table className="w-full min-w-[600px] table-fixed border-collapse">
-            <thead className="bg-gray-100 dark:bg-neutral-800">
+          <table className="w-full border border-gray-200 rounded-lg overflow-hidden">
+            <thead className="bg-gray-100 text-left">
               <tr>
-                <th className="w-1/4 text-left py-2 px-3">Name</th>
-                <th className="w-1/4 text-left py-2 px-3">Email</th>
-                <th className="w-1/4 text-left py-2 px-3">Status</th>
-                <th className="w-1/4 text-center py-2 px-3">Actions</th>
+                <th className="px-4 py-2">Name</th>
+                <th className="px-4 py-2">Email</th>
+                <th className="px-4 py-2">Status</th>
+                <th className="px-4 py-2 text-center">Actions</th>
               </tr>
             </thead>
-
-            <tbody>
+            <tbody className="divide-y divide-gray-200">
               {leads.map((l) => (
-                <tr
-                  key={l.id}
-                  className="border-b border-gray-200 dark:border-neutral-700 hover:bg-gray-50 dark:hover:bg-neutral-900"
-                >
-                  <td className="py-2 px-3">{l.name}</td>
-                  <td className="py-2 px-3 break-all max-w-[200px] sm:max-w-none">
-                    {l.email}
+                <tr key={l.id} className="hover:bg-gray-50">
+                  <td className="px-4 py-2 font-medium">{l.name}</td>
+                  <td className="px-4 py-2">{l.email}</td>
+                  <td className="px-4 py-2">
+                    <span
+                      className={`px-3 py-1 rounded-full text-xs font-semibold
+              ${l.status === "New" && "bg-blue-100 text-blue-800"}
+              ${l.status === "Contacted" && "bg-purple-100 text-purple-800"}
+              ${l.status === "InProgress" && "bg-yellow-100 text-yellow-800"}
+              ${l.status === "Qualified" && "bg-green-100 text-green-800"}
+              ${l.status === "Converted" && "bg-gray-200 text-gray-800"}
+              ${l.status === "Lost" && "bg-red-100 text-red-800"}
+            `}
+                    >
+                      {l.status}
+                    </span>
                   </td>
-                  <td className="py-2 px-3">{l.status}</td>
 
-                  <td className="py-2 px-3">
-                    <div className="flex justify-center gap-2 flex-wrap">
-                      <Button size="sm" onClick={() => openModal("view", l)}>
+                  <td className="px-4 py-2 flex gap-2 justify-center">
+                    <div className="flex gap-2 justify-center">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => openModal("view", l)}
+                      >
                         <Eye size={14} />
                       </Button>
-                      <Button size="sm" onClick={() => openModal("edit", l)}>
+
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        disabled={l.status === "Converted"}
+                        onClick={() => openModal("edit", l)}
+                      >
                         <Pencil size={14} />
                       </Button>
+
+                      {l.status === "Qualified" && (
+                        <Button
+                          size="sm"
+                          className="bg-green-600 hover:bg-green-700 text-white"
+                          onClick={() => openModal("convert", l)}
+                        >
+                          Convert
+                        </Button>
+                      )}
+
                       <Button
                         size="sm"
                         variant="destructive"
+                        disabled={l.status === "Converted"}
                         onClick={() => deleteLead(l.id)}
                       >
                         <Trash2 size={14} />
@@ -155,11 +236,18 @@ export default function LeadManagementPage() {
         </CardContent>
       </Card>
 
-      {/* MODAL */}
       <AnimatePresence>
         {open && (
-          <motion.div className="fixed inset-0 bg-black/50 flex justify-center items-center p-4">
-            <motion.div className="bg-white p-6 rounded w-[90%] max-w-md space-y-4">
+          <div className="fixed inset-0 bg-black/50 flex justify-center items-center p-4">
+            <motion.div className="bg-white p-6 rounded-lg w-full max-w-md space-y-4 shadow-lg">
+              <h2 className="text-xl font-semibold text-center">
+                {mode === "add" && "Add Lead"}
+                {mode === "edit" && "Edit Lead"}
+                {mode === "view" && "View Lead"}
+                {mode === "convert" && "Convert Lead to Deal"}
+              </h2>
+
+              {/* Inputs */}
               <Input
                 placeholder="Name"
                 value={current.name}
@@ -184,12 +272,14 @@ export default function LeadManagementPage() {
                 }
                 disabled={mode === "view"}
               />
+
+              {/* Status select */}
               <select
                 value={current.status}
                 onChange={(e) =>
                   setCurrent({ ...current, status: e.target.value })
                 }
-                disabled={mode === "view"}
+                disabled={mode === "view" || mode === "convert"}
                 className="w-full p-2 border rounded"
               >
                 <option value="New">New</option>
@@ -201,25 +291,39 @@ export default function LeadManagementPage() {
                 <option value="Lost">Lost</option>
               </select>
 
+              {mode === "convert" && (
+                <div className="space-y-2">
+                  <Input
+                    type="number"
+                    placeholder="Deal Amount"
+                    value={current.amount}
+                    onChange={(e) =>
+                      setCurrent({ ...current, amount: Number(e.target.value) })
+                    }
+                  />
+                  <Input
+                    placeholder="Owner"
+                    value={current.owner}
+                    onChange={(e) =>
+                      setCurrent({ ...current, owner: e.target.value })
+                    }
+                  />
+                </div>
+              )}
+
               {error && (
                 <p className="text-red-500 text-sm text-center">{error}</p>
               )}
 
-              {mode !== "view" && (
-                <Button className="w-full" onClick={saveLead}>
-                  Save
+              {/* Buttons */}
+              <div className="flex flex-col gap-2">
+                {mode !== "view" && <Button onClick={saveLead}>Save</Button>}
+                <Button variant="outline" onClick={() => setOpen(false)}>
+                  Close
                 </Button>
-              )}
-
-              <Button
-                className="w-full"
-                variant="outline"
-                onClick={() => setOpen(false)}
-              >
-                Close
-              </Button>
+              </div>
             </motion.div>
-          </motion.div>
+          </div>
         )}
       </AnimatePresence>
     </div>

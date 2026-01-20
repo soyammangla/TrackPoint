@@ -6,7 +6,7 @@ import { authOptions } from "@/lib/authoptions";
 const LIMITS = {
   FREE: 10,
   PAID: 500,
-};
+} as const;
 
 export async function GET() {
   const session = await getServerSession(authOptions);
@@ -22,38 +22,32 @@ export async function GET() {
 
 export async function POST(req: Request) {
   const session = await getServerSession(authOptions);
-
-  if (!session?.user?.email) {
+  if (!session?.user?.email)
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
 
   const body = await req.json();
-
-  // 1️⃣ Get logged-in user
   const user = await prisma.user.findUnique({
     where: { email: session.user.email },
   });
 
-  if (!user) {
+  if (!user)
     return NextResponse.json({ error: "User not found" }, { status: 404 });
-  }
 
-  // 2️⃣ Count existing leads
-  const existingLeads = await prisma.lead.count({
-    where: { userId: user.id },
-  });
+  const count = await prisma.lead.count({ where: { userId: user.id } });
+  const limit = LIMITS[user.plan];
 
-  // 3️⃣ Check limit
-  const limit = LIMITS[user.plan || "FREE"];
-
-  if (existingLeads >= limit) {
+  if (count >= limit) {
     return NextResponse.json(
-      { error: `Lead limit reached for ${user.plan || "FREE"} plan` },
+      {
+        error:
+          user.plan === "PAID"
+            ? "You have reached your plan limit."
+            : "You have reached your free plan limit (10 leads). Upgrade to Pro.",
+      },
       { status: 403 },
     );
   }
 
-  // 4️⃣ Create lead
   const lead = await prisma.lead.create({
     data: {
       name: body.name,

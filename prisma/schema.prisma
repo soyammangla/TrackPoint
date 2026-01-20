@@ -3,7 +3,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -16,6 +15,7 @@ model User {
   provider String
   plan     Plan @default(FREE)
   leads    Lead[]
+  deals    Deal[]
 }
 
 model Lead {
@@ -26,6 +26,22 @@ model Lead {
   status    Status   @default(New)
   userId    String
   user      User     @relation(fields: [userId], references: [id])
+  deal      Deal?
+  createdAt DateTime @default(now())
+}
+
+model Deal {
+  id        String  @id @default(cuid())
+  amount    Float
+  name      String
+  email     String?
+  notes     String?
+  owner     String?
+  stage     String  @default("New")
+  leadId    String  @unique
+  lead Lead @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User    @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
 }
 
@@ -34,8 +50,8 @@ enum Status {
   Contacted
   InProgress
   Qualified
-  Unqualified
   Converted
+  Unqualified
   Lost
 }
 

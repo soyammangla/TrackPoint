@@ -1,22 +1,16 @@
-import type { Metadata } from "next";
-import { Geist } from "next/font/google";
-import "./globals.css";
-import { ThemeProvider } from "next-themes";
+"use client";
+
+import { SessionProvider } from "next-auth/react";
+import { DealsProvider } from "@/context/dealscontext";
 import Provider from "@/components/provider";
+import "./globals.css";
+import { Geist } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
 });
-
-export const metadata: Metadata = {
-  title: "Trackpoint",
-  description: "Smart CRM. Smarter Growth.",
-  icons: {
-    icon: "/splash.ico",
-  },
-};
 
 export default function RootLayout({
   children,
@@ -26,15 +20,40 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.variable} antialiased`}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="light"
-          enableSystem={false}
-        >
-          <Provider>{children}</Provider>
-          <Analytics />
-        </ThemeProvider>
+        <SessionProvider>
+          <DealsProvider>
+            <Provider>{children}</Provider>
+          </DealsProvider>
+        </SessionProvider>
+        <Analytics />
       </body>
     </html>
   );
 }
+
+// "use client";
+
+// import Provider from "@/components/provider";
+// import "./globals.css";
+// import { Geist } from "next/font/google";
+// import { Analytics } from "@vercel/analytics/react";
+
+// const geistSans = Geist({
+//   variable: "--font-geist-sans",
+//   subsets: ["latin"],
+// });
+
+// export default function RootLayout({
+//   children,
+// }: {
+//   children: React.ReactNode;
+// }) {
+//   return (
+//     <html lang="en" suppressHydrationWarning>
+//       <body className={`${geistSans.variable} antialiased`}>
+//         <Provider>{children}</Provider>
+//         <Analytics />
+//       </body>
+//     </html>
+//   );
+// }
