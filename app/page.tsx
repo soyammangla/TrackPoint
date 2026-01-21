@@ -1,4 +1,4 @@
-import Navbar from "@/components/navbar";
+// import Navbar from "@/components/navbar";
 import Hero from "@/components/hero";
 import Feature from "@/components/feature";
 import HowItWorks from "@/components/howitworks";
@@ -10,7 +10,7 @@ import FAQ from "@/components/faq";
 export default function Home() {
   return (
     <div className="min-h-screen bg-white text-black dark:bg-black dark:text-white">
-      <Navbar />
+      {/* <Navbar /> */}
       <Hero />
       <Feature />
       <HowItWorks />
