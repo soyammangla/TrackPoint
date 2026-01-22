@@ -1,21 +1,21 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-generator client {
-  provider = "prisma-client-js"
-}
-
 model User {
-  id       String @id @default(cuid())
-  email    String @unique
+  id       String  @id @default(cuid())
+  email    String  @unique
   name     String?
   image    String?
   provider String
-  plan     Plan @default(FREE)
-  leads    Lead[]
+  plan     Plan    @default(FREE)
   deals    Deal[]
+  leads    Lead[]
 }
 
 model Lead {
@@ -25,25 +25,25 @@ model Lead {
   phone     String
   status    Status   @default(New)
   userId    String
-  owner     String?
-  user      User     @relation(fields: [userId], references: [id])
-  deal      Deal?
   createdAt DateTime @default(now())
+  owner     String?
+  deal      Deal?
+  user      User     @relation(fields: [userId], references: [id])
 }
 
 model Deal {
-  id        String  @id @default(cuid())
+  id        String   @id @default(cuid())
   amount    Float
   name      String
-  email     String?
   notes     String?
   owner     String?
-  stage     String  @default("New")
-  leadId    String  @unique
-  lead Lead @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  stage     String   @default("New")
+  leadId    String   @unique
   userId    String
-  user      User    @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
+  email     String?
+  lead      Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id])
 }
 
 enum Status {
