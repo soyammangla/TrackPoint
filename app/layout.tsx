@@ -35,11 +35,19 @@ import { Geist } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import Provider from "@/components/provider";
 import Navbar from "@/components/navbar";
+import React from "react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
 });
+export const metadata = {
+  title: "TrackPoint CRM",
+  description: "Lead management and sales tracking for growing teams.",
+  icons: {
+    icon: "/favicon.ico",
+  },
+};
 
 export default function RootLayout({
   children,
