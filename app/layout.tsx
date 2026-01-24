@@ -60,7 +60,7 @@ export default function RootLayout({
         <Provider>
           <Navbar />
 
-          <main className="pt-4">{children}</main>
+          <main className="pt-4 bg-white dark:bg-black ">{children}</main>
         </Provider>
 
         <Analytics />
