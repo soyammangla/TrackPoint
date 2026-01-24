@@ -1,35 +1,142 @@
+// import { NextResponse } from "next/server";
+// import { prisma } from "@/lib/prisma";
+// import { getServerSession } from "next-auth";
+// import { authOptions } from "@/lib/authoptions";
+// import { getOrCreateUser } from "@/lib/getOrCreateUser";
+
+// export async function GET() {
+//   const session = await getServerSession(authOptions);
+//   if (!session?.user?.email) return NextResponse.json([], { status: 401 });
+
+//   const user = await getOrCreateUser({
+//     email: session.user.email!,
+//     name: session.user.name ?? null,
+//     image: session.user.image ?? null,
+//   });
+
+//   const leads = await prisma.lead.findMany({
+//     where: { userId: user.id },
+//     orderBy: { createdAt: "desc" },
+//   });
+
+//   return NextResponse.json(leads);
+// }
+
+// export async function POST(req: Request) {
+//   try {
+//     const session = await getServerSession(authOptions);
+//     if (!session?.user?.email)
+//       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+//     // const user = await getOrCreateUser(session.user);
+//     const user = await getOrCreateUser({
+//       email: session.user.email!,
+//       name: session.user.name ?? null,
+//       image: session.user.image ?? null,
+//     });
+
+//     const { leadId, owner } = await req.json();
+//     if (!leadId)
+//       return NextResponse.json({ error: "Missing leadId" }, { status: 400 });
+
+//     const lead = await prisma.lead.findUnique({
+//       where: { id: leadId },
+//     });
+
+//     if (!lead)
+//       return NextResponse.json({ error: "Lead not found" }, { status: 404 });
+
+//     const existingDeal = await prisma.deal.findUnique({
+//       where: { leadId },
+//     });
+
+//     if (existingDeal)
+//       return NextResponse.json(
+//         { error: "Deal already exists" },
+//         { status: 400 },
+//       );
+
+//     const deal = await prisma.deal.create({
+//       data: {
+//         name: lead.name,
+//         email: lead.email ?? null,
+//         amount: 0,
+//         owner: owner ?? "",
+//         stage: "New",
+//         leadId,
+//         userId: user.id,
+//       },
+//     });
+
+//     return NextResponse.json(deal, { status: 201 });
+//   } catch (err) {
+//     console.error("CREATE DEAL ERROR:", err);
+//     return NextResponse.json(
+//       { error: "Internal Server Error" },
+//       { status: 500 },
+//     );
+//   }
+// }
+
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/authoptions";
+import { getOrCreateUser } from "@/lib/getOrCreateUser";
 
 export async function GET() {
-  try {
-    const deals = await prisma.deal.findMany({
-      orderBy: { createdAt: "desc" },
-    });
-    return NextResponse.json(deals);
-  } catch (err) {
-    console.error("Fetch deals error:", err);
-    return NextResponse.json(
-      { error: "Failed to fetch deals" },
-      { status: 500 },
-    );
-  }
+  const session = await getServerSession(authOptions);
+  if (!session?.user?.email) return NextResponse.json([], { status: 401 });
+
+  const user = await getOrCreateUser({
+    email: session.user.email!,
+    name: session.user.name ?? null,
+    image: session.user.image ?? null,
+  });
+
+  //   const leads = await prisma.lead.findMany({
+  //     where: { userId: user.id },
+  //     orderBy: { createdAt: "desc" },
+  //   });
+
+  //   return NextResponse.json(leads);
+  // }
+  const deals = await prisma.deal.findMany({
+    where: { userId: user.id },
+    orderBy: { createdAt: "desc" },
+  });
+
+  return NextResponse.json(deals);
 }
 
 export async function POST(req: Request) {
   try {
-    const { leadId, userId, owner } = await req.json();
-    if (!leadId || !userId)
-      return NextResponse.json(
-        { error: "Missing leadId or userId" },
-        { status: 400 },
-      );
+    const session = await getServerSession(authOptions);
+    if (!session?.user?.email)
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-    const lead = await prisma.lead.findUnique({ where: { id: leadId } });
+    // const user = await getOrCreateUser(session.user);
+    const user = await getOrCreateUser({
+      email: session.user.email!,
+      name: session.user.name ?? null,
+      image: session.user.image ?? null,
+    });
+
+    const { leadId, owner } = await req.json();
+    if (!leadId)
+      return NextResponse.json({ error: "Missing leadId" }, { status: 400 });
+
+    const lead = await prisma.lead.findUnique({
+      where: { id: leadId },
+    });
+
     if (!lead)
       return NextResponse.json({ error: "Lead not found" }, { status: 404 });
 
-    const existingDeal = await prisma.deal.findUnique({ where: { leadId } });
+    const existingDeal = await prisma.deal.findUnique({
+      where: { leadId },
+    });
+
     if (existingDeal)
       return NextResponse.json(
         { error: "Deal already exists" },
@@ -41,16 +148,16 @@ export async function POST(req: Request) {
         name: lead.name,
         email: lead.email ?? null,
         amount: 0,
-        owner: owner ?? lead.owner ?? "",
+        owner: owner ?? "",
         stage: "New",
         leadId,
-        userId,
+        userId: user.id,
       },
     });
 
     return NextResponse.json(deal, { status: 201 });
-  } catch (error) {
-    console.error("CREATE DEAL ERROR:", error);
+  } catch (err) {
+    console.error("CREATE DEAL ERROR:", err);
     return NextResponse.json(
       { error: "Internal Server Error" },
       { status: 500 },

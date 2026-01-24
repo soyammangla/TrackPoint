@@ -75,22 +75,35 @@ export default function LeadManagementPage() {
     try {
       let res: Response | undefined;
 
+      // ---------- ADD LEAD ----------
       if (mode === "add") {
         res = await fetch("/api/leads", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(current),
+          body: JSON.stringify({
+            name: current.name,
+            email: current.email,
+            phone: current.phone,
+            status: current.status,
+          }),
         });
       }
 
+      // ---------- EDIT LEAD ----------
       if (mode === "edit") {
         res = await fetch(`/api/leads/${current.id}`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(current),
+          body: JSON.stringify({
+            name: current.name,
+            email: current.email,
+            phone: current.phone,
+            status: current.status,
+          }),
         });
       }
 
+      // ---------- CONVERT LEAD TO DEAL ----------
       if (mode === "convert") {
         if (current.status !== "Qualified") {
           setError("Only qualified leads can be converted");

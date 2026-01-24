@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/authoptions";
+import { getOrCreateUser } from "@/lib/getOrCreateUser";
 
 const LIMITS = {
   FREE: 10,
@@ -12,8 +13,17 @@ export async function GET() {
   const session = await getServerSession(authOptions);
   if (!session?.user?.email) return NextResponse.json([], { status: 401 });
 
+  // const user = await getOrCreateUser(session.user);
+  const user = await getOrCreateUser({
+    email: session.user.email,
+    name: session.user.name,
+    image: session.user.image,
+  });
+
   const leads = await prisma.lead.findMany({
-    where: { user: { email: session.user.email } },
+    // where: { user: { email: session.user.email } },
+    where: { userId: user.id },
+
     orderBy: { createdAt: "desc" },
   });
 
@@ -26,15 +36,15 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const body = await req.json();
-  const user = await prisma.user.findUnique({
-    where: { email: session.user.email },
+  const user = await getOrCreateUser({
+    email: session.user.email,
+    name: session.user.name,
+    image: session.user.image,
   });
-
-  if (!user)
-    return NextResponse.json({ error: "User not found" }, { status: 404 });
 
   const count = await prisma.lead.count({ where: { userId: user.id } });
   const limit = LIMITS[user.plan];
+  // const limit = LIMITS[user.plan.toUpperCase() as keyof typeof LIMITS] ?? 10;
 
   if (count >= limit) {
     return NextResponse.json(
