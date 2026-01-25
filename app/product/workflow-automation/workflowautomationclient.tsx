@@ -63,7 +63,7 @@ export default function WorkflowAutomationPage() {
 
   const updateWorkflow = (id: number, key: keyof WorkflowType, value: any) => {
     setWorkflows(
-      workflows.map((wf) => (wf.id === id ? { ...wf, [key]: value } : wf))
+      workflows.map((wf) => (wf.id === id ? { ...wf, [key]: value } : wf)),
     );
   };
 
