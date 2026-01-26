@@ -6,7 +6,7 @@ import { Status } from "@prisma/client";
 
 export async function POST(
   req: Request,
-  { params }: { params: Promise<{ id: string }> }, // 🔥 FIX 1
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -14,28 +14,41 @@ export async function POST(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { amount, owner } = await req.json();
+    // 🔥 UPDATED: dealName added
+    const { dealName, amount, owner } = await req.json();
+
+    if (!dealName || !amount || !owner) {
+      return NextResponse.json(
+        { error: "Deal name, amount and owner are required" },
+        { status: 400 },
+      );
+    }
 
     const user = await prisma.user.findUnique({
       where: { email: session.user.email },
     });
+
     if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
-    // 🔥 FIX 1 (important)
     const { id } = await params;
 
     const lead = await prisma.lead.findFirst({
-      where: { id, userId: user.id },
-      include: { deal: true },
+      where: {
+        id,
+        userId: user.id,
+      },
+      include: {
+        deal: true,
+      },
     });
 
     if (!lead) {
       return NextResponse.json({ error: "Lead not found" }, { status: 404 });
     }
 
-    // 🔥 FIX 2 (enum-safe check)
+    // ✅ enum-safe check
     if (lead.status !== Status.Qualified) {
       return NextResponse.json(
         { error: "Only qualified leads can be converted" },
@@ -43,22 +56,26 @@ export async function POST(
       );
     }
 
-    // already converted
+    // ❌ already converted
     if (lead.deal) {
       return NextResponse.json(
-        { error: "Deal already exists" },
+        { error: "Deal already exists for this lead" },
         { status: 400 },
       );
     }
 
     const amt = Number(amount);
     if (isNaN(amt) || amt <= 0) {
-      return NextResponse.json({ error: "Invalid amount" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Invalid deal amount" },
+        { status: 400 },
+      );
     }
 
+    // ✅ CREATE DEAL (dealName used)
     const deal = await prisma.deal.create({
       data: {
-        name: lead.name,
+        name: dealName, // 🔥 MAIN CHANGE
         email: lead.email,
         amount: amt,
         owner,
@@ -68,9 +85,10 @@ export async function POST(
       },
     });
 
+    // ✅ UPDATE LEAD STATUS
     await prisma.lead.update({
       where: { id: lead.id },
-      data: { status: Status.Converted }, // 🔥 enum-safe
+      data: { status: Status.Converted },
     });
 
     return NextResponse.json(deal, { status: 201 });
