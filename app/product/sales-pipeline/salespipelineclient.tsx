@@ -22,6 +22,83 @@ const stages = [
   "Closed Lost",
 ];
 
+const sendProposal = async (dealId: string) => {
+  try {
+    const res = await fetch("/api/proposal/send", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ dealId }),
+    });
+
+    if (!res.ok) throw new Error("Failed");
+
+    alert("Proposal sent & workflow updated ✅");
+  } catch (err) {
+    alert("Something went wrong ❌");
+  }
+};
+
+const sendWonEmail = async (deal: Deal) => {
+  if (!deal.email) return alert("No email found for this deal");
+
+  try {
+    const res = await fetch("/api/email/send-won", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ dealId: deal.id }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) return alert(data.error || "Failed to send email");
+
+    alert("Won email sent successfully!");
+  } catch (err) {
+    console.error(err);
+    alert("Error sending email");
+  }
+};
+
+const sendInvoiceEmail = async (deal: Deal) => {
+  if (!deal.email) return alert("No email found for this deal");
+
+  try {
+    const res = await fetch("/api/email/send-invoice", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ dealId: deal.id }),
+    });
+
+    const data = await res.json();
+    if (!res.ok) return alert(data.error || "Failed to send invoice");
+
+    alert("Invoice email sent successfully!");
+  } catch (err) {
+    console.error(err);
+    alert("Error sending invoice");
+  }
+};
+
+const sendFollowUpEmail = async (deal: Deal) => {
+  if (!deal.email) return alert("No email found for this deal");
+
+  try {
+    const res = await fetch("/api/email/send-followup", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ dealId: deal.id }),
+    });
+
+    const data = await res.json();
+    if (!res.ok) return alert(data.error || "Failed to send follow-up email");
+
+    alert("Follow-up email sent successfully!");
+  } catch (err) {
+    console.error(err);
+    alert("Error sending follow-up email");
+  }
+};
+
 export default function SalesPipelinePage() {
   const { deals, updateDeal, removeDeal } = useDeals();
 
@@ -169,6 +246,7 @@ export default function SalesPipelinePage() {
                             size="sm"
                             variant="secondary"
                             className="col-span-2 text-xs"
+                            onClick={() => sendProposal(deal.id)}
                           >
                             Send Proposal Email
                           </Button>
@@ -182,6 +260,7 @@ export default function SalesPipelinePage() {
                             size="sm"
                             variant="secondary"
                             className="text-xs"
+                            onClick={() => sendWonEmail(deal)}
                           >
                             Send Won Email
                           </Button>
@@ -189,6 +268,7 @@ export default function SalesPipelinePage() {
                             size="sm"
                             variant="secondary"
                             className="text-xs"
+                            onClick={() => sendInvoiceEmail(deal)}
                           >
                             Send Invoice
                           </Button>
@@ -201,6 +281,7 @@ export default function SalesPipelinePage() {
                           size="sm"
                           variant="secondary"
                           className="col-span-2 text-xs"
+                          onClick={() => sendFollowUpEmail(deal)}
                         >
                           Send Follow-up Email
                         </Button>

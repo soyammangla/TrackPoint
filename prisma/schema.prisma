@@ -44,6 +44,19 @@ model Deal {
   email     String?
   lead      Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
   user      User     @relation(fields: [userId], references: [id])
+
+  workflowLogs WorkflowLog[]
+}
+
+model WorkflowLog {
+  id        String   @id @default(cuid())
+  dealId    String
+  trigger   String
+  action    String
+  status    String
+  createdAt DateTime @default(now())
+
+  deal Deal @relation(fields: [dealId], references: [id])
 }
 
 enum Status {
