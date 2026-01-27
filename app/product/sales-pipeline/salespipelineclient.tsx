@@ -244,7 +244,7 @@ export default function SalesPipelinePage() {
                           </Button>
                           <Button
                             size="sm"
-                            variant="secondary"
+                            variant="outline"
                             className="col-span-2 text-xs"
                             onClick={() => sendProposal(deal.id)}
                           >
@@ -258,7 +258,7 @@ export default function SalesPipelinePage() {
                         <>
                           <Button
                             size="sm"
-                            variant="secondary"
+                            variant="outline"
                             className="text-xs"
                             onClick={() => sendWonEmail(deal)}
                           >
@@ -266,7 +266,7 @@ export default function SalesPipelinePage() {
                           </Button>
                           <Button
                             size="sm"
-                            variant="secondary"
+                            variant="outline"
                             className="text-xs"
                             onClick={() => sendInvoiceEmail(deal)}
                           >
@@ -279,7 +279,7 @@ export default function SalesPipelinePage() {
                       {deal.stage === "Closed Lost" && (
                         <Button
                           size="sm"
-                          variant="secondary"
+                          variant="outline"
                           className="col-span-2 text-xs"
                           onClick={() => sendFollowUpEmail(deal)}
                         >
