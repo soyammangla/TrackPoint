@@ -1,7 +1,8 @@
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { authOptions } from "@/lib/authoptions";
-import WorkflowAutomationClient from "./workflowautomationclient";
+// import WorkflowAutomationClient from "./taskmoduleclient";
+import TaskModuleClient from "./taskmoduleclient";
 
 export default async function WorkflowAutomationPage() {
   const session = await getServerSession(authOptions);
@@ -10,5 +11,5 @@ export default async function WorkflowAutomationPage() {
     redirect("/login");
   }
 
-  return <WorkflowAutomationClient />;
+  return <TaskModuleClient />;
 }

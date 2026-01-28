@@ -21,7 +21,7 @@ export default function Navbar() {
   const productLinks = [
     { name: "Lead Management", href: "/product/lead-management" },
     { name: "Sales Pipeline", href: "/product/sales-pipeline" },
-    { name: "Workflow Automation", href: "/product/workflow-automation" },
+    { name: "Task Module", href: "/product/task-module" },
     { name: "Reports & Analytics", href: "/product/reports-analytics" },
   ];
 
