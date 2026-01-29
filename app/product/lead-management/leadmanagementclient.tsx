@@ -176,7 +176,7 @@ export default function LeadManagementPage() {
   return (
     <div className="p-4 sm:p-6 space-y-6 bg-white dark:bg-black text-black dark:text-white min-h-screen">
       {/* HEADER */}
-      <div className="flex justify-between items-center gap-4 flex-wrap">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
         <h1 className="text-2xl sm:text-3xl font-bold">Lead Management</h1>
 
         <div className="flex items-center gap-2">
@@ -184,7 +184,7 @@ export default function LeadManagementPage() {
             placeholder="Search by name"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-48"
+            className="w-full sm:w-48"
           />
 
           <Button onClick={() => openModal("add")}>
@@ -198,8 +198,8 @@ export default function LeadManagementPage() {
           <CardTitle>Leads</CardTitle>
         </CardHeader>
 
-        <CardContent className="overflow-x-auto">
-          <table className="w-full border rounded-lg">
+        <CardContent className="overflow-x-auto -mx-4 sm:mx-0">
+          <table className="hidden sm:table w-full border rounded-lg">
             <thead>
               <tr>
                 <th className="px-4 py-2 text-left">Name</th>
@@ -215,7 +215,7 @@ export default function LeadManagementPage() {
                   <td className="px-4 py-2 font-medium">{l.name}</td>
                   <td className="px-4 py-2">{l.email}</td>
                   <td className="px-4 py-2">{l.status}</td>
-                  <td className="px-4 py-2 flex gap-2 justify-center">
+                  <td className="px-4 py-2 flex flex-wrap gap-2 justify-center">
                     <Button
                       size="sm"
                       variant="outline"
@@ -252,13 +252,58 @@ export default function LeadManagementPage() {
               ))}
             </tbody>
           </table>
+
+          {/* MOBILE VIEW */}
+          <div className="sm:hidden space-y-4">
+            {filteredLeads.map((l) => (
+              <div key={l.id} className="border rounded-lg p-4 space-y-2">
+                <p className="font-semibold">{l.name}</p>
+                <p className="text-sm">{l.email || "No email"}</p>
+                <p className="text-sm">Status: {l.status}</p>
+
+                <div className="flex flex-wrap gap-2 pt-2">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => openModal("view", l)}
+                  >
+                    <Eye size={14} />
+                  </Button>
+
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    disabled={l.status === "Converted"}
+                    onClick={() => openModal("edit", l)}
+                  >
+                    <Pencil size={14} />
+                  </Button>
+
+                  {l.status === "Qualified" && (
+                    <Button size="sm" onClick={() => openModal("convert", l)}>
+                      Convert
+                    </Button>
+                  )}
+
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    disabled={l.status === "Converted"}
+                    onClick={() => deleteLead(l.id)}
+                  >
+                    <Trash2 size={14} />
+                  </Button>
+                </div>
+              </div>
+            ))}
+          </div>
         </CardContent>
       </Card>
 
       <AnimatePresence>
         {open && (
-          <div className="fixed inset-0 bg-black/60 flex items-center justify-center p-4">
-            <motion.div className="bg-white dark:bg-black p-6 rounded-lg w-full max-w-md space-y-4">
+          <div className="fixed inset-0 bg-black/60 flex items-center justify-center p-4 overflow-y-auto">
+            <motion.div className="bg-white dark:bg-black p-4 sm:p-6 rounded-lg w-full max-w-md space-y-4">
               <h2 className="text-xl font-semibold text-center">
                 {mode === "add" && "Add Lead"}
                 {mode === "edit" && "Edit Lead"}

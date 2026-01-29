@@ -146,12 +146,12 @@ export default function SalesPipelinePage() {
   };
 
   return (
-    <div className="p-6 bg-white dark:bg-black min-h-screen space-y-6">
+    <div className="p-4 sm:p-6 bg-white dark:bg-black min-h-screen space-y-6">
       {/* Header */}
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
         <h1 className="text-4xl font-bold">Sales Pipeline</h1>
         <Input
-          className="max-w-sm"
+          className="w-full sm:max-w-sm border-black dark:border-white"
           placeholder="Search deals..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
@@ -159,11 +159,11 @@ export default function SalesPipelinePage() {
       </div>
 
       {/* Pipeline */}
-      <div className="flex gap-6 overflow-x-auto py-4">
+      <div className="flex gap-4 sm:gap-6 overflow-x-auto py-4 -mx-4 px-4 sm:mx-0 sm:px-0">
         {stages.map((stage) => (
           <div
             key={stage}
-            className="w-80 shrink-0 border border-black dark:border-white rounded-xl p-4"
+            className="w-72 sm:w-80 shrink-0 border border-black dark:border-white rounded-xl p-3 sm:p-4"
           >
             <div className="flex justify-between mb-3">
               <h3 className="font-semibold">{stage}</h3>
@@ -179,7 +179,7 @@ export default function SalesPipelinePage() {
                   <motion.div
                     key={deal.id}
                     whileHover={{ scale: 1.02 }}
-                    className="border rounded-lg p-3 space-y-2"
+                    className="border rounded-lg p-3 space-y-2 text-sm"
                   >
                     {/* Deal info */}
                     <div className="text-sm space-y-1">
@@ -191,13 +191,13 @@ export default function SalesPipelinePage() {
                       {deal.owner && (
                         <p className="opacity-70">Owner: {deal.owner}</p>
                       )}
-                      <p className="text-green-600 font-medium">
+                      <p className="text-green-600 font-medium break-words">
                         ₹ {deal.amount.toLocaleString()}
                       </p>
                     </div>
 
                     {/* CRUD */}
-                    <div className="flex gap-1">
+                    <div className="flex flex-wrap gap-1">
                       <Button
                         size="icon"
                         variant="ghost"
@@ -222,7 +222,7 @@ export default function SalesPipelinePage() {
                     </div>
 
                     {/* Stage + Action Buttons */}
-                    <div className="grid grid-cols-2 gap-2 mt-2">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2">
                       {/* Proposal */}
                       {deal.stage === "Proposal" && (
                         <>
@@ -313,8 +313,8 @@ export default function SalesPipelinePage() {
       {/* Modal */}
       <AnimatePresence>
         {open && current && (
-          <motion.div className="fixed inset-0 bg-black/50 flex justify-center items-center">
-            <motion.div className="bg-white dark:bg-black p-6 rounded-xl w-full max-w-md space-y-4">
+          <motion.div className="fixed inset-0 bg-black/50 flex justify-center items-center p-4 overflow-y-auto">
+            <motion.div className="bg-white dark:bg-black p-4 sm:p-6 rounded-xl w-full max-w-md space-y-4">
               <div className="flex justify-between">
                 <h2 className="font-bold capitalize">{mode} Deal</h2>
                 <Button
@@ -328,6 +328,7 @@ export default function SalesPipelinePage() {
 
               {["name", "owner", "amount", "email"].map((field) => (
                 <Input
+                  className="h-11"
                   key={field}
                   disabled={mode === "view"}
                   value={(current as any)[field] || ""}

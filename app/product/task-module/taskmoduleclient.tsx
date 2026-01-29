@@ -117,14 +117,10 @@ export default function TasksPage() {
 
   /* -------------------- UI -------------------- */
   return (
-    <div className="p-6 space-y-8">
+    <div className="p-6 py-2 space-y-8">
       {/* Header */}
       <div className="space-y-2">
-        <h1 className="text-4xl font-bold tracking-tight">Tasks</h1>
-        <p className="text-muted-foreground max-w-2xl">
-          Independent task management module for internal operations. Not linked
-          to leads or sales pipeline.
-        </p>
+        <h1 className="text-5xl font-bold tracking-tight">Tasks</h1>
       </div>
 
       {/* Top Actions */}
@@ -132,13 +128,13 @@ export default function TasksPage() {
         <div className="flex flex-col sm:flex-row gap-2">
           <Input
             placeholder="Search tasks..."
-            className="h-9 sm:w-[220px]"
+            className="h-9 sm:w-220px border-black dark:border-white"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
 
           <Select value={filter} onValueChange={(v) => setFilter(v as any)}>
-            <SelectTrigger className="h-9 w-[160px]">
+            <SelectTrigger className="h-9 w-160px">
               <SelectValue placeholder="Filter priority" />
             </SelectTrigger>
             <SelectContent>
