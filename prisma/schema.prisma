@@ -48,16 +48,6 @@ model Deal {
   workflowLogs WorkflowLog[]
 }
 
-model WorkflowLog {
-  id        String   @id @default(cuid())
-  dealId    String
-  trigger   String
-  action    String
-  status    String
-  createdAt DateTime @default(now())
-
-  deal Deal @relation(fields: [dealId], references: [id])
-}
 
 enum Status {
   New
