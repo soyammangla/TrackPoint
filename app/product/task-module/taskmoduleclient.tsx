@@ -7,6 +7,10 @@ import {
   CheckCircle2,
   Circle,
   Calendar as CalendarIcon,
+  Eye,
+  Pencil,
+  Trash2,
+  Search,
 } from "lucide-react";
 import { format } from "date-fns";
 
@@ -60,43 +64,41 @@ const initialTasks: Task[] = [
     due: "Tomorrow",
     completed: false,
   },
-  {
-    id: 3,
-    title: "Refactor shared components",
-    priority: "Low",
-    due: "Completed",
-    completed: true,
-  },
 ];
 
 export default function TasksPage() {
   const [tasks, setTasks] = useState<Task[]>(initialTasks);
+
+  /* dialogs */
   const [open, setOpen] = useState(false);
+  const [actionOpen, setActionOpen] = useState(false);
 
-  // filters & search
-  const [filter, setFilter] = useState<"All" | "High" | "Medium" | "Low">(
-    "All",
-  );
-  const [search, setSearch] = useState("");
-
-  // form state
+  /* add task */
   const [title, setTitle] = useState("");
   const [priority, setPriority] = useState<"High" | "Medium" | "Low">("Medium");
   const [dueDate, setDueDate] = useState<Date | undefined>(new Date());
 
+  /* view / edit */
+  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
+  const [mode, setMode] = useState<"view" | "edit">("view");
+
+  /* search */
+  const [search, setSearch] = useState("");
+
   /* -------------------- Logic -------------------- */
+
   const addTask = () => {
     if (!title.trim()) return;
 
-    setTasks([
+    setTasks((prev) => [
       {
         id: Date.now(),
         title,
         priority,
-        due: dueDate ? format(dueDate, "PPP") : "Upcoming",
+        due: format(dueDate ?? new Date(), "PPP"),
         completed: false,
       },
-      ...tasks,
+      ...prev,
     ]);
 
     setTitle("");
@@ -106,49 +108,69 @@ export default function TasksPage() {
   };
 
   const toggleTask = (id: number) => {
-    setTasks(
-      tasks.map((t) => (t.id === id ? { ...t, completed: !t.completed } : t)),
+    setTasks((prev) =>
+      prev.map((t) => (t.id === id ? { ...t, completed: !t.completed } : t)),
     );
   };
 
-  const filteredTasks = tasks
-    .filter((t) => (filter === "All" ? true : t.priority === filter))
-    .filter((t) => t.title.toLowerCase().includes(search.toLowerCase()));
+  const openView = (task: Task) => {
+    setSelectedTask(task);
+    setMode("view");
+    setActionOpen(true);
+  };
+
+  const openEdit = (task: Task) => {
+    setSelectedTask({ ...task });
+    setMode("edit");
+    setActionOpen(true);
+  };
+
+  const saveEdit = () => {
+    if (!selectedTask) return;
+
+    setTasks((prev) =>
+      prev.map((t) => (t.id === selectedTask.id ? selectedTask : t)),
+    );
+    setActionOpen(false);
+  };
+
+  const deleteTask = (id: number) => {
+    setTasks((prev) => prev.filter((t) => t.id !== id));
+  };
+
+  const filteredTasks = tasks.filter((task) =>
+    task.title.toLowerCase().includes(search.toLowerCase()),
+  );
 
   /* -------------------- UI -------------------- */
   return (
-    <div className="p-6 py-2 space-y-8">
+    <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white p-6 space-y-6">
       {/* Header */}
-      <div className="space-y-2">
-        <h1 className="text-5xl font-bold tracking-tight">Tasks</h1>
-      </div>
+      <div className="flex items-center justify-between">
+        <h1 className=" mb-4 text-4xl font-bold">Tasks</h1>
 
-      {/* Top Actions */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex flex-col sm:flex-row gap-2">
-          <Input
-            placeholder="Search tasks..."
-            className="h-9 sm:w-220px border-black dark:border-white"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
+        {/* Search + Add Task */}
+        <div className="flex items-center gap-3">
+          <div className="relative">
+            <Search
+              size={16}
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-black dark:text-white"
+            />
+            <Input
+              placeholder="Search tasks..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="pl-9 w-64 border-black dark:border-white"
+            />
+          </div>
 
-          <Select value={filter} onValueChange={(v) => setFilter(v as any)}>
-            <SelectTrigger className="h-9 w-160px">
-              <SelectValue placeholder="Filter priority" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="All">All Priorities</SelectItem>
-              <SelectItem value="High">High</SelectItem>
-              <SelectItem value="Medium">Medium</SelectItem>
-              <SelectItem value="Low">Low</SelectItem>
-            </SelectContent>
-          </Select>
+          <Button
+            onClick={() => setOpen(true)}
+            className="bg-black text-white dark:bg-white dark:text-black"
+          >
+            <Plus size={16} className="mr-2" /> Add Task
+          </Button>
         </div>
-
-        <Button size="sm" className="gap-2" onClick={() => setOpen(true)}>
-          <Plus size={16} /> Add Task
-        </Button>
       </div>
 
       {/* Task List */}
@@ -156,18 +178,14 @@ export default function TasksPage() {
         {filteredTasks.map((task) => (
           <motion.div
             key={task.id}
-            initial={{ opacity: 0, y: 6 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
           >
-            <Card className="hover:shadow-sm transition">
-              <CardContent className="p-4 flex items-center justify-between">
+            <Card className="rounded-xl">
+              <CardContent className="p-4 flex justify-between items-center">
                 <div className="flex gap-4">
                   <button onClick={() => toggleTask(task.id)}>
-                    {task.completed ? (
-                      <CheckCircle2 className="text-green-500" />
-                    ) : (
-                      <Circle className="text-muted-foreground" />
-                    )}
+                    {task.completed ? <CheckCircle2 /> : <Circle />}
                   </button>
 
                   <div>
@@ -180,39 +198,61 @@ export default function TasksPage() {
                     >
                       {task.title}
                     </p>
-                    <div className="flex items-center gap-2 text-xs text-muted-foreground mt-1">
+                    <div className="text-s flex items-center gap-2 mt-2">
                       <CalendarIcon size={14} /> {task.due}
                     </div>
                   </div>
                 </div>
 
-                <Badge
-                  variant={
-                    task.priority === "High"
-                      ? "destructive"
-                      : task.priority === "Medium"
-                        ? "default"
-                        : "secondary"
-                  }
-                >
-                  {task.priority}
-                </Badge>
+                <div className="flex items-center gap-2">
+                  <Badge variant="secondary">{task.priority}</Badge>
+
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    onClick={() => openView(task)}
+                  >
+                    <Eye size={16} />
+                  </Button>
+
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    onClick={() => openEdit(task)}
+                  >
+                    <Pencil size={16} />
+                  </Button>
+
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    onClick={() => deleteTask(task.id)}
+                  >
+                    <Trash2 size={16} />
+                  </Button>
+                </div>
               </CardContent>
             </Card>
           </motion.div>
         ))}
+
+        {filteredTasks.length === 0 && (
+          <p className="text-center text-sm text-muted-foreground py-8">
+            No tasks found
+          </p>
+        )}
       </div>
 
-      {/* Add Task Dialog */}
+      {/* ADD TASK DIALOG */}
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="sm:max-w-md">
+        <DialogContent>
           <DialogHeader>
-            <DialogTitle>Create Task</DialogTitle>
+            <DialogTitle>New Task</DialogTitle>
           </DialogHeader>
 
           <div className="space-y-4">
             <Input
-              placeholder="Task name"
+              placeholder="Task title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
             />
@@ -222,7 +262,7 @@ export default function TasksPage() {
               onValueChange={(v) => setPriority(v as any)}
             >
               <SelectTrigger>
-                <SelectValue placeholder="Priority" />
+                <SelectValue />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="High">High</SelectItem>
@@ -231,33 +271,82 @@ export default function TasksPage() {
               </SelectContent>
             </Select>
 
-            {/* Due Date Picker */}
             <Popover>
               <PopoverTrigger asChild>
-                <Button
-                  variant="outline"
-                  className="w-full justify-start text-left font-normal"
-                >
+                <Button variant="outline" className="justify-start">
                   <CalendarIcon className="mr-2 h-4 w-4" />
-                  {dueDate ? format(dueDate, "PPP") : "Pick due date"}
+                  {format(dueDate ?? new Date(), "PPP")}
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="w-auto p-0" align="start">
+              <PopoverContent className="p-0">
                 <Calendar
                   mode="single"
                   selected={dueDate}
                   onSelect={setDueDate}
-                  initialFocus
                 />
               </PopoverContent>
             </Popover>
           </div>
 
-          <DialogFooter className="mt-4">
+          <DialogFooter>
             <Button variant="outline" onClick={() => setOpen(false)}>
               Cancel
             </Button>
-            <Button onClick={addTask}>Create Task</Button>
+            <Button onClick={addTask} disabled={!title.trim()}>
+              Create
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* VIEW / EDIT DIALOG */}
+      <Dialog open={actionOpen} onOpenChange={setActionOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>
+              {mode === "view" ? "View Task" : "Edit Task"}
+            </DialogTitle>
+          </DialogHeader>
+
+          {selectedTask && (
+            <div className="space-y-4">
+              <Input
+                disabled={mode === "view"}
+                value={selectedTask.title}
+                onChange={(e) =>
+                  setSelectedTask({ ...selectedTask, title: e.target.value })
+                }
+              />
+
+              <Select
+                disabled={mode === "view"}
+                value={selectedTask.priority}
+                onValueChange={(v) =>
+                  setSelectedTask({
+                    ...selectedTask,
+                    priority: v as any,
+                  })
+                }
+              >
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="High">High</SelectItem>
+                  <SelectItem value="Medium">Medium</SelectItem>
+                  <SelectItem value="Low">Low</SelectItem>
+                </SelectContent>
+              </Select>
+
+              <Input disabled value={selectedTask.due} />
+            </div>
+          )}
+
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setActionOpen(false)}>
+              Close
+            </Button>
+            {mode === "edit" && <Button onClick={saveEdit}>Save</Button>}
           </DialogFooter>
         </DialogContent>
       </Dialog>
