@@ -15,16 +15,6 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Deal not found" }, { status: 404 });
     }
 
-    // 1️⃣ workflow entry
-    await prisma.workflowLog.create({
-      data: {
-        dealId,
-        trigger: "Proposal Stage",
-        action: "Send Proposal Email",
-        status: "SUCCESS",
-      },
-    });
-
     // 2️⃣ send email
     await sendEmail({
       to: deal.email,
