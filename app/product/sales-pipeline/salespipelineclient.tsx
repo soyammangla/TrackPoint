@@ -32,7 +32,7 @@ const sendProposal = async (dealId: string) => {
 
     if (!res.ok) throw new Error("Failed");
 
-    alert("Proposal sent & workflow updated ✅");
+    alert("Proposal sent✅");
   } catch (err) {
     alert("Something went wrong ❌");
   }
