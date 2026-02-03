@@ -309,36 +309,60 @@ export default function TasksPage() {
           </DialogHeader>
 
           {selectedTask && (
-            <div className="space-y-4">
-              <Input
-                disabled={mode === "view"}
-                value={selectedTask.title}
-                onChange={(e) =>
-                  setSelectedTask({ ...selectedTask, title: e.target.value })
-                }
-              />
+            <div className="space-y-5">
+              {/* Task Title */}
+              <div className="space-y-1">
+                <label className="text-sm font-medium">Task title</label>
+                <Input
+                  placeholder="e.g. Design dashboard UI"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                />
+              </div>
 
-              <Select
-                disabled={mode === "view"}
-                value={selectedTask.priority}
-                onValueChange={(v) =>
-                  setSelectedTask({
-                    ...selectedTask,
-                    priority: v as any,
-                  })
-                }
-              >
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="High">High</SelectItem>
-                  <SelectItem value="Medium">Medium</SelectItem>
-                  <SelectItem value="Low">Low</SelectItem>
-                </SelectContent>
-              </Select>
+              {/* Priority + Due Date */}
+              <div className="grid grid-cols-2 gap-4">
+                {/* Priority */}
+                <div className="space-y-1">
+                  <label className="text-sm font-medium">Priority</label>
+                  <Select
+                    value={priority}
+                    onValueChange={(v) => setPriority(v as any)}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select priority" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="High">🔥 High</SelectItem>
+                      <SelectItem value="Medium">⚡ Medium</SelectItem>
+                      <SelectItem value="Low">🌱 Low</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
 
-              <Input disabled value={selectedTask.due} />
+                {/* Due Date */}
+                <div className="space-y-1">
+                  <label className="text-sm font-medium">Due date</label>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        className="w-full justify-start text-left"
+                      >
+                        <CalendarIcon className="mr-2 h-4 w-4" />
+                        {format(dueDate ?? new Date(), "PPP")}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="p-0">
+                      <Calendar
+                        mode="single"
+                        selected={dueDate}
+                        onSelect={setDueDate}
+                      />
+                    </PopoverContent>
+                  </Popover>
+                </div>
+              </div>
             </div>
           )}
 
