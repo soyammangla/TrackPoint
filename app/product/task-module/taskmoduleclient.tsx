@@ -1,18 +1,14 @@
 "use client";
 
-import { useState } from "react";
-import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 import {
   Plus,
-  CheckCircle2,
-  Circle,
-  Calendar as CalendarIcon,
-  Eye,
-  Pencil,
-  Trash2,
   Search,
+  Trash2,
+  Calendar,
+  Circle,
+  CheckCircle2,
 } from "lucide-react";
-import { format } from "date-fns";
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -27,227 +23,176 @@ import {
 } from "@/components/ui/dialog";
 import {
   Select,
-  SelectContent,
-  SelectItem,
   SelectTrigger,
   SelectValue,
+  SelectContent,
+  SelectItem,
 } from "@/components/ui/select";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { Calendar } from "@/components/ui/calendar";
 
-/* -------------------- Types -------------------- */
+/* ---------------- TYPES ---------------- */
 type Task = {
-  id: number;
+  id: string;
   title: string;
   priority: "High" | "Medium" | "Low";
-  due: string;
+  dueDate: string | null;
   completed: boolean;
 };
 
-/* -------------------- Dummy Data -------------------- */
-const initialTasks: Task[] = [
-  {
-    id: 1,
-    title: "Finalize Tasks module UI review",
-    priority: "High",
-    due: "Today",
-    completed: false,
-  },
-  {
-    id: 2,
-    title: "Prepare deployment checklist for CRM",
-    priority: "Medium",
-    due: "Tomorrow",
-    completed: false,
-  },
-];
+/* ---------------- DATE FORMAT ---------------- */
+const formatDueDate = (date: string | null) => {
+  if (!date) return "No due date";
 
+  const d = new Date(date);
+  const today = new Date();
+  const tomorrow = new Date();
+  tomorrow.setDate(today.getDate() + 1);
+
+  if (d.toDateString() === today.toDateString()) return "Today";
+  if (d.toDateString() === tomorrow.toDateString()) return "Tomorrow";
+
+  return d.toLocaleDateString("en-IN", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
+};
+
+/* ---------------- COMPONENT ---------------- */
 export default function TasksPage() {
-  const [tasks, setTasks] = useState<Task[]>(initialTasks);
-
-  /* dialogs */
-  const [open, setOpen] = useState(false);
-  const [actionOpen, setActionOpen] = useState(false);
-
-  /* add task */
-  const [title, setTitle] = useState("");
-  const [priority, setPriority] = useState<"High" | "Medium" | "Low">("Medium");
-  const [dueDate, setDueDate] = useState<Date | undefined>(new Date());
-
-  /* view / edit */
-  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
-  const [mode, setMode] = useState<"view" | "edit">("view");
-
-  /* search */
+  const [tasks, setTasks] = useState<Task[]>([]);
   const [search, setSearch] = useState("");
 
-  /* -------------------- Logic -------------------- */
+  /* add task modal */
+  const [open, setOpen] = useState(false);
+  const [title, setTitle] = useState("");
+  const [priority, setPriority] = useState<Task["priority"]>("Medium");
+  const [dueDate, setDueDate] = useState("");
 
-  const addTask = () => {
+  /* ---------------- API ---------------- */
+  const fetchTasks = async () => {
+    const res = await fetch("/api/tasks");
+    const data = await res.json();
+    setTasks(Array.isArray(data) ? data : []);
+  };
+
+  useEffect(() => {
+    fetchTasks();
+  }, []);
+
+  const addTask = async () => {
     if (!title.trim()) return;
 
-    setTasks((prev) => [
-      {
-        id: Date.now(),
+    await fetch("/api/tasks", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
         title,
         priority,
-        due: format(dueDate ?? new Date(), "PPP"),
-        completed: false,
-      },
-      ...prev,
-    ]);
+        dueDate: dueDate || null,
+      }),
+    });
 
     setTitle("");
     setPriority("Medium");
-    setDueDate(new Date());
+    setDueDate("");
     setOpen(false);
+    fetchTasks();
   };
 
-  const toggleTask = (id: number) => {
-    setTasks((prev) =>
-      prev.map((t) => (t.id === id ? { ...t, completed: !t.completed } : t)),
-    );
+  const toggleComplete = async (task: Task) => {
+    await fetch(`/api/tasks/${task.id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ completed: !task.completed }),
+    });
+    fetchTasks();
   };
 
-  const openView = (task: Task) => {
-    setSelectedTask(task);
-    setMode("view");
-    setActionOpen(true);
-  };
-
-  const openEdit = (task: Task) => {
-    setSelectedTask({ ...task });
-    setMode("edit");
-    setActionOpen(true);
-  };
-
-  const saveEdit = () => {
-    if (!selectedTask) return;
-
-    setTasks((prev) =>
-      prev.map((t) => (t.id === selectedTask.id ? selectedTask : t)),
-    );
-    setActionOpen(false);
-  };
-
-  const deleteTask = (id: number) => {
-    setTasks((prev) => prev.filter((t) => t.id !== id));
+  const deleteTask = async (id: string) => {
+    await fetch(`/api/tasks/${id}`, { method: "DELETE" });
+    fetchTasks();
   };
 
   const filteredTasks = tasks.filter((task) =>
     task.title.toLowerCase().includes(search.toLowerCase()),
   );
 
-  /* -------------------- UI -------------------- */
-  return (
-    <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white p-6 space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <h1 className=" mb-4 text-4xl font-bold">Tasks</h1>
+  const priorityStyle = (p: string) => {
+    if (p === "High") return "destructive";
+    if (p === "Medium") return "secondary";
+    return "outline";
+  };
 
-        {/* Search + Add Task */}
+  /* ---------------- UI ---------------- */
+  return (
+    <div className="min-h-screen bg-white dark:bg-black px-10 py-8">
+      {/* HEADER */}
+      <div className="flex items-center justify-between mb-8">
+        <h1 className="text-3xl font-bold">Tasks</h1>
+
         <div className="flex items-center gap-3">
           <div className="relative">
-            <Search
-              size={16}
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-black dark:text-white"
-            />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
               placeholder="Search tasks..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="pl-9 w-64 border-black dark:border-white"
+              className="pl-9 w-64"
             />
           </div>
 
-          <Button
-            onClick={() => setOpen(true)}
-            className="bg-black text-white dark:bg-white dark:text-black"
-          >
-            <Plus size={16} className="mr-2" /> Add Task
+          <Button onClick={() => setOpen(true)}>
+            <Plus className="h-4 w-4 mr-2" />
+            Add Task
           </Button>
         </div>
       </div>
 
-      {/* Task List */}
-      <div className="space-y-3">
+      {/* TASK LIST */}
+      <div className="space-y-4">
         {filteredTasks.map((task) => (
-          <motion.div
-            key={task.id}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-          >
-            <Card className="rounded-xl">
-              <CardContent className="p-4 flex justify-between items-center">
-                <div className="flex gap-4">
-                  <button onClick={() => toggleTask(task.id)}>
-                    {task.completed ? <CheckCircle2 /> : <Circle />}
-                  </button>
+          <Card key={task.id} className="rounded-xl">
+            <CardContent className="p-6 flex items-center justify-between">
+              <div className="flex items-start gap-4">
+                <div>
+                  <p
+                    className={`font-medium ${
+                      task.completed ? "line-through text-muted-foreground" : ""
+                    }`}
+                  >
+                    {task.title}
+                  </p>
 
-                  <div>
-                    <p
-                      className={`font-medium ${
-                        task.completed
-                          ? "line-through text-muted-foreground"
-                          : ""
-                      }`}
-                    >
-                      {task.title}
-                    </p>
-                    <div className="text-s flex items-center gap-2 mt-2">
-                      <CalendarIcon size={14} /> {task.due}
-                    </div>
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground mt-2">
+                    <Calendar className="h-4 w-4" />
+                    {formatDueDate(task.dueDate)}
                   </div>
                 </div>
+              </div>
 
-                <div className="flex items-center gap-2">
-                  <Badge variant="secondary">{task.priority}</Badge>
+              <div className="flex items-center gap-4">
+                <Badge variant={priorityStyle(task.priority)}>
+                  {task.priority}
+                </Badge>
 
-                  <Button
-                    size="icon"
-                    variant="ghost"
-                    onClick={() => openView(task)}
-                  >
-                    <Eye size={16} />
-                  </Button>
-
-                  <Button
-                    size="icon"
-                    variant="ghost"
-                    onClick={() => openEdit(task)}
-                  >
-                    <Pencil size={16} />
-                  </Button>
-
-                  <Button
-                    size="icon"
-                    variant="ghost"
-                    onClick={() => deleteTask(task.id)}
-                  >
-                    <Trash2 size={16} />
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  onClick={() => deleteTask(task.id)}
+                >
+                  <Trash2 className="h-4 w-4 text-red-500" />
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
         ))}
-
-        {filteredTasks.length === 0 && (
-          <p className="text-center text-sm text-muted-foreground py-8">
-            No tasks found
-          </p>
-        )}
       </div>
 
-      {/* ADD TASK DIALOG */}
+      {/* ADD TASK MODAL */}
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>New Task</DialogTitle>
+            <DialogTitle>Add Task</DialogTitle>
           </DialogHeader>
 
           <div className="space-y-4">
@@ -271,21 +216,11 @@ export default function TasksPage() {
               </SelectContent>
             </Select>
 
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button variant="outline" className="justify-start">
-                  <CalendarIcon className="mr-2 h-4 w-4" />
-                  {format(dueDate ?? new Date(), "PPP")}
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="p-0">
-                <Calendar
-                  mode="single"
-                  selected={dueDate}
-                  onSelect={setDueDate}
-                />
-              </PopoverContent>
-            </Popover>
+            <Input
+              type="date"
+              value={dueDate}
+              onChange={(e) => setDueDate(e.target.value)}
+            />
           </div>
 
           <DialogFooter>
@@ -295,82 +230,6 @@ export default function TasksPage() {
             <Button onClick={addTask} disabled={!title.trim()}>
               Create
             </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-
-      {/* VIEW / EDIT DIALOG */}
-      <Dialog open={actionOpen} onOpenChange={setActionOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>
-              {mode === "view" ? "View Task" : "Edit Task"}
-            </DialogTitle>
-          </DialogHeader>
-
-          {selectedTask && (
-            <div className="space-y-5">
-              {/* Task Title */}
-              <div className="space-y-1">
-                <label className="text-sm font-medium">Task title</label>
-                <Input
-                  placeholder="e.g. Design dashboard UI"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                />
-              </div>
-
-              {/* Priority + Due Date */}
-              <div className="grid grid-cols-2 gap-4">
-                {/* Priority */}
-                <div className="space-y-1">
-                  <label className="text-sm font-medium">Priority</label>
-                  <Select
-                    value={priority}
-                    onValueChange={(v) => setPriority(v as any)}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select priority" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="High">🔥 High</SelectItem>
-                      <SelectItem value="Medium">⚡ Medium</SelectItem>
-                      <SelectItem value="Low">🌱 Low</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                {/* Due Date */}
-                <div className="space-y-1">
-                  <label className="text-sm font-medium">Due date</label>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <Button
-                        variant="outline"
-                        className="w-full justify-start text-left"
-                      >
-                        <CalendarIcon className="mr-2 h-4 w-4" />
-                        {format(dueDate ?? new Date(), "PPP")}
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="p-0">
-                      <Calendar
-                        mode="single"
-                        selected={dueDate}
-                        onSelect={setDueDate}
-                      />
-                    </PopoverContent>
-                  </Popover>
-                </div>
-              </div>
-            </div>
-          )}
-
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setActionOpen(false)}>
-              Close
-            </Button>
-            {mode === "edit" && <Button onClick={saveEdit}>Save</Button>}
           </DialogFooter>
         </DialogContent>
       </Dialog>

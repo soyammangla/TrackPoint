@@ -12,10 +12,11 @@ model User {
   email    String  @unique
   name     String?
   image    String?
-  provider String
+  provider String?
   plan     Plan    @default(FREE)
   deals    Deal[]
   leads    Lead[]
+  tasks    Task[]
 }
 
 model Lead {
@@ -45,6 +46,19 @@ model Deal {
   lead      Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
   user      User     @relation(fields: [userId], references: [id])
 }
+
+model Task {
+  id        String   @id @default(cuid())
+  title     String
+  completed Boolean @default(false)
+
+  userId String
+  user   User @relation(fields: [userId], references: [id])
+
+  @@unique([id, userId])
+}
+
+
 
 
 enum Status {
