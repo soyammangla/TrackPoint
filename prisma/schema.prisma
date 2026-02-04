@@ -54,11 +54,21 @@ model Task {
 
   userId String
   user   User @relation(fields: [userId], references: [id])
+  
+  createdAt DateTime @default(now()) 
+  priority  String   @default("MEDIUM")
+  dueDate   DateTime?  // <-- optional
 
   @@unique([id, userId])
 }
 
 
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+}
 
 
 enum Status {
