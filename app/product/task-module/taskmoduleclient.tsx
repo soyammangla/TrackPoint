@@ -128,7 +128,7 @@ export default function TasksPage() {
     <div className="min-h-screen bg-white dark:bg-black px-10 py-8">
       {/* HEADER */}
       <div className="flex items-center justify-between mb-8">
-        <h1 className="text-3xl font-bold">Tasks</h1>
+        <h1 className="text-5xl font-extrabold">Tasks</h1>
 
         <div className="flex items-center gap-3">
           <div className="relative">
@@ -137,7 +137,7 @@ export default function TasksPage() {
               placeholder="Search tasks..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="pl-9 w-64"
+              className="pl-9 w-64 border:black dark:border-white"
             />
           </div>
 
