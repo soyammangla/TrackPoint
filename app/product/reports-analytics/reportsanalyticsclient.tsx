@@ -67,7 +67,7 @@ export default function ReportsPage() {
   });
 
   return (
-    <div className="p-6 space-y-6 min-h-screen bg-white dark:bg-neutral-950">
+    <div className="p-6 space-y-6 min-h-screen bg-white dark:bg-black">
       {/* HEADER */}
       <div className="flex flex-col md:flex-row md:justify-between gap-4">
         <div>
