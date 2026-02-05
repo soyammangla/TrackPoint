@@ -30,10 +30,10 @@ const solutions = [
     href: "/product/sales-pipeline",
   },
   {
-    title: "Workflow Automation",
-    desc: "Automate tasks, notifications, and follow-ups.",
+    title: "Task-Module",
+    desc: "Organize and prioritize your daily activities with ease.",
     icon: Settings,
-    href: "/product/workflow-automation",
+    href: "/product/task-module",
   },
   {
     title: "Reports & Analytics",

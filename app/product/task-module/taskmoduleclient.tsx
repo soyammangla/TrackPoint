@@ -128,7 +128,7 @@ export default function TasksPage() {
     <div className="min-h-screen bg-white dark:bg-black px-10 py-8">
       {/* HEADER */}
       <div className="flex items-center justify-between mb-8">
-        <h1 className="text-5xl font-extrabold">Tasks</h1>
+        <h1 className="text-5xl font-bold">Tasks</h1>
 
         <div className="flex items-center gap-3">
           <div className="relative">
