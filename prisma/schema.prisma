@@ -12,7 +12,7 @@ model User {
   email    String  @unique
   name     String?
   image    String?
-  provider String?
+  provider String
   plan     Plan    @default(FREE)
   deals    Deal[]
   leads    Lead[]
@@ -50,26 +50,14 @@ model Deal {
 model Task {
   id        String   @id @default(cuid())
   title     String
-  completed Boolean @default(false)
-
-  userId String
-  user   User @relation(fields: [userId], references: [id])
-  
-  createdAt DateTime @default(now()) 
-  priority  String   @default("MEDIUM")
-  dueDate   DateTime?  // <-- optional
-
-  @@unique([id, userId])
+  priority  String
+  dueDate   DateTime
+  completed Boolean  @default(false)
+  stage     String   @default("todo")
+  userId    String
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
 }
-
-
-
-enum Priority {
-  LOW
-  MEDIUM
-  HIGH
-}
-
 
 enum Status {
   New
