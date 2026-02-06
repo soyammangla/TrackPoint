@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { Users, TrendingUp, DollarSign, BarChart3 } from "lucide-react";
 import {
   LineChart,
@@ -16,111 +17,145 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
-/* ---------- DUMMY USER (FRONTEND ONLY) ---------- */
-const user = {
-  plan: "free", // change to "paid" to unlock charts
-};
-
-/* ---------- MONTH UTILS (REALISTIC) ---------- */
-function getLastNMonths(n = 6) {
-  const months = [];
-  const now = new Date();
-
-  for (let i = n - 1; i >= 0; i--) {
-    const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
-    months.push({
-      key: `${d.getFullYear()}-${d.getMonth() + 1}`, // UNIQUE (year+month)
-      label: d.toLocaleString("en-US", { month: "short", year: "numeric" }), // Jan 2026
-      year: d.getFullYear(),
-      month: d.getMonth() + 1,
-    });
-  }
-
-  return months;
-}
-
 export default function ReportsPage() {
-  /* ---------- METRICS (DUMMY) ---------- */
-  const metrics = [
-    { label: "Leads Generated", value: 124, icon: Users },
-    { label: "Deals Closed", value: 18, icon: TrendingUp },
-    { label: "Pipeline Value", value: "₹3,40,000", icon: DollarSign },
-    { label: "Conversion Rate", value: "14.5%", icon: BarChart3 },
-  ];
-
-  /* ---------- MONTHLY DATA (YEAR SAFE) ---------- */
-  const months = getLastNMonths(6);
-
-  const monthlyReport = months.map((m) => {
-    const leads = Math.floor(Math.random() * 80) + 20;
-    const dealsClosed = Math.floor(leads * (Math.random() * 0.2 + 0.05));
-    const pipelineValue = Math.floor(Math.random() * 200000) + 100000;
-
-    return {
-      key: m.key,
-      monthLabel: m.label,
-      leads,
-      dealsClosed,
-      conversionRate: Number(((dealsClosed / leads) * 100).toFixed(1)),
-      pipelineValue,
-    };
+  const [data, setData] = useState<any>({
+    metrics: {
+      totalLeads: 0,
+      totalDeals: 0,
+      pipelineValue: 0,
+      conversionRate: 0,
+    },
+    monthlyReport: [],
+    plan: "FREE",
   });
 
+  useEffect(() => {
+    fetch("/api/reports")
+      .then((res) => res.json())
+      .then((res) => setData(res))
+      .catch(() => {}); // optional error handling
+  }, []);
+
+  const { metrics, monthlyReport, plan } = data;
+
+  const metricCards = [
+    {
+      label: "Leads Generated",
+      value: metrics.totalLeads,
+      icon: Users,
+      description: "Total leads generated",
+    },
+    {
+      label: "Deals Closed",
+      value: metrics.totalDeals,
+      icon: TrendingUp,
+      description: "Total deals closed",
+    },
+    {
+      label: "Pipeline Value",
+      value: `₹${metrics.pipelineValue.toLocaleString("en-IN")}`,
+      icon: DollarSign,
+      description: "Total value of deals in pipeline",
+    },
+    {
+      label: "Conversion Rate",
+      value: `${metrics.conversionRate}%`,
+      icon: BarChart3,
+      description: "Overall conversion percentage",
+    },
+  ];
+
   return (
-    <div className="p-6 space-y-6 min-h-screen bg-white dark:bg-black">
-      {/* HEADER */}
-      <div className="flex flex-col md:flex-row md:justify-between gap-4">
-        <div>
-          <h1 className="text-4xl font-bold">Reports & Analytics</h1>
-          <p className="text-neutral-500 mt-1">
-            Deep insights into sales & performance
-          </p>
-        </div>
+    <div className="p-6 space-y-6">
+      <h1 className="text-4xl font-bold mb-10">Reports & Analytics</h1>
 
-        <div className="flex gap-2">
-          <Button variant="outline">Last 7 Days</Button>
-          <Button variant="outline">Last 30 Days</Button>
-          <Button variant="outline">This Year</Button>
-        </div>
-      </div>
-
-      {/* TOP METRICS */}
+      {/* METRICS */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {metrics.map((m) => (
-          <Card key={m.label}>
+        {metricCards.map((m) => (
+          <Card
+            key={m.label}
+            className="relative group hover:shadow-lg transition-all"
+          >
             <CardContent className="p-4 space-y-2">
               <m.icon />
               <p className="text-sm text-neutral-500">{m.label}</p>
               <h2 className="text-2xl font-bold">{m.value}</h2>
+
+              {/* Tooltip */}
+              <span className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 hidden group-hover:block text-xs px-2 py-1 rounded bg-neutral-800 text-white whitespace-nowrap z-50">
+                {m.description}
+              </span>
             </CardContent>
           </Card>
         ))}
       </div>
 
-      {/* MONTHLY TABLE */}
+      {/* TABLE */}
       <Card>
-        <CardHeader>
-          <CardTitle>Monthly Performance</CardTitle>
+        <CardHeader className="pb-3">
+          <CardTitle className="text-xl">Monthly Performance</CardTitle>
+          <p className="text-sm text-neutral-500">
+            Overview of leads & pipeline month by month
+          </p>
         </CardHeader>
-        <CardContent>
-          <table className="w-full text-sm">
-            <thead className="border-b text-neutral-500">
-              <tr>
-                <th className="text-left py-2">Month</th>
-                <th className="text-left">Leads</th>
-                <th className="text-left">Pipeline Value</th>
-              </tr>
-            </thead>
-            <tbody>
-              {monthlyReport.map((row) => (
-                <tr key={row.key} className="border-b last:border-0">
-                  <td className="py-2">{row.monthLabel}</td>
-                  <td>{row.leads}</td>
-                  <td>₹{row.pipelineValue.toLocaleString("en-IN")}</td>
+
+        <CardContent className="flex justify-center">
+          <div className="overflow-x-auto w-[90%] rounded-xl border border-neutral-200 dark:border-neutral-800">
+            <table className="w-full table-auto text-sm">
+              <thead className="bg-neutral-100 dark:bg-neutral-900">
+                <tr>
+                  <th className="px-4 py-3 text-left font-medium text-neutral-600">
+                    Month
+                  </th>
+                  <th className="px-4 py-3 text-center font-medium text-neutral-600">
+                    Leads
+                  </th>
+                  <th className="px-4 py-3 text-center font-medium text-neutral-600">
+                    Deals
+                  </th>
+                  <th className="px-4 py-3 text-right font-medium text-neutral-600">
+                    Pipeline Value
+                  </th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+
+              <tbody>
+                {monthlyReport.length === 0 ? (
+                  <tr>
+                    <td
+                      colSpan={4}
+                      className="text-center py-4 text-neutral-500"
+                    >
+                      Loading data...
+                    </td>
+                  </tr>
+                ) : (
+                  monthlyReport.map((m: any) => (
+                    <tr
+                      key={m.month}
+                      className="border-b last:border-0 hover:bg-blue-50 dark:hover:bg-neutral-800 transition cursor-pointer"
+                      title={`Month: ${m.month}, Leads: ${m.leads}, Deals: ${m.deals}, Pipeline: ₹${m.pipelineValue.toLocaleString(
+                        "en-IN",
+                      )}`}
+                    >
+                      <td className="px-4 py-3 font-medium whitespace-nowrap">
+                        {m.month}
+                      </td>
+                      <td className="px-4 py-3 text-center font-medium">
+                        {m.leads}
+                      </td>
+                      <td className="px-4 py-3 text-center font-medium">
+                        {m.deals}
+                      </td>
+                      <td className="px-4 py-3 font-semibold text-right">
+                        ₹{m.pipelineValue.toLocaleString("en-IN")}
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
         </CardContent>
       </Card>
 
@@ -129,38 +164,34 @@ export default function ReportsPage() {
         <CardHeader className="pb-2">
           <CardTitle className="text-xl">Trends & Insights</CardTitle>
           <p className="text-sm text-neutral-500">
-            Month-wise & year-safe performance trends
+            Growth patterns based on your activity
           </p>
         </CardHeader>
-        <CardContent>
-          {user.plan === "free" && (
-            <div className="h-64 flex flex-col items-center justify-center text-neutral-400 gap-3">
-              <p>Charts are available on the paid plan</p>
+
+        <CardContent className="flex flex-col items-center">
+          {plan === "FREE" && (
+            <div className="h-64 flex flex-col items-center justify-center text-neutral-400 gap-3 w-[90%]">
+              <p>Charts are available on the Pro plan</p>
               <Button>Upgrade to Pro</Button>
             </div>
           )}
 
-          {user.plan === "paid" && (
-            <div className="flex flex-col gap-16">
+          {plan === "PAID" && monthlyReport.length > 0 && (
+            <div className="flex flex-col gap-12 w-[90%]">
               {/* Leads Trend */}
-              <div className="bg-neutral-50 dark:bg-neutral-900 p-5 rounded-2xl h-80 border border-neutral-200 dark:border-neutral-800">
-                <p className="text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
-                  Leads Growth
+              <div className="h-80 p-5 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900">
+                <p className="text-sm font-medium mb-1">Leads Growth</p>
+                <p className="text-xs text-neutral-500 mb-4">
+                  Number of leads generated each month
                 </p>
-                <p className="text-xs text-neutral-500 mb-3">
-                  How lead volume changed over time
-                </p>
+
                 <ResponsiveContainer width="100%" height="100%">
-                  <LineChart
-                    data={monthlyReport}
-                    margin={{ top: 10, right: 20, left: 0, bottom: 0 }}
-                  >
+                  <LineChart data={monthlyReport}>
                     <CartesianGrid strokeDasharray="3 3" strokeOpacity={0.3} />
-                    <XAxis dataKey="monthLabel" />
+                    <XAxis dataKey="month" />
                     <YAxis />
                     <Tooltip />
                     <Line
-                      type="monotone"
                       dataKey="leads"
                       stroke="#2563eb"
                       strokeWidth={3}
@@ -171,21 +202,17 @@ export default function ReportsPage() {
                 </ResponsiveContainer>
               </div>
 
-              {/* Pipeline Value Trend */}
-              <div className="bg-neutral-50 dark:bg-neutral-900 p-5 rounded-2xl h-80 border border-neutral-200 dark:border-neutral-800">
-                <p className="text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
-                  Pipeline Value
+              {/* Pipeline Trend */}
+              <div className="h-80 p-5 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900">
+                <p className="text-sm font-medium mb-1">Pipeline Value</p>
+                <p className="text-xs text-neutral-500 mb-4">
+                  Total deal value trend over time
                 </p>
-                <p className="text-xs text-neutral-500 mb-3">
-                  Total value of open deals per period
-                </p>
+
                 <ResponsiveContainer width="100%" height="100%">
-                  <BarChart
-                    data={monthlyReport}
-                    margin={{ top: 10, right: 20, left: 0, bottom: 0 }}
-                  >
+                  <BarChart data={monthlyReport}>
                     <CartesianGrid strokeDasharray="3 3" strokeOpacity={0.3} />
-                    <XAxis dataKey="monthLabel" />
+                    <XAxis dataKey="month" />
                     <YAxis tickFormatter={(v) => `₹${v / 1000}k`} />
                     <Tooltip
                       formatter={(v) => `₹${Number(v).toLocaleString("en-IN")}`}
