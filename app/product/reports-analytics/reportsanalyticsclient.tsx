@@ -13,6 +13,7 @@ import {
   CartesianGrid,
   ResponsiveContainer,
 } from "recharts";
+import Link from "next/link";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -78,7 +79,7 @@ export default function ReportsPage() {
           >
             <CardContent className="p-4 space-y-2">
               <m.icon />
-              <p className="text-sm text-neutral-500">{m.label}</p>
+              <p className="text-sm text-black dark:text-white">{m.label}</p>
               <h2 className="text-2xl font-bold">{m.value}</h2>
 
               {/* Tooltip */}
@@ -94,7 +95,7 @@ export default function ReportsPage() {
       <Card>
         <CardHeader className="pb-3">
           <CardTitle className="text-xl">Monthly Performance</CardTitle>
-          <p className="text-sm text-neutral-500">
+          <p className="text-sm text-black dark:text-white">
             Overview of leads & pipeline month by month
           </p>
         </CardHeader>
@@ -104,16 +105,16 @@ export default function ReportsPage() {
             <table className="w-full table-auto text-sm">
               <thead className="bg-neutral-100 dark:bg-neutral-900">
                 <tr>
-                  <th className="px-4 py-3 text-left font-medium text-neutral-600">
+                  <th className="px-4 py-3 text-left font-medium text-black dark:text-white">
                     Month
                   </th>
-                  <th className="px-4 py-3 text-center font-medium text-neutral-600">
+                  <th className="px-4 py-3 text-center font-medium text-black dark:text-white">
                     Leads
                   </th>
-                  <th className="px-4 py-3 text-center font-medium text-neutral-600">
+                  <th className="px-4 py-3 text-center font-medium text-black dark:text-white">
                     Deals
                   </th>
-                  <th className="px-4 py-3 text-right font-medium text-neutral-600">
+                  <th className="px-4 py-3 text-right font-medium text-black dark:text-white">
                     Pipeline Value
                   </th>
                 </tr>
@@ -133,10 +134,7 @@ export default function ReportsPage() {
                   monthlyReport.map((m: any) => (
                     <tr
                       key={m.month}
-                      className="border-b last:border-0 hover:bg-blue-50 dark:hover:bg-neutral-800 transition cursor-pointer"
-                      title={`Month: ${m.month}, Leads: ${m.leads}, Deals: ${m.deals}, Pipeline: ₹${m.pipelineValue.toLocaleString(
-                        "en-IN",
-                      )}`}
+                      className="border-b last:border-0 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition cursor-pointer"
                     >
                       <td className="px-4 py-3 font-medium whitespace-nowrap">
                         {m.month}
@@ -163,16 +161,18 @@ export default function ReportsPage() {
       <Card>
         <CardHeader className="pb-2">
           <CardTitle className="text-xl">Trends & Insights</CardTitle>
-          <p className="text-sm text-neutral-500">
+          <p className="text-sm text-black dark:text-white">
             Growth patterns based on your activity
           </p>
         </CardHeader>
 
         <CardContent className="flex flex-col items-center">
           {plan === "FREE" && (
-            <div className="h-64 flex flex-col items-center justify-center text-neutral-400 gap-3 w-[90%]">
+            <div className="h-32 flex flex-col items-center justify-center text-black dark:text-white gap-3 w-[90%]">
               <p>Charts are available on the Pro plan</p>
-              <Button>Upgrade to Pro</Button>
+              <Link href="/pricing">
+                <Button>Upgrade to Pro</Button>
+              </Link>
             </div>
           )}
 
@@ -181,7 +181,7 @@ export default function ReportsPage() {
               {/* Leads Trend */}
               <div className="h-80 p-5 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900">
                 <p className="text-sm font-medium mb-1">Leads Growth</p>
-                <p className="text-xs text-neutral-500 mb-4">
+                <p className="text-xs text-black dark:text-white mb-4">
                   Number of leads generated each month
                 </p>
 
@@ -205,7 +205,7 @@ export default function ReportsPage() {
               {/* Pipeline Trend */}
               <div className="h-80 p-5 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900">
                 <p className="text-sm font-medium mb-1">Pipeline Value</p>
-                <p className="text-xs text-neutral-500 mb-4">
+                <p className="text-xs text-black dark:text-white mb-4">
                   Total deal value trend over time
                 </p>
 
