@@ -20,72 +20,73 @@ import { Button } from "@/components/ui/button";
 
 export default function ReportsPage() {
   const [data, setData] = useState<any>({
+    plan: "FREE",
     metrics: {
       totalLeads: 0,
-      totalDeals: 0,
-      pipelineValue: 0,
+      dealsClosed: 0,
+      revenue: 0,
       conversionRate: 0,
     },
     monthlyReport: [],
-    plan: "FREE",
   });
+
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetch("/api/reports")
       .then((res) => res.json())
       .then((res) => setData(res))
-      .catch(() => {}); // optional error handling
+      .finally(() => setLoading(false));
   }, []);
 
-  const { metrics, monthlyReport, plan } = data;
+  const metrics = data?.metrics ?? {
+    totalLeads: 0,
+    dealsClosed: 0,
+    revenue: 0,
+    conversionRate: 0,
+  };
+
+  const monthlyReport = Array.isArray(data?.monthlyReport)
+    ? data.monthlyReport
+    : [];
+
+  const plan = data?.plan ?? "FREE";
 
   const metricCards = [
     {
       label: "Leads Generated",
       value: metrics.totalLeads,
       icon: Users,
-      description: "Total leads generated",
     },
     {
       label: "Deals Closed",
-      value: metrics.totalDeals,
+      value: metrics.dealsClosed,
       icon: TrendingUp,
-      description: "Total deals closed",
     },
     {
-      label: "Pipeline Value",
-      value: `₹${metrics.pipelineValue.toLocaleString("en-IN")}`,
+      label: "Revenue",
+      value: `₹${metrics.revenue.toLocaleString("en-IN")}`,
       icon: DollarSign,
-      description: "Total value of deals in pipeline",
     },
     {
       label: "Conversion Rate",
       value: `${metrics.conversionRate}%`,
       icon: BarChart3,
-      description: "Overall conversion percentage",
     },
   ];
 
   return (
-    <div className="p-6 space-y-6">
-      <h1 className="text-4xl font-bold mb-10">Reports & Analytics</h1>
+    <div className="p-6 space-y-8">
+      <h1 className="text-4xl font-bold">Reports & Analytics</h1>
 
       {/* METRICS */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {metricCards.map((m) => (
-          <Card
-            key={m.label}
-            className="relative group hover:shadow-lg transition-all"
-          >
-            <CardContent className="p-4 space-y-2">
+          <Card key={m.label}>
+            <CardContent className="p-5 space-y-2">
               <m.icon />
               <p className="text-sm text-black dark:text-white">{m.label}</p>
               <h2 className="text-2xl font-bold">{m.value}</h2>
-
-              {/* Tooltip */}
-              <span className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 hidden group-hover:block text-xs px-2 py-1 rounded bg-neutral-800 text-white whitespace-nowrap z-50">
-                {m.description}
-              </span>
             </CardContent>
           </Card>
         ))}
@@ -93,97 +94,77 @@ export default function ReportsPage() {
 
       {/* TABLE */}
       <Card>
-        <CardHeader className="pb-3">
-          <CardTitle className="text-xl">Monthly Performance</CardTitle>
-          <p className="text-sm text-black dark:text-white">
-            Overview of leads & pipeline month by month
-          </p>
+        <CardHeader>
+          <CardTitle>Monthly Performance</CardTitle>
         </CardHeader>
 
-        <CardContent className="flex justify-center">
-          <div className="overflow-x-auto w-[90%] rounded-xl border border-neutral-200 dark:border-neutral-800">
-            <table className="w-full table-auto text-sm">
-              <thead className="bg-neutral-100 dark:bg-neutral-900">
-                <tr>
-                  <th className="px-4 py-3 text-left font-medium text-black dark:text-white">
-                    Month
-                  </th>
-                  <th className="px-4 py-3 text-center font-medium text-black dark:text-white">
-                    Leads
-                  </th>
-                  <th className="px-4 py-3 text-center font-medium text-black dark:text-white">
-                    Deals
-                  </th>
-                  <th className="px-4 py-3 text-right font-medium text-black dark:text-white">
-                    Pipeline Value
-                  </th>
-                </tr>
-              </thead>
+        <CardContent>
+          <table className="w-full text-sm">
+            <thead className="border-b text-black dark:text-white">
+              <tr>
+                <th className="text-left py-2">Month</th>
+                <th className="text-center">Leads</th>
+                <th className="text-center">Deals</th>
+                <th className="text-right">Pipeline</th>
+              </tr>
+            </thead>
 
-              <tbody>
-                {monthlyReport.length === 0 ? (
-                  <tr>
-                    <td
-                      colSpan={4}
-                      className="text-center py-4 text-neutral-500"
-                    >
-                      Loading data...
+            <tbody>
+              {loading ? (
+                <tr>
+                  <td colSpan={4} className="text-center py-6">
+                    Loading...
+                  </td>
+                </tr>
+              ) : monthlyReport.length === 0 ? (
+                <tr>
+                  <td colSpan={4} className="text-center py-6 text-neutral-400">
+                    No data available
+                  </td>
+                </tr>
+              ) : (
+                monthlyReport.map((m: any) => (
+                  <tr key={m.month} className="border-b last:border-0">
+                    <td className="py-2">{m.month}</td>
+                    <td className="text-center">{m.leads}</td>
+                    <td className="text-center">{m.deals}</td>
+                    <td className="text-right font-semibold">
+                      ₹{m.pipelineValue.toLocaleString("en-IN")}
                     </td>
                   </tr>
-                ) : (
-                  monthlyReport.map((m: any) => (
-                    <tr
-                      key={m.month}
-                      className="border-b last:border-0 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition cursor-pointer"
-                    >
-                      <td className="px-4 py-3 font-medium whitespace-nowrap">
-                        {m.month}
-                      </td>
-                      <td className="px-4 py-3 text-center font-medium">
-                        {m.leads}
-                      </td>
-                      <td className="px-4 py-3 text-center font-medium">
-                        {m.deals}
-                      </td>
-                      <td className="px-4 py-3 font-semibold text-right">
-                        ₹{m.pipelineValue.toLocaleString("en-IN")}
-                      </td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
-          </div>
+                ))
+              )}
+            </tbody>
+          </table>
         </CardContent>
       </Card>
 
       {/* CHARTS */}
       <Card>
-        <CardHeader className="pb-2">
-          <CardTitle className="text-xl">Trends & Insights</CardTitle>
-          <p className="text-sm text-black dark:text-white">
-            Growth patterns based on your activity
-          </p>
+        <CardHeader>
+          <CardTitle>Trends & Insights</CardTitle>
         </CardHeader>
 
-        <CardContent className="flex flex-col items-center">
+        <CardContent>
           {plan === "FREE" && (
-            <div className="h-32 flex flex-col items-center justify-center text-black dark:text-white gap-3 w-[90%]">
-              <p>Charts are available on the Pro plan</p>
+            <div className="h-40 flex flex-col items-center justify-center gap-3">
+              <p>Charts are available on Pro plan</p>
               <Link href="/pricing">
-                <Button>Upgrade to Pro</Button>
+                <Button>Upgrade</Button>
               </Link>
             </div>
           )}
 
           {plan === "PAID" && monthlyReport.length > 0 && (
-            <div className="flex flex-col gap-12 w-[90%]">
-              {/* Leads Trend */}
-              <div className="h-80 p-5 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900">
-                <p className="text-sm font-medium mb-1">Leads Growth</p>
-                <p className="text-xs text-black dark:text-white mb-4">
-                  Number of leads generated each month
-                </p>
+            <div className="flex flex-col gap-12">
+              {/* LEADS TREND */}
+              <div className="h-80 p-5 mb-5 rounded-xl border border-neutral-200 dark:border-neutral-800">
+                <div className="mb-3">
+                  <h3 className="text-md font-bold">Leads Growth</h3>
+                  <p className="text-sm mb-8 text-black dark:text-white font-semibold">
+                    Number of leads generated each month
+                  </p>
+                </div>
 
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart data={monthlyReport}>
@@ -202,12 +183,14 @@ export default function ReportsPage() {
                 </ResponsiveContainer>
               </div>
 
-              {/* Pipeline Trend */}
-              <div className="h-80 p-5 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900">
-                <p className="text-sm font-medium mb-1">Pipeline Value</p>
-                <p className="text-xs text-black dark:text-white mb-4">
-                  Total deal value trend over time
-                </p>
+              {/* PIPELINE / REVENUE TREND */}
+              <div className="h-80 p-5 my-5 rounded-xl border border-neutral-200 dark:border-neutral-800">
+                <div className="mb-3">
+                  <h3 className="text-md font-bold">Revenue Trend</h3>
+                  <p className="text-sm mb-8 text-black dark:text-white font-semibold">
+                    Total value of closed-won deals (₹)
+                  </p>
+                </div>
 
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={monthlyReport}>
@@ -220,7 +203,7 @@ export default function ReportsPage() {
                     <Bar
                       dataKey="pipelineValue"
                       fill="#16a34a"
-                      radius={[8, 8, 0, 0]}
+                      radius={[6, 6, 0, 0]}
                     />
                   </BarChart>
                 </ResponsiveContainer>
