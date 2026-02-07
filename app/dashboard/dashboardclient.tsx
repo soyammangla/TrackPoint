@@ -1,47 +1,85 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
-
 import { Users, TrendingUp, DollarSign, BarChart3 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 
 export default function DashboardPage() {
-  const stats = [
+  const [stats, setStats] = useState<any[]>([
     {
       title: "Total Leads",
-      value: 124,
-      change: "+12 this week",
+      value: "—",
       icon: Users,
     },
     {
       title: "Deals Won",
-      value: 18,
-      change: "+3 this week",
+      value: "—",
       icon: TrendingUp,
     },
     {
       title: "Revenue",
-      value: "₹1,85,000",
-      change: "+₹25,000",
+      value: "—",
       icon: DollarSign,
     },
     {
       title: "Conversion Rate",
-      value: "14.5%",
-      change: "+1.2%",
+      value: "—",
       icon: BarChart3,
     },
-  ];
+  ]);
+
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchStats() {
+      const res = await fetch("/api/dashboard");
+      const data = await res.json();
+
+      setStats([
+        {
+          title: "Total Leads",
+          value: data.totalLeads,
+          change: "",
+          icon: Users,
+        },
+        {
+          title: "Deals Won",
+          value: data.dealsWon,
+          change: "",
+          icon: TrendingUp,
+        },
+        {
+          title: "Revenue",
+          value: `₹${data.revenue.toLocaleString("en-IN")}`,
+          change: "",
+          icon: DollarSign,
+        },
+        {
+          title: "Conversion Rate",
+          value: `${data.conversionRate}%`,
+          change: "",
+          icon: BarChart3,
+        },
+      ]);
+
+      setLoading(false);
+    }
+
+    fetchStats();
+  }, []);
 
   return (
     <div className="p-6 space-y-6 min-h-screen bg-white dark:bg-black">
       {/* HEADER */}
       <div>
         <h1 className="text-4xl font-bold">Dashboard</h1>
-        <p className="text-neutral-500 mt-1">Quick snapshot of your business</p>
+        <p className="text-neutral-500 font-semibold mt-1">
+          Quick snapshot of your business
+        </p>
       </div>
 
-      {/* OVERVIEW CARDS */}
+      {/* OVERVIEW CARDS (UI SAME) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {stats.map((stat) => (
           <Card key={stat.title}>
@@ -52,8 +90,6 @@ export default function DashboardPage() {
               </div>
 
               <div className="text-3xl font-bold">{stat.value}</div>
-
-              <p className="text-xs text-green-500">{stat.change}</p>
             </CardContent>
           </Card>
         ))}
@@ -61,11 +97,11 @@ export default function DashboardPage() {
 
       {/* NOTE */}
       <Card>
-        <CardContent className="p-4 text-sm text-black dark:text-white">
+        <CardContent className="p-4 text-sm">
           This dashboard shows a real-time overview of your sales performance.
           For detailed analysis, visit the{" "}
           <Link
-            href="/reports"
+            href="/product/reports-analytics"
             className="text-blue-600 hover:underline font-medium"
           >
             Reports & Analytics
