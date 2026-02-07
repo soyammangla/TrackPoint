@@ -76,14 +76,16 @@ export default function ReportsPage() {
   ];
 
   return (
-    <div className="p-6 space-y-8">
-      <h1 className="text-4xl font-bold">Reports & Analytics</h1>
+    <div className="p-4 sm:p-6 space-y-8">
+      <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold">
+        Reports & Analytics
+      </h1>
 
       {/* METRICS */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {metricCards.map((m) => (
           <Card key={m.label}>
-            <CardContent className="p-5 space-y-2">
+            <CardContent className="p-4 sm:p-5 space-y-2 flex flex-col items-start">
               <m.icon />
               <p className="text-sm text-black dark:text-white">{m.label}</p>
               <h2 className="text-2xl font-bold">{m.value}</h2>
@@ -97,9 +99,8 @@ export default function ReportsPage() {
         <CardHeader>
           <CardTitle>Monthly Performance</CardTitle>
         </CardHeader>
-
-        <CardContent>
-          <table className="w-full text-sm">
+        <CardContent className="overflow-x-auto">
+          <table className="w-full min-w-520px text-sm">
             <thead className="border-b text-black dark:text-white">
               <tr>
                 <th className="text-left py-2">Month</th>
@@ -147,7 +148,7 @@ export default function ReportsPage() {
 
         <CardContent>
           {plan === "FREE" && (
-            <div className="h-40 flex flex-col items-center justify-center gap-3">
+            <div className="h-40 flex flex-col items-center justify-center gap-3 text-center px-4">
               <p>Charts are available on Pro plan</p>
               <Link href="/pricing">
                 <Button>Upgrade</Button>
@@ -158,7 +159,7 @@ export default function ReportsPage() {
           {plan === "PAID" && monthlyReport.length > 0 && (
             <div className="flex flex-col gap-12">
               {/* LEADS TREND */}
-              <div className="h-80 p-5 mb-5 rounded-xl border border-neutral-200 dark:border-neutral-800">
+              <div className="h-64 sm:h-80 p-4 sm:p-5 mb-5 rounded-xl border border-neutral-200 dark:border-neutral-800">
                 <div className="mb-3">
                   <h3 className="text-md font-bold">Leads Growth</h3>
                   <p className="text-sm mb-8 text-black dark:text-white font-semibold">
@@ -184,7 +185,7 @@ export default function ReportsPage() {
               </div>
 
               {/* PIPELINE / REVENUE TREND */}
-              <div className="h-80 p-5 my-5 rounded-xl border border-neutral-200 dark:border-neutral-800">
+              <div className="h-64 sm:h-80 p-4 sm:p-5 my-5 rounded-xl border border-neutral-200 dark:border-neutral-800">
                 <div className="mb-3">
                   <h3 className="text-md font-bold">Revenue Trend</h3>
                   <p className="text-sm mb-8 text-black dark:text-white font-semibold">

@@ -11,7 +11,7 @@ const Footer = () => {
       <div className="w-[90%] sm:w-[85%] md:w-[80%] mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 text-center sm:text-left">
         {/* Brand */}
         <div>
-          <div className="flex items-start gap-0 -translate-x-3">
+          <div className="flex items-center justify-center sm:justify-start gap-0 sm:-translate-x-3">
             {/* Dark mode → light logo */}
             <Image
               src="/logo-light.png"

@@ -125,19 +125,19 @@ export default function TasksPage() {
 
   /* ---------------- UI ---------------- */
   return (
-    <div className="min-h-screen bg-white dark:bg-black px-10 py-8">
+    <div className="min-h-screen bg-white dark:bg-black px-4 sm:px-6 md:px-10 py-8">
       {/* HEADER */}
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-8">
         <h1 className="text-5xl font-bold">Tasks</h1>
 
-        <div className="flex items-center gap-3">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
               placeholder="Search tasks..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="pl-9 w-64 border:black dark:border-white"
+              className="pl-9 w-full sm:w-64 border-black dark:border-white"
             />
           </div>
 
@@ -152,7 +152,7 @@ export default function TasksPage() {
       <div className="space-y-4">
         {filteredTasks.map((task) => (
           <Card key={task.id} className="rounded-xl">
-            <CardContent className="p-6 flex items-center justify-between">
+            <CardContent className="p-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex items-start gap-4">
                 <div>
                   <p

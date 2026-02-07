@@ -46,11 +46,13 @@ export default function DashboardPage() {
   }, []);
 
   return (
-    <div className="p-6 space-y-6 min-h-screen bg-white dark:bg-black">
+    <div className="p-4 sm:p-6 space-y-6 min-h-screen bg-white dark:bg-black">
       {/* HEADER */}
       <div>
-        <h1 className="text-4xl font-bold">Dashboard</h1>
-        <p className="text-black dark:text-white font-semibold mt-1">
+        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold">
+          Dashboard
+        </h1>
+        <p className="text-black dark:text-white font-semibold mt-1 max-w-xl">
           Quick snapshot of your business
         </p>
       </div>
@@ -59,14 +61,14 @@ export default function DashboardPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {stats.map((stat) => (
           <Card key={stat.title}>
-            <CardContent className="p-5 space-y-3">
+            <CardContent className="p-4 sm:p-5 space-y-3">
               <div className="flex justify-between items-center">
                 <span className="text-sm text-black dark:text-white">
                   {stat.title}
                 </span>
                 <stat.icon size={18} />
               </div>
-              <div className="text-3xl font-bold">{stat.value}</div>
+              <div className="text-2xl sm:text-3xl font-bold">{stat.value}</div>
             </CardContent>
           </Card>
         ))}
@@ -74,7 +76,7 @@ export default function DashboardPage() {
 
       {/* NOTE */}
       <Card>
-        <CardContent className="p-4 text-sm">
+        <CardContent className="p-4 text-sm leading-relaxed">
           This dashboard shows a real-time overview of your sales performance.
           For detailed analysis, visit{" "}
           <Link

@@ -24,7 +24,7 @@ export default function HeroSection() {
     <section className="relative overflow-hidden bg-gradient from-slate-50 to-white dark:from-black dark:to-black">
       {/* Background glow */}
       <div className="absolute inset-0 -z-10">
-        <div className="absolute left-1/2 top-[-20%] h-[360px] w-[360px] sm:h-[420px] sm:w-[420px] -translate-x-1/2 rounded-full bg-indigo-500/20 dark:bg-indigo-400/10 blur-3xl" />
+        <div className="absolute left-1/2 top-[-20%] h-360px w-360px sm:h-420px sm:w-420px -translate-x-1/2 rounded-full bg-indigo-500/20 dark:bg-indigo-400/10 blur-3xl" />
       </div>
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 py-16 sm:py-20 lg:py-32">
@@ -37,7 +37,7 @@ export default function HeroSection() {
             className="space-y-5 text-center lg:text-left"
           >
             <span className="mx-auto inline-flex items-center justify-center rounded-full border border-black dark:border-white bg-black dark:bg-neutral-900 px-4 py-1 text-xs sm:text-sm font-medium text-white lg:mx-0">
-              🚀 Modern CRM Platform
+              Modern CRM Platform
             </span>
 
             <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight text-slate-900 dark:text-white">
