@@ -46,7 +46,7 @@ export default function Pricing() {
         "Team collaboration",
       ],
       buttonText: "Buy Pro",
-      link: "/",
+      link: "/buy-pro",
       highlighted: true,
     },
     {
