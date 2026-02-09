@@ -344,7 +344,7 @@ export default function LeadManagementPage() {
                   setCurrent({ ...current, status: e.target.value })
                 }
                 disabled={mode === "view" || mode === "convert"}
-                className="w-full p-2 border rounded"
+                className="w-full p-2 border rounded bg-white text-black dark:bg-black dark:text-white"
               >
                 <option>New</option>
                 <option>Contacted</option>

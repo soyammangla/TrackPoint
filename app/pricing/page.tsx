@@ -36,13 +36,13 @@ export default function Pricing() {
     {
       name: "Pro",
       description: "Perfect for growing teams & businesses.",
-      price: "₹499",
+      price: "₹199",
       duration: "/ one-time",
       features: [
         "Manage up to 500 clients",
         "Advanced analytics",
         "Priority email support",
-        "Task automation",
+        "Graphical dashboards",
         "Team collaboration",
       ],
       buttonText: "Buy Pro",
@@ -52,7 +52,7 @@ export default function Pricing() {
     {
       name: "Enterprise",
       description: "For large teams with custom needs.",
-      price: "₹999",
+      price: "₹499",
       duration: "/ one-time",
       features: [
         "Unlimited clients",

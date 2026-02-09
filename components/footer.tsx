@@ -132,27 +132,7 @@ const Footer = () => {
 
       {/* Copyright */}
       <div className="border-t border-gray-300 dark:border-slate-800 mt-10 pt-6 text-center text-sm flex flex-row items-center justify-center gap-2 text-black dark:text-white">
-        <span>Made with</span>
-        <motion.span
-          animate={{ scale: [1, 1.3, 1] }}
-          transition={{ duration: 0.8, repeat: Infinity, repeatDelay: 0.5 }}
-          className="inline-flex"
-        >
-          <IoIosHeart className="text-red-500 text-lg cursor-pointer" />
-        </motion.span>
-        <span>
-          by{" "}
-          <Link
-            href="https://twitter.com/soyam1134"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <span className="font-semibold text-black dark:text-white cursor-pointer">
-              Soyam
-            </span>
-          </Link>
-          .
-        </span>
+        Built for growth • Powered by TrackPoint
       </div>
     </footer>
   );
