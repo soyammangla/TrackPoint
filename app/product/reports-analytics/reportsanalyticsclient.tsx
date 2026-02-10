@@ -105,7 +105,7 @@ export default function ReportsPage() {
               <tr>
                 <th className="text-left py-2">Month</th>
                 <th className="text-center">Leads</th>
-                <th className="text-center">Deals</th>
+                <th className="text-center">Deals Closed</th>
                 <th className="text-right">Pipeline</th>
               </tr>
             </thead>
