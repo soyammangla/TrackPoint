@@ -44,6 +44,7 @@ export default function LeadManagementPage() {
   });
 
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetchLeads();
@@ -84,6 +85,8 @@ export default function LeadManagementPage() {
   };
 
   const saveLead = async () => {
+    if (loading) return;
+    setLoading(true);
     setError(null);
     try {
       let res: Response | undefined;
@@ -140,6 +143,7 @@ export default function LeadManagementPage() {
           deal.stage = "New";
           addDeal(deal);
           router.push("/product/sales-pipeline");
+          router.refresh();
           return;
         }
       }
@@ -154,6 +158,8 @@ export default function LeadManagementPage() {
       setOpen(false);
     } catch {
       setError("Something went wrong");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -387,7 +393,12 @@ export default function LeadManagementPage() {
               )}
 
               <div className="flex flex-col gap-2">
-                {mode !== "view" && <Button onClick={saveLead}>Save</Button>}
+                {mode !== "view" && (
+                  <Button onClick={saveLead} disabled={loading}>
+                    {loading ? "Saving..." : "Save"}
+                  </Button>
+                )}
+
                 <Button variant="outline" onClick={() => setOpen(false)}>
                   Close
                 </Button>
