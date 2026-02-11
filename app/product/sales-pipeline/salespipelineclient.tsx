@@ -6,6 +6,7 @@ import { Pencil, Trash2, Eye, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useDeals, Deal } from "@/context/dealscontext";
+import { useRouter } from "next/navigation";
 
 const STAGE_FLOW: Record<string, string[]> = {
   New: ["Contacted"],
@@ -100,6 +101,12 @@ const sendFollowUpEmail = async (deal: Deal) => {
 };
 
 export default function SalesPipelinePage() {
+  const router = useRouter();
+
+  useEffect(() => {
+    router.refresh();
+  }, []);
+
   const { deals, updateDeal, removeDeal } = useDeals();
 
   const [search, setSearch] = useState("");
