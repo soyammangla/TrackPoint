@@ -9,6 +9,65 @@ import { Label } from "@/components/ui/label";
 export default function BuyPro() {
   const [method, setMethod] = useState<"card" | "upi">("card");
 
+  const loadRazorpayScript = () => {
+    return new Promise<boolean>((resolve) => {
+      const script = document.createElement("script");
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+      script.onload = () => resolve(true);
+      script.onerror = () => resolve(false);
+      document.body.appendChild(script);
+    });
+  };
+
+  const handlePayment = async () => {
+    const res = await loadRazorpayScript();
+    if (!res) {
+      alert("Razorpay SDK failed to load. Are you online?");
+      return;
+    }
+
+    try {
+      // 1️Create order on backend
+      const orderRes = await fetch("/api/create-order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ amount: 199 }), // ₹199
+      });
+      const order = await orderRes.json();
+
+      // 2️Open Razorpay checkout
+      const options = {
+        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
+        amount: order.amount,
+        currency: order.currency,
+        name: "TrackPoint Pro",
+        description: "One-time payment for TrackPoint Pro",
+        order_id: order.id,
+        handler: async function (response: any) {
+          // 3️Verify payment
+          const verifyRes = await fetch("/api/verify-payment", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(response),
+          });
+          const data = await verifyRes.json();
+          if (data.success) {
+            alert("Payment Successful! Thank you.");
+          } else {
+            alert("Payment Failed. Please try again.");
+          }
+        },
+        theme: { color: "#000000" },
+      };
+
+      const rzp = new (window as any).Razorpay(options);
+      rzp.open();
+    } catch (err) {
+      console.error(err);
+      alert("Something went wrong while creating the order.");
+    }
+  };
+
   return (
     <main className="min-h-screen bg-white dark:bg-black text-black dark:text-white">
       <div className="max-w-6xl mx-auto px-4 py-20 grid grid-cols-1 md:grid-cols-2 gap-16">
@@ -49,7 +108,6 @@ export default function BuyPro() {
           <CardContent className="p-8 space-y-8">
             <h2 className="text-lg font-medium">Checkout</h2>
 
-            {/* Email */}
             <div>
               <Label className="mb-4">Email address</Label>
               <Input
@@ -86,7 +144,6 @@ export default function BuyPro() {
               </div>
             </div>
 
-            {/* Card Fields */}
             {method === "card" && (
               <>
                 <div>
@@ -115,7 +172,6 @@ export default function BuyPro() {
               </>
             )}
 
-            {/* UPI */}
             {method === "upi" && (
               <div>
                 <Label className="mb-4">UPI ID</Label>
@@ -126,17 +182,15 @@ export default function BuyPro() {
               </div>
             )}
 
-            {/* Country */}
             <div>
               <Label className="mb-4">Billing country</Label>
               <Input
                 value="India"
                 disabled
-                className="text-black dark:text-white "
+                className="text-black dark:text-white"
               />
             </div>
 
-            {/* Summary */}
             <div className="border-t border-black dark:border-white pt-5 text-sm">
               <div className="flex justify-between">
                 <span>Total</span>
@@ -147,7 +201,10 @@ export default function BuyPro() {
               </p>
             </div>
 
-            <Button className="w-full bg-black text-white dark:bg-white dark:text-black h-12 text-base">
+            <Button
+              className="w-full bg-black text-white dark:bg-white dark:text-black h-12 text-base"
+              onClick={handlePayment}
+            >
               Pay ₹199
             </Button>
 
