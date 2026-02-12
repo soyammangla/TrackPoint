@@ -12,24 +12,24 @@ export default function Features() {
 
   const features = [
     {
-      title: "Lead Management",
+      title: "Lead & Client Management",
       description:
-        "Capture, organize, and manage all your leads from a single powerful dashboard.",
+        "Organize leads, manage clients, and keep track of every interaction in one place.",
     },
     {
-      title: "Client Tracking",
+      title: "Sales Pipeline Management",
       description:
-        "View complete client profiles, communication history, and deal status in one place.",
+        "Move deals through stages, monitor progress, and close opportunities faster.",
     },
     {
-      title: "Analytics & Reports",
+      title: "Email & Task Management",
       description:
-        "Track sales performance and business growth with real-time data and insights.",
+        "Send emails, assign tasks, and stay on top of follow-ups without switching tools.",
     },
     {
-      title: "Smart Automations",
+      title: "Reports & Analytics Dashboard",
       description:
-        "Automate follow-ups, lead assignment, & daily workflows to save time & boost productivity.",
+        "Track performance, monitor growth, and make decisions with clear visual insights.",
     },
   ];
 

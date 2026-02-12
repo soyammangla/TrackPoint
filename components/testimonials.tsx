@@ -6,25 +6,25 @@ export default function Testimonials() {
       name: "Rohit Sharma",
       role: "Sales Manager",
       feedback:
-        "TrackPoint CRM has made lead management simple. The dashboard helps our team stay organized and close deals faster.",
+        "TrackPoint CRM streamlined our lead management. The dashboard keeps our team aligned and helps us close deals faster.",
     },
     {
       name: "Anjali Mehta",
       role: "Small Business Owner",
       feedback:
-        "Managing clients and follow-ups is now effortless. TrackPoint keeps everything in one place and saves me hours every week.",
+        "Everything from clients to follow-ups is organized in one place. It saves me hours every single week.",
     },
     {
       name: "Vikram Singh",
       role: "Operations Lead",
       feedback:
-        "Our team collaboration improved a lot. Assigning leads, tracking progress, and staying aligned is now very easy.",
+        "Team collaboration improved instantly. Assigning leads and tracking progress is now smooth and transparent.",
     },
     {
       name: "Priya Kapoor",
       role: "Marketing Consultant",
       feedback:
-        "The clean interface makes it easy for anyone to use. Even new team members can start working without training.",
+        "The interface is clean and intuitive. Even new team members adapt without any training.",
     },
   ];
 

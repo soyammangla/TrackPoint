@@ -40,8 +40,7 @@ export const authOptions: NextAuthOptions = {
 
   callbacks: {
     async redirect({ url, baseUrl }) {
-      // 🔥 LOGIN KE BAAD HOME PAGE
-      return baseUrl; // "/"
+      return baseUrl;
     },
   },
 };

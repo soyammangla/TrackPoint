@@ -174,7 +174,7 @@ export default function BuyPro() {
             <h2 className="text-lg font-medium">Checkout</h2>
 
             <div>
-              <Label>Email address</Label>
+              <Label className="mb-4">Email address</Label>
               <Input
                 placeholder="you@company.com"
                 value={email}

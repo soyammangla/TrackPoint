@@ -5,24 +5,24 @@ import { Users, FileText, CheckCircle, Zap } from "lucide-react";
 export default function HowItWorks() {
   const steps = [
     {
-      title: "Sign Up",
+      title: "Create Your Account",
       description:
-        "Create your account in seconds and get instant access to your CRM dashboard.",
+        "Sign up in seconds and get instant access to your personalized CRM dashboard.",
     },
     {
-      title: "Add Clients & Leads",
+      title: "Manage Leads & Clients",
       description:
-        "Store all your leads, clients, and contacts in one secure place.",
+        "Organize contacts, track interactions, and store everything securely in one place.",
     },
     {
-      title: "Track & Analyze",
+      title: "Track Deals & Performance",
       description:
-        "Monitor conversations, deals, and business performance in real time.",
+        "Monitor your sales pipeline, conversations, and growth metrics in real time.",
     },
     {
-      title: "Automate & Grow",
+      title: "Automate & Scale Faster",
       description:
-        "Let the system handle follow-ups and workflows while you focus on closing deals.",
+        "Automate follow-ups and workflows so you can focus on closing more deals.",
     },
   ];
 
