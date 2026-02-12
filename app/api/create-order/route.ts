@@ -1,41 +1,34 @@
-// /app/api/create-order/route.ts
-import { NextRequest, NextResponse } from "next/server";
 import Razorpay from "razorpay";
+import { NextResponse } from "next/server";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/authoptions";
 
-function getRazorpayInstance() {
-  const key_id = process.env.RAZORPAY_KEY_ID;
-  const key_secret = process.env.RAZORPAY_KEY_SECRET;
+const razorpay = new Razorpay({
+  key_id: process.env.RAZORPAY_KEY_ID!,
+  key_secret: process.env.RAZORPAY_KEY_SECRET!,
+});
 
-  if (!key_id || !key_secret) {
-    throw new Error(
-      "Razorpay keys are not set! Add RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET in environment variables.",
-    );
-  }
-
-  return new Razorpay({ key_id, key_secret });
-}
-
-export async function POST(req: NextRequest) {
+export async function POST() {
   try {
-    const razorpay = getRazorpayInstance();
+    const session = await getServerSession(authOptions);
 
-    const body = await req.json();
-    const amount = body.amount;
+    if (!session?.user?.email) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
 
     const options = {
-      amount: amount * 100, // convert rupees to paise
+      amount: 100, // ₹199
       currency: "INR",
-      receipt: "receipt_" + Date.now(),
+      receipt: "trackpoint_" + Date.now(),
     };
 
     const order = await razorpay.orders.create(options);
 
     return NextResponse.json(order);
-  } catch (err: any) {
-    console.error("Error creating Razorpay order:", err.message);
-
+  } catch (error) {
+    console.error("Order creation error:", error);
     return NextResponse.json(
-      { error: err.message || "Internal Server Error" },
+      { error: "Order creation failed" },
       { status: 500 },
     );
   }
