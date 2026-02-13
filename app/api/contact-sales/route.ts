@@ -7,7 +7,7 @@ export async function POST(req: Request) {
     if (!name || !email || !company || !message) {
       return new Response(
         JSON.stringify({ success: false, error: "All fields required" }),
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -23,7 +23,7 @@ export async function POST(req: Request) {
 
     await transporter.sendMail({
       from: `"Trackpoint Sales" <${process.env.EMAIL_USER}>`,
-      to: process.env.CONTACT_RECEIVER, // 👈 TUJHE EMAIL AAYEGA
+      to: process.env.CONTACT_RECEIVER,
       subject: "📩 New Contact Sales Inquiry",
       html: `
         <h2>New Sales Inquiry</h2>
@@ -39,7 +39,7 @@ export async function POST(req: Request) {
   } catch (err: any) {
     return new Response(
       JSON.stringify({ success: false, error: err.message }),
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

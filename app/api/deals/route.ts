@@ -4,9 +4,6 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/authoptions";
 import { getOrCreateUser } from "@/lib/getOrCreateUser";
 
-/**
- * GET → Fetch all deals with lead info
- */
 export async function GET() {
   const session = await getServerSession(authOptions);
   if (!session?.user?.email) {
@@ -34,9 +31,6 @@ export async function GET() {
   return NextResponse.json(deals);
 }
 
-/**
- * POST → Create deal from lead
- */
 export async function POST(req: Request) {
   try {
     const session = await getServerSession(authOptions);

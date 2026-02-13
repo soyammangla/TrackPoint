@@ -16,7 +16,6 @@ export async function POST(req: Request) {
     if (!deal)
       return NextResponse.json({ error: "Deal not found" }, { status: 404 });
 
-    // Professional follow-up email template
     await sendEmail({
       to: deal.email!,
       subject: `Follow-up for Deal - ${deal.name}`,

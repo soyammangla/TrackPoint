@@ -17,7 +17,7 @@ export async function POST() {
     }
 
     const options = {
-      amount: 19900, // ₹199
+      amount: 19900,
       currency: "INR",
       receipt: "trackpoint_" + Date.now(),
     };

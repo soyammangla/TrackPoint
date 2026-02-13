@@ -13,7 +13,6 @@ export async function GET() {
   const session = await getServerSession(authOptions);
   if (!session?.user?.email) return NextResponse.json([], { status: 401 });
 
-  // const user = await getOrCreateUser(session.user);
   const user = await getOrCreateUser({
     email: session.user.email,
     name: session.user.name,
@@ -21,7 +20,6 @@ export async function GET() {
   });
 
   const leads = await prisma.lead.findMany({
-    // where: { user: { email: session.user.email } },
     where: { userId: user.id },
 
     orderBy: { createdAt: "desc" },
@@ -44,7 +42,6 @@ export async function POST(req: Request) {
 
   const count = await prisma.lead.count({ where: { userId: user.id } });
   const limit = LIMITS[user.plan];
-  // const limit = LIMITS[user.plan.toUpperCase() as keyof typeof LIMITS] ?? 10;
 
   if (count >= limit) {
     return NextResponse.json(

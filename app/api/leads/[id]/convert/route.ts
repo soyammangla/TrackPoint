@@ -14,7 +14,6 @@ export async function POST(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // 🔥 UPDATED: dealName added
     const { dealName, amount, owner } = await req.json();
 
     if (!dealName || !amount || !owner) {
@@ -48,7 +47,6 @@ export async function POST(
       return NextResponse.json({ error: "Lead not found" }, { status: 404 });
     }
 
-    // ✅ enum-safe check
     if (lead.status !== Status.Qualified) {
       return NextResponse.json(
         { error: "Only qualified leads can be converted" },
@@ -56,7 +54,6 @@ export async function POST(
       );
     }
 
-    // ❌ already converted
     if (lead.deal) {
       return NextResponse.json(
         { error: "Deal already exists for this lead" },
@@ -72,10 +69,9 @@ export async function POST(
       );
     }
 
-    // ✅ CREATE DEAL (dealName used)
     const deal = await prisma.deal.create({
       data: {
-        name: dealName, // 🔥 MAIN CHANGE
+        name: dealName,
         email: lead.email,
         amount: amt,
         owner,
@@ -85,7 +81,6 @@ export async function POST(
       },
     });
 
-    // ✅ UPDATE LEAD STATUS
     await prisma.lead.update({
       where: { id: lead.id },
       data: { status: Status.Converted },
@@ -93,7 +88,7 @@ export async function POST(
 
     return NextResponse.json(deal, { status: 201 });
   } catch (err) {
-    console.error("CONVERT ERROR 👉", err);
+    console.error("CONVERT ERROR ", err);
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 },

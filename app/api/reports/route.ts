@@ -44,12 +44,10 @@ export async function GET() {
       );
     }
 
-    /* ---------- TOTAL LEADS ---------- */
     const totalLeads = await prisma.lead.count({
       where: { userId: user.id },
     });
 
-    /* ---------- CLOSED DEALS (WON + LOST) ---------- */
     const dealsClosed = await prisma.deal.count({
       where: {
         userId: user.id,
@@ -57,7 +55,6 @@ export async function GET() {
       },
     });
 
-    /* ---------- REVENUE (ONLY CLOSED WON) ---------- */
     const revenueAgg = await prisma.deal.aggregate({
       where: {
         userId: user.id,
@@ -68,7 +65,6 @@ export async function GET() {
 
     const revenue = revenueAgg._sum.amount ?? 0;
 
-    /* ---------- MONTHLY DATA ---------- */
     const leads = await prisma.lead.findMany({
       where: { userId: user.id },
       select: { createdAt: true },
@@ -98,7 +94,6 @@ export async function GET() {
       });
     }
 
-    // leads
     for (const l of leads) {
       const key = getKey(l.createdAt);
       if (!monthlyMap[key]) {
@@ -112,7 +107,6 @@ export async function GET() {
       monthlyMap[key].leads++;
     }
 
-    // deals
     for (const d of deals) {
       const key = getKey(d.createdAt);
       if (!monthlyMap[key]) {
@@ -137,7 +131,7 @@ export async function GET() {
         : Number(((dealsClosed / totalLeads) * 100).toFixed(1));
 
     return NextResponse.json({
-      plan: user.plan, // FREE | PAID
+      plan: user.plan,
       metrics: {
         totalLeads,
         dealsClosed,

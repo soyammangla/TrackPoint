@@ -3,13 +3,12 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/authoptions";
 import { prisma } from "@/lib/prisma";
 
-/* ================= DELETE TASK ================= */
 export async function DELETE(
   req: Request,
   context: { params: Promise<{ id: string }> },
 ) {
   try {
-    const { id } = await context.params; // ✅ IMPORTANT FIX
+    const { id } = await context.params;
 
     const session = await getServerSession(authOptions);
     if (!session?.user?.email) {
@@ -24,7 +23,6 @@ export async function DELETE(
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
-    // ✅ ownership check
     const task = await prisma.task.findFirst({
       where: {
         id,
@@ -36,7 +34,6 @@ export async function DELETE(
       return NextResponse.json({ error: "Task not found" }, { status: 404 });
     }
 
-    // ✅ SINGLE DELETE
     await prisma.task.delete({
       where: { id },
     });
@@ -50,13 +47,12 @@ export async function DELETE(
   }
 }
 
-/* ================= UPDATE / TOGGLE ================= */
 export async function PATCH(
   req: Request,
   context: { params: Promise<{ id: string }> },
 ) {
   try {
-    const { id } = await context.params; // ✅ IMPORTANT FIX
+    const { id } = await context.params;
 
     const session = await getServerSession(authOptions);
     if (!session?.user?.email) {
@@ -73,7 +69,6 @@ export async function PATCH(
 
     const body = await req.json();
 
-    // ✅ ownership check
     const task = await prisma.task.findFirst({
       where: {
         id,

@@ -19,12 +19,9 @@ export async function GET() {
     return NextResponse.json({ error: "User not found" }, { status: 404 });
   }
 
-  // ✅ TOTAL LEADS
   const totalLeads = await prisma.lead.count({
     where: { userId: user.id },
   });
-
-  // ✅ DEALS WON (ONLY CLOSED WON)
   const dealsWon = await prisma.deal.count({
     where: {
       userId: user.id,
@@ -32,7 +29,6 @@ export async function GET() {
     },
   });
 
-  // ✅ REVENUE (ONLY CLOSED WON)
   const revenueAgg = await prisma.deal.aggregate({
     where: {
       userId: user.id,
@@ -43,7 +39,6 @@ export async function GET() {
 
   const revenue = revenueAgg._sum.amount ?? 0;
 
-  // ✅ CONVERSION RATE
   const conversionRate =
     totalLeads === 0 ? 0 : Number(((dealsWon / totalLeads) * 100).toFixed(1));
 

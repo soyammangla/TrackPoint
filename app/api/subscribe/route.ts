@@ -7,7 +7,7 @@ export async function POST(req: Request) {
     if (!email) {
       return new Response(
         JSON.stringify({ success: false, error: "Email is required" }),
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -28,7 +28,7 @@ export async function POST(req: Request) {
       html: `
     <h2>Hello!</h2>
     <p>Thank you for subscribing to Trackpoint updates. You will now receive all the latest tips, news, and updates from us.</p>
-    <p>We appreciate your interest and support! 🚀</p>
+    <p>We appreciate your interest and support!</p>
   `,
     });
 
@@ -37,7 +37,7 @@ export async function POST(req: Request) {
     console.log("Subscription Error:", err);
     return new Response(
       JSON.stringify({ success: false, error: err.message }),
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

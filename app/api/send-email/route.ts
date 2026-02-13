@@ -7,11 +7,10 @@ export async function POST(req: Request) {
     if (!name || !email || !subject || !message) {
       return new Response(
         JSON.stringify({ success: false, error: "All fields required" }),
-        { status: 400 }
+        { status: 400 },
       );
     }
 
-    // Nodemailer transporter
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
       port: 587,
@@ -39,7 +38,7 @@ export async function POST(req: Request) {
     console.log("Nodemailer Error:", err);
     return new Response(
       JSON.stringify({ success: false, error: err.message }),
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

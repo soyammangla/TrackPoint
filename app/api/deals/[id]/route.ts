@@ -1,12 +1,11 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma"; // make sure prisma client is imported correctly
+import { prisma } from "@/lib/prisma";
 
 export async function PUT(
   req: Request,
   { params }: { params: Promise<{ id: string }> },
 ) {
   try {
-    // params is a Promise → await it
     const { id } = await params;
 
     if (!id) {

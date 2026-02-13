@@ -57,7 +57,7 @@ export async function POST(req: Request) {
       title,
       priority: priority ?? "MEDIUM",
       dueDate: new Date(dueDate),
-      userId: user.id, // 🔥 FK issue fixed
+      userId: user.id,
     },
   });
 

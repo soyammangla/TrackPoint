@@ -15,7 +15,6 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Deal not found" }, { status: 404 });
     }
 
-    // 2️⃣ send email
     await sendEmail({
       to: deal.email,
       subject: "Your Proposal from TrackPoint CRM",
