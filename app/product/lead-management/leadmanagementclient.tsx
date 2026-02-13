@@ -259,7 +259,6 @@ export default function LeadManagementPage() {
             </tbody>
           </table>
 
-          {/* MOBILE VIEW */}
           <div className="sm:hidden space-y-4">
             {filteredLeads.map((l) => (
               <div key={l.id} className="border rounded-lg p-4 space-y-2">

@@ -71,7 +71,6 @@ const sections = [
 export default function DocsPage() {
   return (
     <div className="bg-background text-foreground">
-      {/* HERO */}
       <section className="px-6 py-24 text-center">
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
@@ -87,7 +86,6 @@ export default function DocsPage() {
         </p>
       </section>
 
-      {/* DOC SECTIONS */}
       <section className="px-6 pb-24">
         <div className="max-w-5xl mx-auto space-y-10">
           {sections.map((section, index) => (

@@ -8,7 +8,7 @@ const ContactPage: React.FC = () => {
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
-  const [status, setStatus] = useState(""); // ✅ status message
+  const [status, setStatus] = useState("");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -19,7 +19,7 @@ const ContactPage: React.FC = () => {
     }
 
     setLoading(true);
-    setStatus(""); // clear previous status
+    setStatus("");
 
     try {
       const res = await fetch("/api/send-email", {
@@ -93,7 +93,6 @@ const ContactPage: React.FC = () => {
           {loading ? "Sending..." : "Send Message"}
         </button>
 
-        {/* ✅ Status message */}
         {status && (
           <p className="mt-4 text-center text-sm text-green-600 dark:text-green-400">
             {status}

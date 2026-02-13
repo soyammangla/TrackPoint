@@ -2,10 +2,9 @@
 
 import React from "react";
 
-// ---------------- FAQ Card Component ----------------
 interface FAQCardProps {
   question: string;
-  answer: React.ReactNode; // allow JSX for links
+  answer: React.ReactNode;
 }
 
 const FAQCard: React.FC<FAQCardProps> = ({ question, answer }) => {
@@ -21,7 +20,6 @@ const FAQCard: React.FC<FAQCardProps> = ({ question, answer }) => {
   );
 };
 
-// ---------------- Main Help Center Page ----------------
 const HelpCenterPage = () => {
   const faqs = [
     {
@@ -56,7 +54,6 @@ const HelpCenterPage = () => {
 
   return (
     <div className="bg-white dark:bg-black text-black dark:text-white min-h-screen">
-      {/* ---------------- Hero Section ---------------- */}
       <section className="text-center py-16 px-4 md:px-8 lg:px-16">
         <h1 className="text-3xl md:text-5xl font-bold mb-4">Help Center</h1>
         <p className="text-black dark:text-white text-lg md:text-xl max-w-2xl mx-auto">
@@ -64,7 +61,6 @@ const HelpCenterPage = () => {
         </p>
       </section>
 
-      {/* ---------------- FAQ Grid ---------------- */}
       <section className="py-16 px-4 md:px-8 lg:px-16">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {faqs.map((faq, idx) => (
@@ -99,7 +95,6 @@ const HelpCenterPage = () => {
         </div>
       </section>
 
-      {/* ---------------- CTA Section ---------------- */}
       <section className="py-16 px-4 md:px-8 lg:px-16 text-center">
         <h2 className="text-3xl md:text-4xl font-bold mb-4">
           Still have questions?

@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
-// ---------------- Reusable Step Component ----------------
 const Step = ({ number = "", title = "" }) => {
   return (
     <div className="flex flex-col items-center text-center p-8 bg-white dark:bg-neutral-900 rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300 border-l-4 border-black dark:border-white">
@@ -19,7 +18,6 @@ const Step = ({ number = "", title = "" }) => {
   );
 };
 
-// ---------------- Feature Card Component ----------------
 const FeatureCard = ({ icon = "💡", title = "", description = "" }) => {
   return (
     <div className="flex flex-col items-center text-center p-8 bg-white dark:bg-neutral-900 rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300 border border-gray-200 dark:border-gray-700">
@@ -31,8 +29,6 @@ const FeatureCard = ({ icon = "💡", title = "", description = "" }) => {
     </div>
   );
 };
-
-// ---------------- Main Features Page ----------------
 const FeaturesPage = () => {
   const { data: session } = useSession();
   const router = useRouter();
@@ -80,7 +76,6 @@ const FeaturesPage = () => {
 
   return (
     <div className="bg-white dark:bg-black text-black dark:text-white min-h-screen">
-      {/* ---------------- Hero Section ---------------- */}
       <section className="text-center py-16 px-4 md:px-8 lg:px-16">
         <h1 className="text-3xl md:text-5xl font-bold mb-4">
           Powerful Features built for Productivity
@@ -91,7 +86,6 @@ const FeaturesPage = () => {
         </p>
       </section>
 
-      {/* ---------------- Features Grid ---------------- */}
       <section className="py-16 px-4 md:px-8 lg:px-16">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {features.map((feature, idx) => (
@@ -105,7 +99,6 @@ const FeaturesPage = () => {
         </div>
       </section>
 
-      {/* ---------------- How It Works Section ---------------- */}
       <section className="py-16 px-4 md:px-8 lg:px-16 bg-white dark:bg-black">
         <div className="max-w-4xl mx-auto text-center mb-12">
           <h2 className="text-2xl md:text-4xl font-bold mb-4 text-black dark:text-white">
@@ -122,7 +115,6 @@ const FeaturesPage = () => {
         </div>
       </section>
 
-      {/* ---------------- CTA Section ---------------- */}
       <section className="py-16 px-4 md:px-8 lg:px-16 text-center">
         <h2 className="text-3xl md:text-4xl font-bold mb-4">
           Start using Trackpoint today

@@ -6,11 +6,9 @@ import DashboardClient from "./dashboardclient";
 export default async function DashboardPage() {
   const session = await getServerSession(authOptions);
 
-  // ❌ User logged in nahi hai
   if (!session) {
     redirect("/login");
   }
 
-  // ✅ User logged in hai
   return <DashboardClient />;
 }

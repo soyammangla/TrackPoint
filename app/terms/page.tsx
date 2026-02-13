@@ -5,7 +5,6 @@ import React from "react";
 const TermsPage = () => {
   return (
     <div className="bg-white dark:bg-black text-black dark:text-white min-h-screen">
-      {/* ---------------- Hero Section ---------------- */}
       <section className="text-center py-16 px-4 md:px-8 lg:px-16">
         <h1 className="text-3xl md:text-5xl font-bold mb-4">
           Terms & Conditions
@@ -17,7 +16,6 @@ const TermsPage = () => {
         </p>
       </section>
 
-      {/* ---------------- Terms Content ---------------- */}
       <section className="py-16 px-4 md:px-8 lg:px-16 max-w-4xl mx-auto space-y-8">
         {[
           {

@@ -165,7 +165,6 @@ export default function SalesPipelinePage() {
         />
       </div>
 
-      {/* Pipeline */}
       <div className="flex gap-4 sm:gap-6 overflow-x-auto py-4 -mx-4 px-4 sm:mx-0 sm:px-0">
         {stages.map((stage) => (
           <div
@@ -188,7 +187,6 @@ export default function SalesPipelinePage() {
                     whileHover={{ scale: 1.02 }}
                     className="border rounded-lg p-3 space-y-2 text-sm"
                   >
-                    {/* Deal info */}
                     <div className="text-sm space-y-1">
                       <p className="font-semibold">{deal.name}</p>
                       <p className="opacity-70">
@@ -203,7 +201,6 @@ export default function SalesPipelinePage() {
                       </p>
                     </div>
 
-                    {/* CRUD */}
                     <div className="flex flex-wrap gap-1">
                       <Button
                         size="icon"
@@ -228,9 +225,7 @@ export default function SalesPipelinePage() {
                       </Button>
                     </div>
 
-                    {/* Stage + Action Buttons */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2">
-                      {/* Proposal */}
                       {deal.stage === "Proposal" && (
                         <>
                           <Button
@@ -260,7 +255,6 @@ export default function SalesPipelinePage() {
                         </>
                       )}
 
-                      {/* Closed Won */}
                       {deal.stage === "Closed Won" && (
                         <>
                           <Button
@@ -282,7 +276,6 @@ export default function SalesPipelinePage() {
                         </>
                       )}
 
-                      {/* Closed Lost */}
                       {deal.stage === "Closed Lost" && (
                         <Button
                           size="sm"
@@ -294,7 +287,6 @@ export default function SalesPipelinePage() {
                         </Button>
                       )}
 
-                      {/* Normal flow */}
                       {deal.stage !== "Proposal" &&
                         deal.stage !== "Closed Won" &&
                         deal.stage !== "Closed Lost" &&
@@ -317,7 +309,6 @@ export default function SalesPipelinePage() {
         ))}
       </div>
 
-      {/* Modal */}
       <AnimatePresence>
         {open && current && (
           <motion.div className="fixed inset-0 bg-black/50 flex justify-center items-center p-4 overflow-y-auto">

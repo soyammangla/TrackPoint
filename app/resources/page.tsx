@@ -59,7 +59,6 @@ export default function ResourcesPage() {
 
   return (
     <div className="bg-background dark:bg-black text-foreground">
-      {/* ================= HERO ================= */}
       <section className="px-6 py-28 text-center">
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
@@ -87,7 +86,6 @@ export default function ResourcesPage() {
         </div>
       </section>
 
-      {/* ================= RESOURCES GRID ================= */}
       <section className="px-6 py-24">
         <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {resources.map((item, i) => (
@@ -114,10 +112,8 @@ export default function ResourcesPage() {
         </div>
       </section>
 
-      {/* ================= EXTRA SECTION ================= */}
       <section className="px-6 py-24 bg-muted/30 dark:bg-black">
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
-          {/* LIVE DEMO */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -138,7 +134,6 @@ export default function ResourcesPage() {
             </Button>
           </motion.div>
 
-          {/* GET STARTED */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -160,7 +155,6 @@ export default function ResourcesPage() {
         </div>
       </section>
 
-      {/* ================= CTA ================= */}
       <section className="px-6 py-28 text-center">
         <h2 className="text-3xl md:text-4xl font-bold mb-6 text-black dark:text-white">
           Need More Help?

@@ -137,7 +137,6 @@ export default function BuyPro() {
   return (
     <main className="min-h-screen bg-white dark:bg-black text-black dark:text-white">
       <div className="max-w-6xl mx-auto px-4 py-20 grid grid-cols-1 md:grid-cols-2 gap-16">
-        {/* LEFT */}
         <section className="flex flex-col justify-center">
           <span className="text-lg font-bold uppercase tracking-wide mb-3">
             TrackPoint Pro

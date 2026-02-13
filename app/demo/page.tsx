@@ -10,22 +10,21 @@ import { useTheme } from "next-themes";
 export default function DemoPage() {
   const { data: session } = useSession();
   const router = useRouter();
-  const { theme, setTheme, resolvedTheme } = useTheme(); // resolvedTheme = actual current theme
+  const { theme, setTheme, resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => setMounted(true), []);
 
   const handleCTA = () => {
     if (session) {
-      router.push("/"); // homepage
+      router.push("/");
     } else {
       router.push("/login");
     }
   };
 
-  if (!mounted) return null; // avoid hydration issues
+  if (!mounted) return null;
 
-  // Determine initial theme: use resolvedTheme which matches current system/localStorage
   const currentTheme = resolvedTheme || "light";
 
   return (
@@ -36,9 +35,6 @@ export default function DemoPage() {
           : "bg-neutral-950 text-white"
       }`}
     >
-      {/* TOP BAR: Dark/Light Toggle */}
-
-      {/* TOP CONTENT */}
       <div className="max-w-5xl mx-auto text-center space-y-5">
         <span className="inline-block rounded-full border px-4 py-1 text-sm font-medium">
           Product Demo
@@ -54,14 +50,12 @@ export default function DemoPage() {
         </p>
       </div>
 
-      {/* MEDIA SECTION */}
       <div className="max-w-5xl mx-auto mt-14">
         <div
           className="group relative rounded-2xl border border-dashed overflow-hidden shadow-md transition-shadow hover:shadow-xl
           dark:border-gray-700 dark:bg-neutral-900 bg-gray-50"
         >
           <div className="aspect-video flex flex-col items-center justify-center gap-6 p-6">
-            {/* DEMO VIDEO */}
             <div className="w-full mt-4">
               <video
                 controls
@@ -76,7 +70,6 @@ export default function DemoPage() {
         </div>
       </div>
 
-      {/* CTA */}
       <div className="max-w-5xl mx-auto mt-14 flex justify-center">
         <Button size="lg" className="gap-2" onClick={handleCTA}>
           {session ? "Go to Homepage" : "Start Free Trial"}

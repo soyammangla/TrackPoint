@@ -14,7 +14,7 @@ const ContactSalesPage = () => {
   const [success, setSuccess] = useState(false);
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -44,7 +44,6 @@ const ContactSalesPage = () => {
 
   return (
     <div className="bg-white dark:bg-neutral-900 text-black dark:text-white min-h-screen">
-      {/* ---------------- Hero Section ---------------- */}
       <section className="text-center py-24 px-4">
         <h1 className="text-4xl md:text-5xl font-bold mb-5">Contact Sales</h1>
         <p className="max-w-2xl mx-auto text-lg md:text-xl text-black dark:text-white">
@@ -53,13 +52,11 @@ const ContactSalesPage = () => {
         </p>
       </section>
 
-      {/* ---------------- Form Section ---------------- */}
       <section className="max-w-3xl mx-auto px-4 pb-24">
         <form
           onSubmit={handleSubmit}
           className="bg-white dark:bg-neutral-800 p-10 rounded-3xl shadow-lg space-y-6"
         >
-          {/* Name */}
           <div>
             <label className="block mb-2 font-medium">Full Name</label>
             <input
@@ -73,7 +70,6 @@ const ContactSalesPage = () => {
             />
           </div>
 
-          {/* Email */}
           <div>
             <label className="block mb-2 font-medium">Work Email</label>
             <input
@@ -87,7 +83,6 @@ const ContactSalesPage = () => {
             />
           </div>
 
-          {/* Company */}
           <div>
             <label className="block mb-2 font-medium">Company Name</label>
             <input
@@ -101,7 +96,6 @@ const ContactSalesPage = () => {
             />
           </div>
 
-          {/* Message */}
           <div>
             <label className="block mb-2 font-medium">Message</label>
             <textarea
@@ -115,7 +109,6 @@ const ContactSalesPage = () => {
             />
           </div>
 
-          {/* Submit Button */}
           <button
             type="submit"
             disabled={loading}
@@ -128,7 +121,6 @@ const ContactSalesPage = () => {
             {loading ? "Sending Request..." : "Contact Sales"}
           </button>
 
-          {/* Success Message */}
           {success && (
             <p className="text-green-600 text-center mt-4">
               Thank you for reaching out. Our sales team will get back to you

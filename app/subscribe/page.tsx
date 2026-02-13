@@ -74,7 +74,6 @@ const SubscribePage = () => {
         </form>
       </div>
 
-      {/* Optional social links */}
       <div className="mt-12 flex gap-6">
         <a
           href="https://www.linkedin.com/in/soyam-mangla-432b13365/"

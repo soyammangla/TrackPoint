@@ -26,12 +26,12 @@ export default function DashboardPage() {
         },
         {
           title: "Deals Won",
-          value: data.dealsWon ?? 0, // ✅ ONLY CLOSED WON
+          value: data.dealsWon ?? 0,
           icon: TrendingUp,
         },
         {
           title: "Revenue",
-          value: `₹${(data.revenue ?? 0).toLocaleString("en-IN")}`, // ✅ ONLY CLOSED WON
+          value: `₹${(data.revenue ?? 0).toLocaleString("en-IN")}`,
           icon: DollarSign,
         },
         {
@@ -57,7 +57,6 @@ export default function DashboardPage() {
         </p>
       </div>
 
-      {/* CARDS (UI SAME) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {stats.map((stat) => (
           <Card key={stat.title}>
@@ -74,7 +73,6 @@ export default function DashboardPage() {
         ))}
       </div>
 
-      {/* NOTE */}
       <Card>
         <CardContent className="p-4 text-sm leading-relaxed">
           This dashboard shows a real-time overview of your sales performance.

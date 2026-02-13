@@ -5,7 +5,6 @@ import React from "react";
 const LearnMorePage = () => {
   return (
     <div className="bg-white dark:bg-black text-black dark:text-white min-h-screen">
-      {/* ---------------- Hero Section ---------------- */}
       <section className="text-center py-20 px-4 md:px-8">
         <h1 className="text-3xl md:text-5xl font-bold mb-4">
           Learn More About Trackpoint
@@ -16,7 +15,6 @@ const LearnMorePage = () => {
         </p>
       </section>
 
-      {/* ---------------- Content Sections ---------------- */}
       <section className="max-w-5xl mx-auto px-4 md:px-8 space-y-16 pb-24">
         {/* Section 1 */}
         <div>
@@ -30,7 +28,6 @@ const LearnMorePage = () => {
           </p>
         </div>
 
-        {/* Section 2 */}
         <div>
           <h2 className="text-2xl md:text-3xl font-semibold mb-3">
             Smart Task & Project Tracking
@@ -42,7 +39,6 @@ const LearnMorePage = () => {
           </p>
         </div>
 
-        {/* Section 3 */}
         <div>
           <h2 className="text-2xl md:text-3xl font-semibold mb-3">
             Analytics That Matter
@@ -53,7 +49,6 @@ const LearnMorePage = () => {
           </p>
         </div>
 
-        {/* Section 4 */}
         <div>
           <h2 className="text-2xl md:text-3xl font-semibold mb-3">
             Secure & Reliable
@@ -65,7 +60,6 @@ const LearnMorePage = () => {
           </p>
         </div>
 
-        {/* CTA */}
         <div className="text-center pt-10">
           <a
             href="/pricing"

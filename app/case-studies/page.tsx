@@ -5,7 +5,6 @@ import { ArrowRight, Building2, Users, TrendingUp } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
-// Case studies data with slugs for dynamic pages
 const caseStudies = [
   {
     company: "TechNova Solutions",
@@ -70,7 +69,6 @@ export default function CaseStudiesPage() {
         </p>
       </section>
 
-      {/* CASE STUDIES GRID */}
       <section className="px-6 pb-24">
         <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {caseStudies.map((study, index) => (
@@ -102,7 +100,6 @@ export default function CaseStudiesPage() {
                 </ul>
               </div>
 
-              {/* Read Full Case Study */}
               <Link href={`/case-studies/${study.slug}`}>
                 <Button variant="outline" className="w-full group">
                   Read Full Case Study
@@ -114,7 +111,6 @@ export default function CaseStudiesPage() {
         </div>
       </section>
 
-      {/* CTA SECTION */}
       <section className="px-6 py-24 text-center bg-muted/30 dark:bg-black">
         <motion.h2
           initial={{ opacity: 0, y: 20 }}

@@ -120,7 +120,6 @@ export default function TasksPage() {
 
   return (
     <div className="min-h-screen bg-white dark:bg-black px-4 sm:px-6 md:px-10 py-8">
-      {/* HEADER */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-8">
         <h1 className="text-5xl font-bold">Tasks</h1>
 

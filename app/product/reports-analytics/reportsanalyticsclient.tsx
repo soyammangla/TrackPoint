@@ -81,7 +81,6 @@ export default function ReportsPage() {
         Reports & Analytics
       </h1>
 
-      {/* METRICS */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {metricCards.map((m) => (
           <Card key={m.label}>
@@ -94,7 +93,6 @@ export default function ReportsPage() {
         ))}
       </div>
 
-      {/* TABLE */}
       <Card>
         <CardHeader>
           <CardTitle>Monthly Performance</CardTitle>
@@ -140,7 +138,6 @@ export default function ReportsPage() {
         </CardContent>
       </Card>
 
-      {/* CHARTS */}
       <Card>
         <CardHeader>
           <CardTitle>Trends & Insights</CardTitle>
@@ -184,7 +181,6 @@ export default function ReportsPage() {
                 </ResponsiveContainer>
               </div>
 
-              {/* PIPELINE / REVENUE TREND */}
               <div className="h-64 sm:h-80 p-4 sm:p-5 my-5 rounded-xl border border-neutral-200 dark:border-neutral-800">
                 <div className="mb-3">
                   <h3 className="text-md font-bold">Revenue Trend</h3>
