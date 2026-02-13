@@ -10,11 +10,11 @@ import Link from "next/link";
 
 export default function HeroSection() {
   const router = useRouter();
-  const { status } = useSession(); // authenticated | unauthenticated | loading
+  const { status } = useSession();
 
   const handleGetStarted = () => {
     if (status === "authenticated") {
-      router.push("/"); // or /dashboard
+      router.push("/");
     } else {
       router.push("/login");
     }
@@ -22,7 +22,6 @@ export default function HeroSection() {
 
   return (
     <section className="relative overflow-hidden bg-gradient from-slate-50 to-white dark:from-black dark:to-black">
-      {/* Background glow */}
       <div className="absolute inset-0 -z-10">
         <div className="absolute left-1/2 top-[-20%] h-360px w-360px sm:h-420px sm:w-420px -translate-x-1/2 rounded-full bg-indigo-500/20 dark:bg-indigo-400/10 blur-3xl" />
       </div>
@@ -54,7 +53,6 @@ export default function HeroSection() {
             </p>
 
             <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 lg:justify-start">
-              {/* ✅ GET STARTED */}
               <Button
                 size="lg"
                 onClick={handleGetStarted}
@@ -62,8 +60,6 @@ export default function HeroSection() {
               >
                 Get Started Free <ArrowRight className="h-4 w-4" />
               </Button>
-
-              {/* WATCH DEMO */}
 
               <Link href="/demo">
                 <Button
@@ -82,7 +78,6 @@ export default function HeroSection() {
             </p>
           </motion.div>
 
-          {/* RIGHT IMAGE */}
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}

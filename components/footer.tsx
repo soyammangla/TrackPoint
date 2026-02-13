@@ -9,10 +9,8 @@ const Footer = () => {
   return (
     <footer className="bg-white dark:bg-black text-black dark:text-white transition-colors duration-300 py-10 mt-16">
       <div className="w-[90%] sm:w-[85%] md:w-[80%] mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 text-center sm:text-left">
-        {/* Brand */}
         <div>
           <div className="flex items-center justify-center sm:justify-start gap-0 sm:-translate-x-3">
-            {/* Dark mode → light logo */}
             <Image
               src="/logo-light.png"
               alt="Trackpoint Logo"
@@ -21,7 +19,6 @@ const Footer = () => {
               className="hidden dark:block -mr-4"
             />
 
-            {/* Light mode → dark logo */}
             <Image
               src="/logo-dark.jpg"
               alt="Trackpoint Logo"
@@ -41,7 +38,6 @@ const Footer = () => {
           </p>
         </div>
 
-        {/* Quick Links */}
         <div className="md:ml-auto">
           <h3 className="text-lg font-semibold mb-3">Quick Links</h3>
           <ul className="space-y-2 text-black dark:text-white">
@@ -63,7 +59,6 @@ const Footer = () => {
           </ul>
         </div>
 
-        {/* Resources */}
         <div className="md:ml-auto">
           <h3 className="text-lg font-semibold mb-3">Resources</h3>
           <ul className="space-y-2 text-black dark:text-white   ">
@@ -85,7 +80,6 @@ const Footer = () => {
           </ul>
         </div>
 
-        {/* Social Media + Status */}
         <div className="md:ml-auto">
           <h3 className="text-lg font-semibold mb-3">Follow Us</h3>
 
@@ -94,7 +88,6 @@ const Footer = () => {
               href="https://twitter.com/soyam1134"
               target="_blank"
               rel="noopener noreferrer"
-              // className="hover:text-indigo-500 transition"
             >
               <FaTwitter />
             </a>
@@ -102,7 +95,6 @@ const Footer = () => {
               href="https://github.com/soyammangla"
               target="_blank"
               rel="noopener noreferrer"
-              // className="hover:text-indigo-500 transition"
             >
               <FaGithub />
             </a>
@@ -110,13 +102,11 @@ const Footer = () => {
               href="https://www.linkedin.com/in/soyam-mangla-432b13365/"
               target="_blank"
               rel="noopener noreferrer"
-              // className="hover:text-indigo-500 transition"
             >
               <FaLinkedin />
             </a>
           </div>
 
-          {/* Status */}
           <div className="flex items-center gap-2 justify-center sm:justify-start mt-14">
             <span className="relative flex h-2.5 w-2.5">
               <span className="absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75 animate-ping"></span>
@@ -130,7 +120,6 @@ const Footer = () => {
         </div>
       </div>
 
-      {/* Copyright */}
       <div className="border-t border-gray-300 dark:border-slate-800 mt-10 pt-6 text-center text-sm flex flex-row items-center justify-center gap-2 text-black dark:text-white">
         Built for growth • Powered by TrackPoint
       </div>

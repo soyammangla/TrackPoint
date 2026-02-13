@@ -25,7 +25,6 @@ export default function Navbar() {
     { name: "Reports & Analytics", href: "/product/reports-analytics" },
   ];
 
-  // ------------------- Mounted & Click Outside -------------------
   useEffect(() => {
     setMounted(true);
 
@@ -44,8 +43,7 @@ export default function Navbar() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // ------------------- Hydration-safe navBg -------------------
-  const [navBg, setNavBg] = useState("bg-white text-black"); // SSR fallback
+  const [navBg, setNavBg] = useState("bg-white text-black");
   useEffect(() => {
     if (mounted) {
       setNavBg(
@@ -86,9 +84,7 @@ export default function Navbar() {
             </Link>
           </div>
 
-          {/* Desktop Menu */}
           <div className="hidden md:flex md:items-center space-x-6">
-            {/* Product Dropdown */}
             <div className="relative group">
               <button className="flex items-center gap-1">
                 Product
@@ -98,7 +94,6 @@ export default function Navbar() {
                 />
               </button>
 
-              {/* Dropdown — hidden by default, show on hover */}
               <div
                 className={`absolute mt-2 w-56 rounded-md shadow-lg py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-150 ${dropdownBg}`}
               >
@@ -119,11 +114,8 @@ export default function Navbar() {
             <Link href="/resources">Resources</Link>
           </div>
 
-          {/* Right Side */}
           <div className="flex items-center space-x-4">
-            {/* Desktop only buttons */}
             <div className="hidden md:flex items-center space-x-4">
-              {/* Theme Toggle */}
               {mounted && (
                 <button
                   onClick={() => setTheme(theme === "light" ? "dark" : "light")}
@@ -132,7 +124,6 @@ export default function Navbar() {
                 </button>
               )}
 
-              {/* Auth */}
               {session ? (
                 <div className="relative">
                   <button
@@ -144,9 +135,6 @@ export default function Navbar() {
                       alt="avatar"
                       className="w-8 h-8 rounded-full"
                     />
-                    {/* <span className="hidden md:block">
-                      {session.user?.name || "User"}
-                    </span> */}
                     <ChevronDown size={16} />
                   </button>
                   {userDropdownOpen && (
@@ -172,7 +160,6 @@ export default function Navbar() {
               )}
             </div>
 
-            {/* Mobile Menu Button */}
             <div className="md:hidden">
               <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
                 {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -182,7 +169,6 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile Menu */}
       {mobileMenuOpen && (
         <div ref={mobileMenuRef} className={`md:hidden border-t py-2 ${navBg}`}>
           <div className="px-2 pt-2 pb-3 space-y-1">
@@ -220,7 +206,6 @@ export default function Navbar() {
               Resources
             </Link>
 
-            {/* Mobile Theme Toggle */}
             {mounted && (
               <div className="flex justify-left px-3 py-1">
                 <button
@@ -231,8 +216,6 @@ export default function Navbar() {
               </div>
             )}
           </div>
-
-          {/* Mobile bottom buttons */}
           <div className="flex justify-between items-center px-4 py-3 border-t">
             {session ? (
               <button

@@ -31,7 +31,6 @@ export default function Testimonials() {
   return (
     <section className="w-full py-20 md:py-28 px-6 bg-white dark:bg-black">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
         <div className="text-center mb-16 md:mb-20">
           <h2 className="text-4xl md:text-5xl font-extrabold text-foreground mb-6">
             Trusted by Growing Businesses
@@ -41,7 +40,6 @@ export default function Testimonials() {
           </p>
         </div>
 
-        {/* Testimonials */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
           {testimonials.map((t, idx) => (
             <div

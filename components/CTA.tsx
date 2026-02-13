@@ -6,11 +6,11 @@ import { useSession } from "next-auth/react";
 
 export default function CTA() {
   const router = useRouter();
-  const { status } = useSession(); // "authenticated" | "unauthenticated" | "loading"
+  const { status } = useSession();
 
   const handleGetStarted = () => {
     if (status === "authenticated") {
-      router.push("/"); // or /dashboard
+      router.push("/");
     } else {
       router.push("/login");
     }

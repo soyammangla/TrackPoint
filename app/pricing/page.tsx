@@ -70,7 +70,6 @@ export default function Pricing() {
   return (
     <section className="flex min-h-screen items-center justify-center py-20 bg-gray-50 dark:bg-black px-6">
       <div className="w-full max-w-6xl space-y-14">
-        {/* Header */}
         <div className="text-center space-y-3">
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-900 dark:text-white">
             Trackpoint Pricing Plans
@@ -80,12 +79,11 @@ export default function Pricing() {
           </p>
         </div>
 
-        {/* Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {plans.map((plan, index) => (
             <div
               key={index}
-              className={`relative flex flex-col rounded-2xl border transition
+              className={`relative flex flex-col rounded-2xl border transition 
                 ${
                   plan.highlighted
                     ? "bg-white dark:bg-black border-black dark:border-white scale-[1.03]"
@@ -93,7 +91,6 @@ export default function Pricing() {
                 }
               `}
             >
-              {/* Popular Badge */}
               {plan.highlighted && (
                 <div className="absolute top-3 right-3 flex items-center gap-1 rounded-md border px-2 py-0.5 text-xs bg-white dark:bg-black">
                   <Star className="h-3 w-3 fill-current text-green-700" />
@@ -101,7 +98,6 @@ export default function Pricing() {
                 </div>
               )}
 
-              {/* Header */}
               <div className="rounded-t-2xl border-b p-6 bg-gray-50 dark:bg-black">
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                   {plan.name}
@@ -120,10 +116,8 @@ export default function Pricing() {
                 </div>
               </div>
 
-              {/* Divider */}
               <div className="border-t border-gray-200 dark:border-gray-800"></div>
 
-              {/* Features */}
               <div className="flex-1 px-6 py-6 space-y-4 text-sm text-black dark:text-white">
                 {plan.features.map((feature, i) => (
                   <div key={i} className="flex items-center gap-2">
@@ -133,7 +127,6 @@ export default function Pricing() {
                 ))}
               </div>
 
-              {/* Button */}
               <div className="border-t p-4">
                 <button
                   onClick={() => handlePlanClick(plan.link)}

@@ -16,7 +16,6 @@ export default function SignInPage() {
           </p>
         </div>
 
-        {/* GOOGLE BUTTON */}
         <button
           onClick={() => signIn("google", { callbackUrl: "/" })}
           className="w-full flex items-center justify-center gap-3 rounded-lg border border-slate-300 dark:border-slate-700 py-3 text-sm font-medium text-black dark:text-white"
@@ -29,20 +28,10 @@ export default function SignInPage() {
           Continue with Google
         </button>
 
-        {/* INFO TEXT */}
         <p className="mt-6 text-center text-xs text-black dark:text-white leading-relaxed">
           By continuing, you agree to Trackpoint’s Terms of Service and Privacy
           Policy.
         </p>
-
-        {/* FOOTER NOTE */}
-        {/* <p className="mt-8 text-center text-sm text-gray-600 dark:text-gray-400">
-          Access is currently invite-only.
-          <br />
-          <span className="text-black dark:text-white font-medium">
-            Contact admin if you need access.
-          </span>
-        </p> */}
       </div>
     </div>
   );

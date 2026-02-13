@@ -29,7 +29,6 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 
-/* ---------------- TYPES ---------------- */
 type Task = {
   id: string;
   title: string;
@@ -38,7 +37,6 @@ type Task = {
   completed: boolean;
 };
 
-/* ---------------- DATE FORMAT ---------------- */
 const formatDueDate = (date: string | null) => {
   if (!date) return "No due date";
 
@@ -57,18 +55,15 @@ const formatDueDate = (date: string | null) => {
   });
 };
 
-/* ---------------- COMPONENT ---------------- */
 export default function TasksPage() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [search, setSearch] = useState("");
 
-  /* add task modal */
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState("");
   const [priority, setPriority] = useState<Task["priority"]>("Medium");
   const [dueDate, setDueDate] = useState("");
 
-  /* ---------------- API ---------------- */
   const fetchTasks = async () => {
     const res = await fetch("/api/tasks");
     const data = await res.json();
@@ -123,7 +118,6 @@ export default function TasksPage() {
     return "outline";
   };
 
-  /* ---------------- UI ---------------- */
   return (
     <div className="min-h-screen bg-white dark:bg-black px-4 sm:px-6 md:px-10 py-8">
       {/* HEADER */}
@@ -148,7 +142,6 @@ export default function TasksPage() {
         </div>
       </div>
 
-      {/* TASK LIST */}
       <div className="space-y-4">
         {filteredTasks.map((task) => (
           <Card key={task.id} className="rounded-xl">
@@ -188,7 +181,6 @@ export default function TasksPage() {
         ))}
       </div>
 
-      {/* ADD TASK MODAL */}
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent>
           <DialogHeader>

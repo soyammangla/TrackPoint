@@ -10,7 +10,6 @@ export async function GET() {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  // ✅ user email se user nikaal
   const user = await prisma.user.findUnique({
     where: { email: session.user.email },
   });

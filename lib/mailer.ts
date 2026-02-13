@@ -1,11 +1,10 @@
-// lib/mailer.ts
 import nodemailer from "nodemailer";
 
 interface EmailOptions {
   to: string;
   subject: string;
   text?: string;
-  html?: string; // ✅ Add this
+  html?: string;
 }
 
 export async function sendEmail({ to, subject, text, html }: EmailOptions) {
@@ -24,7 +23,7 @@ export async function sendEmail({ to, subject, text, html }: EmailOptions) {
     to,
     subject,
     text,
-    html, // ✅ Add this
+    html,
   });
 
   console.log("Email sent:", info.messageId);
