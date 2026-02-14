@@ -2,7 +2,6 @@ import { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { prisma } from "./prisma";
-import { PrismaAdapter } from "@next-auth/prisma-adapter";
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -38,7 +37,6 @@ export const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
   },
-  adapter: PrismaAdapter(prisma),
 
   callbacks: {
     async redirect({ url, baseUrl }) {
