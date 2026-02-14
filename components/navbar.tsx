@@ -125,30 +125,33 @@ export default function Navbar() {
               )}
 
               {session ? (
-                <div className="relative">
-                  <button
-                    onClick={() => setUserDropdownOpen(!userDropdownOpen)}
-                    className="flex items-center gap-2 border px-2 py-1 rounded-full"
-                  >
+                <div className="relative group">
+                  <button className="flex items-center gap-2 border px-2 py-1 rounded-full">
                     <img
                       src={session.user?.image || "/default-avatar.png"}
                       alt="avatar"
                       className="w-8 h-8 rounded-full"
                     />
-                    <ChevronDown size={16} />
+                    <ChevronDown
+                      size={16}
+                      className="transition-transform duration-300 group-hover:rotate-180"
+                    />
                   </button>
-                  {userDropdownOpen && (
-                    <div
-                      className={`absolute right-0 mt-2 w-40 rounded-md shadow-lg py-2 ${dropdownBg}`}
+
+                  <div
+                    className={`absolute right-0 mt-2 w-40 rounded-md shadow-lg py-2 
+      opacity-0 invisible group-hover:opacity-100 group-hover:visible 
+      transition-all duration-150 ${dropdownBg}`}
+                  >
+                    <button
+                      onClick={() => signOut()}
+                      className="block w-full text-left px-4 py-2 rounded-lg 
+        bg-black text-white dark:bg-white dark:text-black 
+        transition-colors duration-200"
                     >
-                      <button
-                        onClick={() => signOut()}
-                        className="block w-full text-left px-4 py-2 rounded-lg bg-black text-white dark:bg-white dark:text-black transition-colors duration-200"
-                      >
-                        Sign Out
-                      </button>
-                    </div>
-                  )}
+                      Sign Out
+                    </button>
+                  </div>
                 </div>
               ) : (
                 <Link
