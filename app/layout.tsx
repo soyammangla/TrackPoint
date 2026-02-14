@@ -5,6 +5,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import Provider from "@/components/provider";
 import Navbar from "@/components/navbar";
 import React from "react";
+import Script from "next/script";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,6 +35,22 @@ export default function RootLayout({
 
         <Analytics />
         <SpeedInsights />
+        <Analytics />
+        <SpeedInsights />
+
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-HHBW2Z5YQN"
+          strategy="afterInteractive"
+        />
+
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HHBW2Z5YQN');
+  `}
+        </Script>
       </body>
     </html>
   );
